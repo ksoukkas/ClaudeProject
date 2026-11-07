@@ -67,11 +67,19 @@ export type Parcel = {
   law: LawId;
   feasibility: Feasibility;
   yieldLabel: string;
-  belowGoal: boolean;
+  /** Low and high ends of yieldLabel, as numbers (still fictional). null = unknown. */
+  yieldMin: number | null;
+  yieldMax: number | null;
   onMarket: boolean;
   reasoning: string;
   confidence: Confidence;
   evidence: string;
+  /**
+   * Where the pin goes on the map. ILLUSTRATIVE: roughly the centre of the
+   * sample city, rounded to two decimals. Not a real parcel, lot or address.
+   */
+  position: { lng: number; lat: number };
+  positionSource: "illustrative";
 };
 
 /** The five ranked sample sites on the Results screen. */
@@ -86,12 +94,16 @@ export const parcels: Parcel[] = [
     law: "SB4",
     feasibility: "review",
     yieldLabel: "44–60 potential homes",
-    belowGoal: false,
+    yieldMin: 44,
+    yieldMax: 60,
     onMarket: true,
     reasoning:
       "Faith ownership supports an SB 4 pathway; a private covenant still needs counsel review.",
     confidence: "Medium",
     evidence: "Sample deed + SB 4 screen",
+    // Illustrative: near the centre of Anaheim, not a real lot.
+    position: { lng: -117.91, lat: 33.84 },
+    positionSource: "illustrative",
   },
   {
     id: "civic-orchard",
@@ -103,12 +115,16 @@ export const parcels: Parcel[] = [
     law: "AB2011",
     feasibility: "feasible",
     yieldLabel: "36–48 potential homes",
-    belowGoal: false,
+    yieldMin: 36,
+    yieldMax: 48,
     onMarket: true,
     reasoning:
       "Commercial corridor screen passes; labor, affordability and site exclusions need confirmation.",
     confidence: "Medium",
     evidence: "Sample zoning + AB 2011 screen",
+    // Illustrative: near the centre of Santa Ana, not a real lot.
+    position: { lng: -117.87, lat: 33.75 },
+    positionSource: "illustrative",
   },
   {
     id: "laurel-court",
@@ -120,12 +136,16 @@ export const parcels: Parcel[] = [
     law: "SB9",
     feasibility: "feasible",
     yieldLabel: "2–4 potential homes",
-    belowGoal: true,
+    yieldMin: 2,
+    yieldMax: 4,
     onMarket: false,
     reasoning:
       "Single-family zoning fits an SB 9 screen; owner occupancy and exclusions remain unverified.",
     confidence: "Medium",
     evidence: "Sample parcel + SB 9 screen",
+    // Illustrative: near the centre of Buena Park, not a real lot.
+    position: { lng: -118.0, lat: 33.87 },
+    positionSource: "illustrative",
   },
   {
     id: "lantern-way",
@@ -137,12 +157,16 @@ export const parcels: Parcel[] = [
     law: "SB684_SB1123",
     feasibility: "review",
     yieldLabel: "6–10 potential homes",
-    belowGoal: true,
+    yieldMin: 6,
+    yieldMax: 10,
     onMarket: false,
     reasoning:
       "Small-site pathway may fit; public disposal process and subdivision conditions are unresolved.",
     confidence: "Low",
     evidence: "Sample parcel + subdivision screen",
+    // Illustrative: near the centre of Garden Grove, not a real lot.
+    position: { lng: -117.94, lat: 33.77 },
+    positionSource: "illustrative",
   },
   {
     id: "juniper-mews",
@@ -154,12 +178,16 @@ export const parcels: Parcel[] = [
     law: "SB9",
     feasibility: "blocked",
     yieldLabel: "2–4* potential homes",
-    belowGoal: true,
+    yieldMin: 2,
+    yieldMax: 4,
     onMarket: false,
     reasoning:
       "Sample recorded access easement covers the buildable area. No usable envelope identified.",
     confidence: "High",
     evidence: "Sample easement exhibit",
+    // Illustrative: near the centre of Fullerton, not a real lot.
+    position: { lng: -117.92, lat: 33.87 },
+    positionSource: "illustrative",
   },
 ];
 
