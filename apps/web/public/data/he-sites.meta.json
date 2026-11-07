@@ -1,0 +1,26 @@
+{
+  "source": "SCAG HousingElementSite_poly_scag (adopted housing element sites)",
+  "sourceUrl": "https://maps.scag.ca.gov/scaggis/rest/services/LDX/HousingElementSite_poly_scag/MapServer/0",
+  "query": {
+    "where": "Jurisdiction IN ('ANAHEIM','SANTA ANA')",
+    "outFields": "OBJECTID,Assessor_Parcel_Number,APN24,Jurisdiction,Low_Income_HE_Capacity,Moderate_Income_HE_Capacity,Above_Moderate_Income_HE_Capacity,Total_HE_Capacity,YEAR",
+    "returnGeometry": "true",
+    "outSR": "4326",
+    "geometryPrecision": "6",
+    "orderByFields": "OBJECTID",
+    "f": "geojson",
+    "note": "Polygons were reduced to their centroid locally (largest ring)."
+  },
+  "checked": "2026-11-07",
+  "recordCount": 124,
+  "serverCount": 124,
+  "recordsByJurisdiction": {
+    "ANAHEIM": 124,
+    "SANTA ANA": 0
+  },
+  "notes": [
+    "SANTA ANA was requested but returned 0 records: the layer had no sites for it on 2026-11-07.",
+    "Points are polygon centroids, for display only. Use the APN to look up the real parcel.",
+    "No feasibility, law or ownership verdict is attached to these records."
+  ]
+}
