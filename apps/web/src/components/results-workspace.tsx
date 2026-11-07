@@ -4,6 +4,7 @@ import Link from "next/link";
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ConfidenceBadge } from "@/components/confidence-badge";
 import { ParcelMap } from "@/components/parcel-map";
+import { LiveShortlist } from "@/components/scout-results";
 import { FigmaIcon, StatusTag, feasibilityLabel } from "@/components/ui";
 import {
   DEFAULT_FILTERS,
@@ -40,6 +41,7 @@ import {
 } from "@/lib/public-sites";
 import { sampleConfidence } from "@/lib/sample-checks";
 import { type Feasibility, laws, parcels } from "@/lib/sample-data";
+import type { ScoutResult } from "@/lib/scout/types";
 
 /* How many public sites the list shows at first, and per "Show more". */
 const PUBLIC_PAGE = 20;
@@ -269,12 +271,18 @@ export function ResultsWorkspace({
   understood: initialUnderstood,
   ignored: initialIgnored,
   children,
+  live,
+  liveIntro,
 }: {
   initial: FilterState;
   understood: UnderstoodItem[];
   ignored: string[];
   /** Page heading, rendered above the query line. */
   children?: ReactNode;
+  /** Live scout result for the search text, when it returned sites. */
+  live?: ScoutResult | null;
+  /** Server-rendered scout banner and parsed criteria, shown under the query. */
+  liveIntro?: ReactNode;
 }) {
   const [filters, setFilters] = useState(initial);
   const [saved, setSaved] = useState<Set<string>>(new Set(["olive-commons"]));
@@ -338,7 +346,31 @@ export function ResultsWorkspace({
     () => (publicVisible ?? []).reduce((sum, s) => sum + (s.totalCapacity ?? 0), 0),
     [publicVisible],
   );
-  const topPublic = useMemo(() => (publicVisible ?? []).slice(0, TOP_PUBLIC), [publicVisible]);
+  // Live scout candidates found in the cached public layer (same SCAG source),
+  // matched by APN. Their map squares carry the scout's rank.
+  const liveOnMap = useMemo(() => {
+    const idByCandidate = new Map<string, number>();
+    const sites: PublicSite[] = [];
+    const numbers: number[] = [];
+    if (!live || !allPublic) return { idByCandidate, sites, numbers };
+    const byApn = new Map<string, PublicSite>();
+    for (const s of allPublic) {
+      if (s.apn) byApn.set(s.apn, s);
+      if (s.apn24) byApn.set(s.apn24, s);
+    }
+    for (const c of live.candidates) {
+      const site = byApn.get(c.apn) ?? byApn.get(c.apn.replace(/-/g, ""));
+      if (!site) continue;
+      idByCandidate.set(c.id, site.id);
+      sites.push(site);
+      numbers.push(c.rank);
+    }
+    return { idByCandidate, sites, numbers };
+  }, [live, allPublic]);
+  const topPublic = useMemo(
+    () => (live ? liveOnMap.sites : (publicVisible ?? []).slice(0, TOP_PUBLIC)),
+    [live, liveOnMap, publicVisible],
+  );
 
   // Frame the searched area: every site in the chosen cities (both layers),
   // or the whole county when no city is chosen. Refit only when the cities
@@ -387,13 +419,15 @@ export function ResultsWorkspace({
       if (id === null || !publicVisible) return;
       const index = publicVisible.findIndex((s) => s.id === id);
       if (index >= 0) setPublicShown((n) => Math.max(n, index + 1));
+      // A live scout site scrolls to its shortlist card; others to the public list.
+      const liveCandidate = [...liveOnMap.idByCandidate].find(([, pid]) => pid === id)?.[0];
       requestAnimationFrame(() =>
         document
-          .getElementById(`public-${id}`)
+          .getElementById(liveCandidate ? `live-${liveCandidate}` : `public-${id}`)
           ?.scrollIntoView({ behavior: "smooth", block: "nearest" }),
       );
     },
-    [publicVisible],
+    [publicVisible, liveOnMap],
   );
 
   const toggleLayer = useCallback((layer: "sample" | "public") => {
@@ -492,6 +526,7 @@ export function ResultsWorkspace({
           Orange County, shown as published. Your search sets the filters below; sites under
           your unit goal stay visible and are labelled, not hidden.
         </p>
+        {liveIntro}
       </div>
 
       <div className="flex w-full flex-col gap-[10px]">
@@ -576,7 +611,7 @@ export function ResultsWorkspace({
       </div>
 
       <div className="flex w-full flex-col gap-7 lg:flex-row lg:items-start">
-        <div className="flex w-full flex-col lg:w-[612px] lg:shrink-0">
+        <div id="results-map" className="flex w-full scroll-mt-6 flex-col lg:w-[612px] lg:shrink-0">
           <ParcelMap
             parcels={parcels}
             visibleIds={visibleIds}
@@ -591,6 +626,7 @@ export function ResultsWorkspace({
             onToggleLayer={toggleLayer}
             unitGoal={filters.unitGoal}
             topPublic={topPublic}
+            topNumbers={live ? liveOnMap.numbers : undefined}
             focus={focus}
           />
           <div className="flex flex-col gap-[6px] py-3 text-[10px] leading-[1.5] text-ink-soft">
@@ -625,8 +661,14 @@ export function ResultsWorkspace({
               </span>
             </div>
             <p className="text-muted">
-              Numbered squares are the top {TOP_PUBLIC} public sites by planned homes, as in the
-              list. Bigger dots plan more homes; grey circles with a number are clusters, click to
+              {live
+                ? `Numbered squares are the live scout's ranked sites, with the same numbers as the shortlist${
+                    liveOnMap.sites.length < live.candidates.length
+                      ? ` (${live.candidates.length - liveOnMap.sites.length} not in the map snapshot)`
+                      : ""
+                  }. Square colour uses total planned homes vs the goal; the scout's goal check may count lower-income capacity only (ASSUMPTION).`
+                : `Numbered squares are the top ${TOP_PUBLIC} public sites by planned homes, as in the list.`}{" "}
+              Bigger dots plan more homes; grey circles with a number are clusters, click to
               zoom in. The map zooms to the cities in your search.
             </p>
           </div>
@@ -647,6 +689,24 @@ export function ResultsWorkspace({
         </div>
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">
+          {live ? (
+            <div className="mb-4 border-b border-line pb-6">
+              <LiveShortlist
+                result={live}
+                mapIdByCandidate={liveOnMap.idByCandidate}
+                mapLoaded={allPublic !== null || publicError !== null}
+                selectedMapId={selectedPublicId}
+                onShowOnMap={(id) => {
+                  // Select the square (the map flies to it) and bring the map into view.
+                  setShowPublic(true);
+                  setSelectedPublicId(id);
+                  document
+                    .getElementById("results-map")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+              />
+            </div>
+          ) : null}
           <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 leading-[1.5] whitespace-nowrap">
             <p className="text-[12px] font-semibold text-ink">Sites in sample order</p>
             <div className="flex flex-wrap items-center gap-4">
@@ -873,7 +933,7 @@ export function ResultsWorkspace({
                           isSelected ? "bg-accent-soft" : ""
                         }`}
                       >
-                        {index < TOP_PUBLIC ? (
+                        {!live && index < TOP_PUBLIC ? (
                           <span
                             aria-hidden
                             className={`flex size-[22px] shrink-0 items-center justify-center rounded-[6px] text-[10px] font-bold text-white ${planBadge[label]}`}

@@ -89,6 +89,11 @@ export type ParcelMapProps = {
   unitGoal: number;
   /** The top public sites, numbered on the map in the same order as the list. */
   topPublic: PublicSite[];
+  /**
+   * Optional pin numbers, parallel to `topPublic` (e.g. the live scout's
+   * ranks). Defaults to 1, 2, 3... in list order.
+   */
+  topNumbers?: readonly number[];
   /** Where to frame the map. The map refits whenever `key` changes. */
   focus: { key: string; bounds: Bounds } | null;
 };
@@ -164,6 +169,7 @@ export default function ParcelMap({
   onToggleLayer,
   unitGoal,
   topPublic,
+  topNumbers,
   focus,
 }: ParcelMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -423,7 +429,8 @@ export default function ParcelMap({
       const selected = site.id === selectedPublicId;
       const wrapper = marker.getElement();
       const pin = wrapper.firstElementChild as HTMLButtonElement;
-      pin.textContent = String(i + 1);
+      const number = topNumbers?.[i] ?? i + 1;
+      pin.textContent = String(number);
       // Rounded squares, so they never read as the round sample-site pins.
       pin.className = [
         "flex size-[26px] cursor-pointer items-center justify-center rounded-[7px] border-2 border-white text-[11px] font-bold text-white shadow-sm outline-none focus-visible:ring-4 focus-visible:ring-accent/50",
@@ -432,14 +439,14 @@ export default function ParcelMap({
       ].join(" ");
       pin.setAttribute(
         "aria-label",
-        `Public site ${i + 1}: ${site.city}, APN ${site.apn ?? "unknown"}, ${
+        `Public site ${number}: ${site.city}, APN ${site.apn ?? "unknown"}, ${
           site.totalCapacity ?? "unknown"
         } planned homes (${label === "meets" ? "meets" : label === "below" ? "below" : "unknown vs"} the ${unitGoal}-home goal)`,
       );
       pin.setAttribute("aria-pressed", selected ? "true" : "false");
       wrapper.style.zIndex = selected ? "9" : "1";
     });
-  }, [topPublic, showPublic, unitGoal, selectedPublicId]);
+  }, [topPublic, topNumbers, showPublic, unitGoal, selectedPublicId]);
 
   // Effect 8: frame the searched area. Refits only when the focus key changes
   // (cities picked or the data arriving), not on every render.

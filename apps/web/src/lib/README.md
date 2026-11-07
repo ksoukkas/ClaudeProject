@@ -11,3 +11,6 @@ reusable by another client later.
 - `thresholds.ts`: every cut-off and age limit, each one an ASSUMPTION.
 - `law-tests.ts`: the tests for each law and the unscored project conditions.
 - `sample-checks.ts`: fictional evidence for the five sample sites.
+- `scout/`: the scouting agent (query parsing, public-data retrieval,
+  ranking, sources registry). Uses the Anthropic SDK only on the server, when
+  `ANTHROPIC_API_KEY` is set. Tests: `npm run test:scout`.

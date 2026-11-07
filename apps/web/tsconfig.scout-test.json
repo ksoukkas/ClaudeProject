@@ -1,0 +1,15 @@
+{
+  "//": "Compiles the framework-free scout tests to CommonJS for `node --test`. Used by `npm run test:scout`.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "outDir": ".scout-test",
+    "rootDir": "src",
+    "types": ["node"]
+  },
+  "files": ["src/lib/scout/scout.test.ts"]
+}
