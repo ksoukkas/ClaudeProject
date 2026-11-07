@@ -47,14 +47,25 @@
   body:has([data-print-root]) * {
     visibility: hidden;
   }
-  [data-print-root],
-  [data-print-root] * {
+  body:has([data-print-root]) [data-print-root],
+  body:has([data-print-root]) [data-print-root] * {
     visibility: visible;
   }
   [data-print-root] {
     position: absolute;
     inset: 0 auto auto 0;
+    min-height: 0 !important;
     box-shadow: none !important;
     border: 0 !important;
+  }
+  /* The rest of the page is hidden but still takes up space: stop it adding pages. */
+  html:has([data-print-root]),
+  body:has([data-print-root]) {
+    height: 1120px;
+    overflow: hidden;
+  }
+  @page {
+    size: A4;
+    margin: 0;
   }
 }

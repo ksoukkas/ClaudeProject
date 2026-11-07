@@ -170,15 +170,15 @@ describe("applyFilters", () => {
 
   it("combines filters", () => {
     assert.deepEqual(
-      ids(applyFilters(parcels, state({ cities: ["Santa Ana"], status: "feasible" }))),
+      ids(applyFilters(parcels, state({ cities: ["Santa Ana"], status: "review" }))),
       ["civic-orchard"],
     );
     assert.deepEqual(
-      ids(applyFilters(parcels, state({ onMarketOnly: true, status: "feasible" }))),
-      ["civic-orchard"],
+      ids(applyFilters(parcels, state({ onMarketOnly: true, status: "review" }))),
+      ["olive-commons", "civic-orchard"],
     );
     assert.deepEqual(
-      ids(applyFilters(parcels, state({ owner: "Private", status: "feasible", law: "SB9" }))),
+      ids(applyFilters(parcels, state({ owner: "Private", status: "review", law: "SB9" }))),
       ["laurel-court"],
     );
     assert.deepEqual(
@@ -197,16 +197,16 @@ describe("applyFilters", () => {
 
 describe("countByOption", () => {
   it("counts each option with every other filter applied", () => {
-    const counts = countByOption(parcels, state({ status: "feasible" }), "cities");
-    assert.equal(counts.all, 2);
+    const counts = countByOption(parcels, state({ status: "review" }), "cities");
+    assert.equal(counts.all, 4);
     assert.equal(counts["Santa Ana"], 1);
     assert.equal(counts["Buena Park"], 1);
-    assert.equal(counts.Anaheim, undefined);
+    assert.equal(counts.Fullerton, undefined);
   });
 
   it("ignores its own filter", () => {
-    const counts = countByOption(parcels, state({ status: "feasible" }), "status");
-    assert.deepEqual(counts, { all: 5, review: 2, feasible: 2, blocked: 1 });
+    const counts = countByOption(parcels, state({ status: "review" }), "status");
+    assert.deepEqual(counts, { all: 5, review: 4, blocked: 1 });
   });
 
   it("counts market status as off/on", () => {
@@ -248,12 +248,12 @@ describe("sortParcels", () => {
     ]);
   });
 
-  it("confidence sorts High > Medium > Low, ties by rank", () => {
+  it("confidence sorts by the computed level, ties by rank", () => {
     assert.deepEqual(ids(sortParcels(parcels, "confidence")), [
+      "laurel-court",
       "juniper-mews",
       "olive-commons",
       "civic-orchard",
-      "laurel-court",
       "lantern-way",
     ]);
   });

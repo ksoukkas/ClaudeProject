@@ -44,6 +44,10 @@ export default async function ResultsPage({
         <h1 className="font-display text-[40px] leading-[1.2] font-bold text-ink">
           A shortlist, with the why.
         </h1>
+        <p className="text-[11px] leading-[1.5] text-muted">
+          Sample sites are fictional. Confidence is worked out from the tests on each site, not
+          typed in.
+        </p>
       </ResultsWorkspace>
     </div>
   );

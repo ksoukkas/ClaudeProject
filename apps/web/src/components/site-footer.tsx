@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SNAPSHOT_DATE } from "@/lib/sample-data";
 import { FigmaIcon } from "@/components/ui";
 
@@ -10,7 +11,10 @@ export function SiteFooter() {
           Sample workspace · All addresses, owners, listings and findings are
           fictional. Screening only, not legal advice. Siteline is a prototype
           built at the Claude Impact Lab: talk to a professional before making
-          decisions.
+          decisions.{" "}
+          <Link href="/about" className="text-accent hover:underline">
+            What is real and what is assumed
+          </Link>
         </p>
         <p className="whitespace-nowrap">Data snapshot · {SNAPSHOT_DATE}</p>
       </div>

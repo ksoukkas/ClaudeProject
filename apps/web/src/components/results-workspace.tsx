@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ConfidenceBadge } from "@/components/confidence-badge";
 import { ParcelMap } from "@/components/parcel-map";
 import { FigmaIcon, StatusTag, feasibilityLabel } from "@/components/ui";
 import {
@@ -37,6 +38,7 @@ import {
   publicMeta,
   readPublicSites,
 } from "@/lib/public-sites";
+import { sampleConfidence } from "@/lib/sample-checks";
 import { type Feasibility, laws, parcels } from "@/lib/sample-data";
 
 /* How many public sites the list shows at first, and per "Show more". */
@@ -553,8 +555,8 @@ export function ResultsWorkspace({
         </div>
         <div className="flex items-center justify-between gap-4 text-[11px] leading-[1.5]">
           <p className="text-ink-soft">
-            {visible.length} of {parcels.length} sample sites · {count("feasible")} likely
-            feasible · {count("review")} need review · {count("blocked")} blocked
+            {visible.length} of {parcels.length} sample sites · {count("feasible")} look
+            good · {count("review")} need checking · {count("blocked")} with a red flag
             {publicVisible ? (
               <>
                 {" "}· {publicVisible.length.toLocaleString()} public Housing Element sites
@@ -646,7 +648,7 @@ export function ResultsWorkspace({
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">
           <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 leading-[1.5] whitespace-nowrap">
-            <p className="text-[12px] font-semibold text-ink">Ranked for your search</p>
+            <p className="text-[12px] font-semibold text-ink">Sites in sample order</p>
             <div className="flex flex-wrap items-center gap-4">
               <GoalInput goal={filters.unitGoal} onChange={(unitGoal) => set({ unitGoal })} />
               <label className="flex items-center gap-[6px] text-[11px] text-muted">
@@ -689,6 +691,7 @@ export function ResultsWorkspace({
 
           {visible.map((p) => {
             const isSaved = saved.has(p.id);
+            const result = sampleConfidence(p.id);
             const isSelected = p.id === selectedId;
             const note = goalNote[goalFit(p, filters.unitGoal)]?.(filters.unitGoal);
             return (
@@ -711,7 +714,7 @@ export function ResultsWorkspace({
                       {String(p.rank).padStart(2, "0")}
                     </span>
                     <StatusTag tone={p.feasibility}>
-                      {feasibilityLabel[p.feasibility]}
+                      {result?.statusLabel ?? feasibilityLabel[p.feasibility]}
                     </StatusTag>
                   </div>
                   <button
@@ -763,9 +766,22 @@ export function ResultsWorkspace({
                 ) : null}
                 <p className="text-[12px] leading-[1.5] text-ink">{p.reasoning}</p>
                 <div className="flex items-center gap-[10px]">
-                  <p className="flex-1 text-[10px] leading-[1.5] text-muted">
-                    {p.confidence} confidence · {p.evidence}
-                  </p>
+                  <div className="flex min-w-0 flex-1 flex-col gap-[2px]">
+                    <div className="flex flex-wrap items-center gap-x-3">
+                      <ConfidenceBadge level={result?.level} />
+                      {result ? (
+                        <span className="text-[11px] leading-[1.5] text-ink-soft">
+                          {result.counts.unknown} of {result.counts.total} tests unknown
+                        </span>
+                      ) : null}
+                    </div>
+                    {result ? (
+                      <p className="text-[11px] leading-[1.5] text-ink-soft">
+                        Next: {result.next}
+                      </p>
+                    ) : null}
+                    <p className="text-[10px] leading-[1.5] text-muted">{p.evidence}</p>
+                  </div>
                   <FigmaIcon src="/figma/results/arrowUpRight.svg" size={16} />
                 </div>
               </article>
@@ -773,7 +789,7 @@ export function ResultsWorkspace({
           })}
 
           <p className="text-[10px] leading-[1.5] text-muted">
-            Unit ranges are early capacity estimates, not entitlements. *Blocked
+            Unit ranges are early capacity estimates, not entitlements. *Red flag
             site shows pre-title screening capacity.
           </p>
 

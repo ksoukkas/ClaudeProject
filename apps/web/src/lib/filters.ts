@@ -5,8 +5,9 @@
  *
  * Precedence for every filter: explicit URL param > parsed from `q` > default.
  */
+import { sampleConfidence } from "./sample-checks";
+import type { Level } from "./types";
 import type {
-  Confidence,
   Feasibility,
   LawId,
   OwnerType,
@@ -63,7 +64,7 @@ export const FEASIBILITIES = ["feasible", "review", "blocked"] as const satisfie
 export const SORT_KEYS = ["fit", "units", "acres", "confidence"] as const satisfies readonly SortKey[];
 
 export const sortLabel: Record<SortKey, string> = {
-  fit: "Best fit",
+  fit: "Sample order",
   units: "Most homes (low estimate)",
   acres: "Largest lot",
   confidence: "Highest confidence",
@@ -227,7 +228,12 @@ export function applyFilters(parcels: readonly Parcel[], state: FilterState): Pa
   return parcels.filter((p) => matches(p, state));
 }
 
-const confidenceRank: Record<Confidence, number> = { High: 3, Medium: 2, Low: 1 };
+const confidenceRank: Record<Level, number> = {
+  High: 3,
+  Medium: 2,
+  Low: 1,
+  "Not enough data": 0,
+};
 
 /** Descending by a numeric value; unknown (null) always sorts after known. */
 function byKnownDesc(a: number | null, b: number | null): number {
@@ -247,7 +253,10 @@ export function sortParcels(parcels: readonly Parcel[], sort: SortKey): Parcel[]
     fit: () => 0,
     units: (p: Parcel) => p.yieldMin,
     acres: (p: Parcel) => p.acres,
-    confidence: (p: Parcel) => confidenceRank[p.confidence] ?? null,
+    confidence: (p: Parcel) => {
+      const level = sampleConfidence(p.id)?.level;
+      return level ? confidenceRank[level] : null;
+    },
   }[sort];
   return parcels
     .map((p, i) => ({ p, i }))

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ConfidenceBadge } from "@/components/confidence-badge";
+import { ConfidenceBreakdown } from "@/components/confidence-breakdown";
 import { ParcelContextMap } from "@/components/parcel-context-map";
 import { ReportActions } from "@/components/report-actions";
 import {
@@ -13,10 +15,13 @@ import {
 import {
   type Finding,
   SNAPSHOT_DATE,
+  laws,
   parcels,
   reports,
   workspace,
 } from "@/lib/sample-data";
+import { projectConditions } from "@/lib/law-tests";
+import { sampleConfidence } from "@/lib/sample-checks";
 
 type Params = Promise<{ id: string }>;
 
@@ -52,7 +57,7 @@ function FindingNotes({ finding }: { finding: Finding }) {
   return (
     <>
       <p className="text-[12px] leading-[1.5] text-ink">{finding.body}</p>
-      <p className="text-[10px] leading-[1.5] text-muted">{finding.confidence}</p>
+      <p className="text-[10px] leading-[1.5] text-muted">{finding.evidence}</p>
       {finding.link ? (
         <a
           href={finding.link.href}
@@ -89,6 +94,14 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
   const parcel = parcels.find((p) => p.id === id);
   if (!parcel) notFound();
   const report = reports[id];
+  const result = sampleConfidence(id);
+  const breakdown = result ? (
+    <ConfidenceBreakdown
+      result={result}
+      conditions={projectConditions(parcel.law)}
+      lawSources={laws[parcel.law].sources}
+    />
+  ) : null;
 
   const crumbs = (
     <div className="flex items-center gap-2">
@@ -113,7 +126,12 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
           {parcel.address}
         </h1>
         <div className="flex flex-col gap-3 rounded-[16px] border border-dashed border-line bg-surface p-7">
-          <StatusTag tone={parcel.feasibility}>{feasibilityLabel[parcel.feasibility]}</StatusTag>
+          <div className="flex flex-wrap items-center gap-3">
+            <StatusTag tone={parcel.feasibility}>
+              {result?.statusLabel ?? feasibilityLabel[parcel.feasibility]}
+            </StatusTag>
+            <ConfidenceBadge level={result?.level} />
+          </div>
           <p className="text-[13px] leading-[1.5] text-ink">{parcel.reasoning}</p>
           <p className="text-[12px] leading-[1.5] text-muted">
             A full feasibility report has not been written for this sample site
@@ -123,6 +141,7 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
             Open the Olive Commons sample report
           </ButtonLink>
         </div>
+        {breakdown}
       </div>
     );
   }
@@ -134,7 +153,7 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap gap-2">
           <StatusTag size="md" shape="soft" tone="line">
-            {feasibilityLabel[parcel.feasibility]}
+            {result?.statusLabel ?? feasibilityLabel[parcel.feasibility]}
           </StatusTag>
           {parcel.onMarket ? (
             <StatusTag size="md" shape="soft" tone="line-accent">
@@ -144,6 +163,7 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
           <StatusTag size="md" shape="soft" tone="line-muted">
             Fictional sample site
           </StatusTag>
+          <ConfidenceBadge level={result?.level} />
         </div>
         <h1 className="font-display text-[42px] leading-[1.2] font-bold text-ink">
           {parcel.address}
@@ -155,7 +175,7 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
 
       <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
         <section className="flex flex-1 flex-col gap-[22px] rounded-[16px] border border-line bg-surface p-7">
-          <Eyebrow>A pathway worth investigating</Eyebrow>
+          <Eyebrow>What the sample shows so far</Eyebrow>
           <p className="font-display text-[23px] leading-[1.2] font-semibold text-ink">
             {report.headline}
           </p>
@@ -173,6 +193,8 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
         <ParcelContextMap acresLabel={`${parcel.acres.toFixed(2)} ac`} />
       </div>
 
+      {breakdown}
+
       <section className="flex gap-[14px] rounded-[16px] border border-line bg-canvas p-[22px]">
         <FigmaIcon src="/figma/parcel/triangleAlert.svg" size={22} />
         <div className="flex flex-1 flex-col gap-[7px]">
@@ -180,7 +202,7 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
             {report.caveat.title}
           </p>
           <p className="text-[12px] leading-[1.5] text-ink">{report.caveat.body}</p>
-          <p className="text-[10px] leading-[1.5] text-muted">{report.caveat.confidence}</p>
+          <p className="text-[10px] leading-[1.5] text-muted">{report.caveat.evidence}</p>
         </div>
       </section>
 

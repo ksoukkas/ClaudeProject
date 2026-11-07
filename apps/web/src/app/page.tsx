@@ -48,14 +48,14 @@ export default function ScoutPage() {
             <p className="text-[13px] leading-[1.5] text-ink">Your scout is working</p>
           </div>
           <StatusTag tone="accent" solid shape="pill">
-            LIVE SCREEN
+            SAMPLE SCREEN
           </StatusTag>
         </div>
 
         <div className="flex flex-col gap-10 p-7 lg:flex-row lg:items-center">
           <div className="flex flex-1 flex-col gap-[14px]">
             <p className="text-[13px] leading-[1.5] text-muted">
-              One search. Five layers of due diligence.
+              One search. Five sample screening steps.
             </p>
             <ol className="flex flex-col">
               {steps.map((step) => {
@@ -120,7 +120,7 @@ export default function ScoutPage() {
           <div className="flex flex-1 flex-col gap-[2px] leading-[1.5]">
             <p className="text-[12px] font-semibold text-ink">Possibility, not a promise.</p>
             <p className="text-[11px] text-muted">
-              Every match includes its reasoning and sources.
+              Every match shows which tests have evidence and which are still unknown.
             </p>
           </div>
           <ButtonLink

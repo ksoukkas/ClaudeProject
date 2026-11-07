@@ -1,0 +1,78 @@
+{
+  "about": "Size limits and site tests per land pathway, from the planning SOP (checked 2026-11-07). Summaries, not the statute: verify before relying on them. Sizes in square feet unless noted.",
+  "checked": "2026-11-07",
+  "laws": [
+    {
+      "id": "SB9",
+      "name": "SB 9",
+      "opens": "Lot split and/or duplex on single-family lots",
+      "zone": ["single-family"],
+      "lot": { "min_sqft_to_split": 2400, "max_acres": null },
+      "new_lots": { "min_sqft_each": 1200, "min_share_of_original": 0.40, "max_lots": 2 },
+      "units": { "max_total": 4, "min_unit_sqft_allowed": 800 },
+      "tests": ["not_historic_district", "no_renter_last_3_years", "not_very_high_fire_zone", "not_previously_sb9_split"],
+      "sources": ["https://pwds.oc.gov/sites/ocpwocds/files/2026-04/SB%209%20Guidance%20Handout%2003.31.2026.pdf", "https://sfplanning.org/sites/default/files/documents/publications/DB_08_Streamlined_Housing_Development_SB-9.pdf"]
+    },
+    {
+      "id": "SB684",
+      "name": "SB 684",
+      "opens": "Up to 10 homes on multifamily-zoned lots, no hearing",
+      "zone": ["multifamily"],
+      "lot": { "max_acres": 5 },
+      "new_lots": { "min_sqft_each": 600, "max_lots": 10 },
+      "units": { "max_total": 10, "max_avg_net_sqft": 1750 },
+      "tests": ["substantially_surrounded_by_urban_uses"],
+      "sources": ["https://www.smcgov.org/planning/sb-684sb-1123-small-lot-subdivision-and-housing-development", "https://coxcastle.com/publication-big-support-for-smaller-housing-three-bills-that-reduce-entitlement-friction-for-housing-projects"]
+    },
+    {
+      "id": "SB1123",
+      "name": "SB 1123",
+      "opens": "Up to 10 homes on vacant single-family-zoned lots",
+      "zone": ["single-family"],
+      "requires_vacant": true,
+      "effective": "2025-07-01",
+      "lot": { "max_acres": 1.5 },
+      "new_lots": { "min_sqft_each": 1200, "max_lots": 10 },
+      "units": { "max_total": 10, "max_avg_net_sqft": 1750 },
+      "tests": ["substantially_surrounded_by_urban_uses", "vacant"],
+      "sources": ["https://www.smcgov.org/planning/sb-684sb-1123-small-lot-subdivision-and-housing-development"]
+    },
+    {
+      "id": "AB2011",
+      "name": "AB 2011 (mixed-income)",
+      "opens": "Housing on commercial zones along corridors",
+      "zone": ["commercial-office", "commercial-retail", "parking"],
+      "lot": { "max_acres": 20, "max_acres_regional_mall": 100 },
+      "frontage": { "min_ft": 50, "corridor_row_ft": [70, 150], "note": "AB 2243: 50 ft ROW allowed where height limit is 65 ft or more" },
+      "min_density_du_per_acre_metro": { "under_1_acre": 30, "1_acre_plus_corridor_under_100ft": 40, "1_acre_plus_corridor_100ft_plus": 60, "within_half_mile_major_transit": 80 },
+      "height_ft": { "corridor_under_100ft": 35, "corridor_100ft_plus": 45, "or_current_zoning_if_greater": true },
+      "verify": "Density/height tiers from a city checklist; AB 2243 (2024) amended AB 2011 and HCD is drafting guidelines (2026).",
+      "tests": ["zoned_commercial", "corridor_frontage", "not_next_to_industrial", "not_very_high_fire_zone", "not_flood_zone"],
+      "sources": ["https://morganhill.ca.gov/DocumentCenter/View/44595/AB-2011-Checklist-fillable", "https://hayward-ca.gov/sites/default/files/documents/SB6-AB2011-Eligibility-Checklist-FINAL-080723.pdf", "https://www.bwslaw.com/insights/public-law-update-ab-2243-expanding-housing-development-projects/"]
+    },
+    {
+      "id": "SB4",
+      "name": "SB 4",
+      "opens": "Housing on land owned by religious institutions or independent nonprofit colleges",
+      "ownership": { "owner_types": ["religious_institution", "independent_higher_ed"], "owned_as_of": "2024-01-01", "free_data": false, "proxy": "worship-site maps + IRS exempt-org file (lead only)" },
+      "lot": { "max_acres": null, "note": "No site-size limit per HCD fact sheet" },
+      "perimeter_urban_min_share": 0.75,
+      "affordability": { "lower_income_share": 1.0, "max_moderate_share": 0.20, "max_staff_share": 0.05, "deed_years_rental": 55, "deed_years_ownership": 45 },
+      "min_density_du_per_acre_oc": { "residential_zone": 30, "non_residential_zone": 40 },
+      "height": "one story above local limit",
+      "exclusions": ["farmland", "wetlands", "very_high_fire_hazard_zone", "hazardous_waste_site", "earthquake_fault_zone", "special_flood_hazard_area", "regulatory_floodway", "habitat_conservation", "conservation_easement"],
+      "buffers_ft": { "heavy_industrial": 1200, "title_v_industrial": 1600, "oil_gas_refinery": 3200 },
+      "labor": "prevailing wage; 50+ units adds health care + apprenticeship",
+      "sunset": "2036-01-01",
+      "sources": ["https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/aff-hsg-faith-higher-ed-sb-4.pdf"]
+    },
+    {
+      "id": "SURPLUS",
+      "name": "Surplus Land Act",
+      "opens": "Public agency land declared surplus; affordable builders get first offer",
+      "tests": ["listed_on_hcd_surplus_inventory", "notice_active_not_archive", "zoning_allows_housing"],
+      "contact": "agency contact listed on the HCD notice",
+      "sources": ["https://hcd.ca.gov/housing-element/sites-inventory"]
+    }
+  ]
+}
