@@ -29,14 +29,14 @@ function SourceRow({ id }: { id: string }) {
         <span>{s.name}</span>
       )}
       <span
-        className={`rounded px-1 text-xs ${s.status === "VERIFIED" ? "bg-neutral-100 text-neutral-700" : "bg-amber-50 text-amber-800"}`}
+        className={`rounded px-1 text-xs ${s.status === "VERIFIED" ? "bg-canvas text-ink-soft" : "bg-review-soft text-review"}`}
       >
         {s.status}
       </span>
-      <span className="text-xs text-neutral-500">
+      <span className="text-xs text-muted">
         {s.checked ? `checked ${s.checked}` : "not fetched"}
       </span>
-      {s.note ? <span className="block w-full text-xs text-neutral-600">{s.note}</span> : null}
+      {s.note ? <span className="block w-full text-xs text-ink-soft">{s.note}</span> : null}
     </li>
   );
 }
@@ -63,9 +63,9 @@ export default function MarketPage() {
       title="Chapter 8 pipeline"
       description={`Tax-defaulted parcels in ${FOCUS_LABEL} that a nonprofit may be able to acquire by agreement before the county's tax auction.`}
     >
-      <div className="rounded-md border border-neutral-200 bg-neutral-50 p-4 text-sm">
+      <div className="rounded-md border border-line bg-canvas p-4 text-sm">
         <p className="font-semibold">What Chapter 8 is</p>
-        <p className="mt-1 text-neutral-700">
+        <p className="mt-1 text-ink-soft">
           When property taxes go unpaid long enough, the county tax collector gains the power to
           sell the parcel and offers it at public auction. California&apos;s tax-sale law also
           lets the county sell tax-defaulted property by agreement to a public agency or a
@@ -74,7 +74,7 @@ export default function MarketPage() {
           sections are cited below with their verification status: they were not readable in
           automated fetches today, so read them in a browser before acting.
         </p>
-        <p className="mt-2 text-neutral-700">
+        <p className="mt-2 text-ink-soft">
           What the county itself says (read 2026-11-07): the most recent Orange County tax
           auction was June 25, 2025, approved by the Board of Supervisors on March 11, 2025; an
           owner can redeem until 5 PM the day before an auction; the parcel list can be viewed by
@@ -88,7 +88,7 @@ export default function MarketPage() {
             ),
           )}
         </ul>
-        <p className="mt-3 text-xs text-neutral-500">
+        <p className="mt-3 text-xs text-muted">
           A prototype, not legal advice. Cucumber sends nothing; the request to the tax collector
           is yours to make.
         </p>
@@ -96,14 +96,22 @@ export default function MarketPage() {
 
       <section className="flex flex-col gap-3">
         <h2 className="text-lg font-semibold">The county list</h2>
+        <p className="text-sm text-ink-soft">
+          The county&apos;s June 25, 2025 auction list is already loaded on the{" "}
+          <Link href="/chapter8" className="underline">
+            Chapter 8 page
+          </Link>
+          , parcel by parcel with the application checklist. Use this box when the county
+          publishes a newer list.
+        </p>
         <Chapter8Pipeline />
       </section>
 
-      <details className="rounded-md border border-neutral-200 p-4">
+      <details className="rounded-md border border-line p-4">
         <summary className="cursor-pointer text-base font-semibold">
           Other public land: Surplus Land Act notices in {FOCUS_LABEL} ({notices.length})
         </summary>
-        <p className="mt-2 text-sm text-neutral-600">
+        <p className="mt-2 text-sm text-ink-soft">
           Real HCD data kept as a second public-land channel.{" "}
           {activeNotices === 0
             ? "No active notice in these cities"
@@ -115,7 +123,7 @@ export default function MarketPage() {
         <div className="mt-3 overflow-x-auto">
           <table className="w-full min-w-[900px] border-collapse text-sm">
             <thead>
-              <tr className="border-b border-neutral-200 text-left text-xs uppercase tracking-wide text-neutral-500">
+              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
                 <th className="py-2 pr-3 font-medium">Flag</th>
                 <th className="py-2 pr-3 font-medium">Agency</th>
                 <th className="py-2 pr-3 font-medium">City</th>
@@ -129,7 +137,7 @@ export default function MarketPage() {
             </thead>
             <tbody>
               {noticeRows.map(({ n, flag, withEvidence, unknown, total }) => (
-                <tr key={n.id} className="border-b border-neutral-100 align-top">
+                <tr key={n.id} className="border-b border-line align-top">
                   <td className="py-2 pr-3">
                     <FlagBadge flag={flag} />
                   </td>
@@ -137,18 +145,18 @@ export default function MarketPage() {
                   <td className="py-2 pr-3">{n.city || "—"}</td>
                   <td className="py-2 pr-3">
                     {n.addressWithheld ? (
-                      <span className="text-neutral-500">{n.addressWithheld}</span>
+                      <span className="text-muted">{n.addressWithheld}</span>
                     ) : (
                       n.address || "—"
                     )}
-                    <span className="block text-xs text-neutral-500">APN {n.apnRaw || "—"}</span>
+                    <span className="block text-xs text-muted">APN {n.apnRaw || "—"}</span>
                   </td>
                   <td className="py-2 pr-3">{n.sizeAcres ?? "—"}</td>
                   <td className="py-2 pr-3">{n.generalPlanZoning || "—"}</td>
                   <td className="py-2 pr-3 whitespace-nowrap">{n.dueDate ?? n.dueDateRaw ?? "—"}</td>
                   <td className="py-2 pr-3">
                     <p>{withEvidence.length ? withEvidence.join(", ") : "none with a passing test"}</p>
-                    <p className="text-xs text-neutral-500">
+                    <p className="text-xs text-muted">
                       {unknown} of {total} unknown
                     </p>
                   </td>
@@ -162,7 +170,7 @@ export default function MarketPage() {
             </tbody>
           </table>
         </div>
-        <p className="mt-3 text-xs text-neutral-500">
+        <p className="mt-3 text-xs text-muted">
           Source:{" "}
           <a href={prov.datasetUrl} target="_blank" rel="noreferrer" className="underline">
             {prov.dataset}

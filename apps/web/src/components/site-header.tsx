@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site } from "@/lib/config";
+import { FOCUS_LABEL } from "@/lib/focus";
 import { workspace } from "@/lib/sample-data";
 import { CucumberLogo } from "@/components/cucumber-logo";
 
@@ -55,10 +56,7 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-[10px] md:flex">
           <span className="text-[12px] leading-[1.5] text-muted">
-            {workspace.organization}
-          </span>
-          <span className="flex size-8 items-center justify-center rounded-full bg-line text-[11px] text-ink">
-            {workspace.initials}
+            Chapter 8 focus: {FOCUS_LABEL}
           </span>
         </div>
       </div>

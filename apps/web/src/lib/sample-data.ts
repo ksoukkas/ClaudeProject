@@ -17,8 +17,6 @@ export type OwnerType = "Faith-owned" | "Commercial" | "Private" | "Public";
 export const SNAPSHOT_DATE = "07 Nov 2026";
 
 export const workspace = {
-  organization: "Harbor Housing Collaborative",
-  initials: "ML",
   savedCount: 8,
 } as const;
 
@@ -505,72 +503,3 @@ export const alertRules = [
   },
 ];
 
-export type Profile = {
-  name: string;
-  kind: string;
-  icon: "church" | "store" | "house" | "building2" | "blocks";
-  location: string;
-  tag: string;
-  goal: string;
-  fit: string;
-};
-
-export const landowners: Profile[] = [
-  {
-    name: "Olive Commons Fellowship",
-    kind: "Congregation",
-    icon: "church",
-    location: "Anaheim · 1.24 acres",
-    tag: "Open to a ground lease",
-    goal: "Retain a worship space and create 40+ affordable homes through a long-term ground lease.",
-    fit: "Potential fit: a nonprofit comfortable with SB 4 diligence and shared-campus design.",
-  },
-  {
-    name: "Mesa Lantern Congregation",
-    kind: "Congregation",
-    icon: "church",
-    location: "Santa Ana · 1.10 acres",
-    tag: "Early conversation",
-    goal: "Explore family housing on underused parking while preserving community meal services.",
-    fit: "Potential fit: an experienced family-housing developer with predevelopment capacity.",
-  },
-  {
-    name: "Civic Orchard Partners",
-    kind: "Commercial owner",
-    icon: "store",
-    location: "Santa Ana · 0.86 acres",
-    tag: "On the market · sample",
-    goal: "Sell a commercial site to a mission-aligned buyer. Open to a conditional diligence period.",
-    fit: "Potential fit: a buyer exploring AB 2011; labor and site exclusions still need review.",
-  },
-];
-
-export const developers: Profile[] = [
-  {
-    name: "Harbor Housing Collaborative",
-    kind: "Nonprofit developer",
-    icon: "house",
-    location: "North & central OC · Seeking 0.75–3 acres",
-    tag: "Seeking sites now",
-    goal: "Build 40–80 affordable family homes near transit. Purchase or a long-term ground lease.",
-    fit: "Looking for: faith-owned or commercial sites in Anaheim, Santa Ana and Garden Grove.",
-  },
-  {
-    name: "Orange Grove Community Homes",
-    kind: "Nonprofit developer",
-    icon: "building2",
-    location: "Santa Ana & Garden Grove · Seeking 0.5–2 acres",
-    tag: "Ground-lease ready",
-    goal: "Create 25–60 homes for low-income families, with space for neighborhood services.",
-    fit: "Looking for: a landowner willing to co-plan and allow a 12-month diligence window.",
-  },
-  {
-    name: "Common Ground Housing Studio",
-    kind: "Nonprofit developer",
-    icon: "blocks",
-    location: "Fullerton & Buena Park · Seeking 0.2–1 acre",
-    tag: "Small-site specialist",
-    goal: "Deliver small ownership communities with 4–10 homes and long-term affordability.",
-    fit: "Looking for: infill sites with subdivision potential and a clear access envelope.",
-  },
-];

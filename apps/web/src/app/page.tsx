@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { OcMap } from "@/components/oc-map";
 import { ScoutPrompt } from "@/components/scout-prompt";
 import { ButtonLink, FigmaIcon, StatusTag } from "@/components/ui";
@@ -27,16 +28,30 @@ export default function ScoutPage() {
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-[34px] px-6 pt-[52px] pb-11 lg:px-[100px]">
       <section className="flex flex-col items-center gap-4 text-center">
         <p className="text-[10px] tracking-[1.8px] text-accent">
-          A LITTLE LAND. A LOT OF POSSIBILITY.
+          TAX-DEFAULTED LAND. A LEGAL FIRST LOOK.
         </p>
         <h1 className="font-display text-[40px] leading-[1.14] font-bold tracking-[-1.8px] text-ink lg:text-[52px]">
-          Find the land. See the possibility.
+          Land the county is about to auction. Your nonprofit may get it first.
         </h1>
         <p className="max-w-[700px] text-[16px] leading-[1.5] text-muted">
-          Tell us what you hope to build. Cucumber connects parcel data and
-          California housing laws so you know where to look — and what to
-          verify.
+          Cucumber reads Orange County&apos;s tax-defaulted list for Santa Ana, Stanton and
+          Anaheim, flags the Chapter 8 window, and screens each lot against California&apos;s
+          housing laws so you know what to verify before you apply.
         </p>
+        <div className="flex flex-wrap items-center justify-center gap-3 text-[13px]">
+          <Link
+            href="/chapter8"
+            className="rounded-full bg-accent px-5 py-2 font-medium text-surface hover:bg-accent-hover"
+          >
+            Open the county list
+          </Link>
+          <Link href="/market" className="text-accent underline">
+            Paste a newer list
+          </Link>
+          <Link href="/report" className="text-accent underline">
+            Feasibility reports
+          </Link>
+        </div>
       </section>
 
       <ScoutPrompt />

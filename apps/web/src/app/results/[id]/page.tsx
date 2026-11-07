@@ -15,7 +15,6 @@ import {
   SNAPSHOT_DATE,
   parcels,
   reports,
-  workspace,
 } from "@/lib/sample-data";
 
 type Params = Promise<{ id: string }>;
@@ -252,7 +251,7 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
           <ReportActions memoHref={`/results/${parcel.id}/memo`} />
           <p className="flex-1 text-[10px] leading-[1.5] text-muted lg:text-right">
-            Prepared for {workspace.organization} · Sample only
+            Prepared for the acquisitions team · Sample only
           </p>
         </div>
       </div>

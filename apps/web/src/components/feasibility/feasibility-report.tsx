@@ -53,7 +53,7 @@ function SourceList({ ids, emptyText }: { ids: string[]; emptyText?: string }) {
   }
   return (
     <ul className="flex flex-col gap-1">
-      {ids.map((id) => (
+      {Array.from(new Set(ids)).map((id) => (
         <li key={id}>
           <SourceLink id={id} />
         </li>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PrintButton } from "@/components/print-button";
 import { Eyebrow, FigmaIcon, StatusTag } from "@/components/ui";
-import { SNAPSHOT_DATE, parcels, reports, workspace } from "@/lib/sample-data";
+import { SNAPSHOT_DATE, parcels, reports } from "@/lib/sample-data";
 import { CucumberLogo } from "@/components/cucumber-logo";
 
 export const metadata: Metadata = { title: "Site memo" };
@@ -73,7 +73,7 @@ export default async function SiteMemoPage({
               {parcel.address}
             </h2>
             <p className="text-[11px] text-ink-soft">
-              {parcel.city}, California · Prepared for {workspace.organization}
+              {parcel.city}, California · Prepared for the acquisitions team (sample)
             </p>
             <p className="text-[10px] text-ink-soft">
               {SNAPSHOT_DATE} · Fictional site and owner · Screening, not legal advice
@@ -189,7 +189,7 @@ export default async function SiteMemoPage({
             <hr className="w-full border-line" />
             {[
               ["Format", "A4 · Portrait · PDF"],
-              ["Prepared for", workspace.organization],
+              ["Prepared for", "The acquisitions team (sample)"],
               ["From report", `${SNAPSHOT_DATE} snapshot`],
             ].map(([label, value]) => (
               <div key={label} className="flex flex-col gap-1 leading-[1.5]">

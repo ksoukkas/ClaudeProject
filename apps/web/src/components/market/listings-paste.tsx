@@ -105,7 +105,7 @@ export function ListingsPaste() {
         <button
           type="button"
           onClick={() => run(text)}
-          className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-white hover:bg-accent-hover"
+          className="rounded-md bg-accent px-3 py-1.5 text-sm font-medium text-surface hover:bg-accent-hover"
         >
           Match listings
         </button>
