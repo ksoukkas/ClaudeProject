@@ -36,7 +36,7 @@ const ASSUMPTIONS = [
 ];
 
 const PARTS: [string, string][] = [
-  ["Chapter 8 parcels (/chapter8)", "Real: 108 land parcels from the county's June 25, 2025 Exhibit I, with six tests each. Five months old; may have sold or been redeemed."],
+  ["Chapter 8 parcels (/chapter8)", "Real: 108 parcels (44 vacant, 64 with a building) from the county's June 25, 2025 Exhibit I, with six tests each. About 16 months old as of 2026-11-07; parcels may have sold or been redeemed."],
   ["Chapter 8 pipeline (/market)", "Working on whatever list you paste; synthetic sample for the demo."],
   ["Surplus Land Act notices", "Real HCD data, 138 rows for the focus cities, none active in the 2026-11-06 file."],
   ["Feasibility report law tests", "Working; most hazard and local-code tests return unknown because those layers are not queried per parcel yet."],

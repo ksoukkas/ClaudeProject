@@ -242,7 +242,7 @@ export function SavedPipeline() {
         <div className="flex items-center gap-2 text-[10px] leading-[1.5]">
           <FigmaIcon src="/figma/saved/mail.svg" size={14} />
           <p className="flex-1 text-ink-soft">
-            Email: maya@harbor-housing.example · In-app notifications enabled ·
+            Email: alerts@example.org · In-app notifications enabled ·
             Prototype: nothing is sent
           </p>
           <span className="whitespace-nowrap text-accent">Manage delivery →</span>

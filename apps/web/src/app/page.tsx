@@ -31,12 +31,14 @@ export default function ScoutPage() {
           TAX-DEFAULTED LAND. A LEGAL FIRST LOOK.
         </p>
         <h1 className="font-display text-[40px] leading-[1.14] font-bold tracking-[-1.8px] text-ink lg:text-[52px]">
-          Land the county is about to auction. Your nonprofit may get it first.
+          Tax-defaulted land the county has listed. Your nonprofit may be able to apply first.
         </h1>
         <p className="max-w-[700px] text-[16px] leading-[1.5] text-muted">
           Cucumber reads Orange County&apos;s tax-defaulted list for Santa Ana, Stanton and
           Anaheim, flags the Chapter 8 window, and screens each lot against California&apos;s
-          housing laws so you know what to verify before you apply.
+          housing laws so you know what to verify before you apply. The loaded list is the
+          county&apos;s June 2025 auction exhibit; eligibility and approvals are unverified until
+          you confirm them with the tax collector.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3 text-[13px]">
           <Link

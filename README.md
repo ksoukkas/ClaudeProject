@@ -33,7 +33,7 @@ unknown, and get the request drafted for them to send before the day-before cuto
 One niche, five parts, three cities. Every screen says it is a prototype and not legal advice.
 
 1. **Chapter 8 parcels** (`/chapter8`) and **pipeline** (`/market`). The heart of the product.
-   The county's real list is loaded: 108 Orange County land parcels from the Treasurer-Tax
+   The county's real list is loaded: 108 Orange County parcels (44 vacant, 64 with a building) from the Treasurer-Tax
    Collector's Exhibit I for the June 25, 2025 auction, each with six Chapter 8 tests run through
    the confidence engine and the State Controller's ten-step application checklist. Street
    addresses are left out. When the county publishes a newer list, paste it into the pipeline and
@@ -146,13 +146,13 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
 | Feasibility report: state-law tests with sources and verdicts | working; most hazard and local-code tests return unknown because those layers are not queried per parcel yet |
 | Feasibility report: local zoning plain-English translation | mocked: the slot exists, no city code text is wired |
 | Title and CC&R check | partly working: checklist, flags from parcel signals, and a draft request; no title data exists in public sources, so it never returns pass |
-| Chapter 8 parcels: county tax-defaulted list | real: 108 land parcels from the county's June 25, 2025 Exhibit I, cached with its source; the list is five months old and the page says so |
+| Chapter 8 parcels: county tax-defaulted list | real: 108 parcels (44 vacant, 64 with a building) from the county's June 25, 2025 Exhibit I, cached with its source; about 16 months old as of 2026-11-07, and the page says parcels may have sold or been redeemed |
 | Chapter 8 pipeline: newer lists | user-pasted, with a labelled synthetic sample; flags and evidence levels work on whatever is pasted |
 | Matchmaking directory | removed; not part of the product |
 | Chapter 8 pipeline: Surplus Land Act notices (second channel) | working on real data; 0 of the 138 focus-city notices were active on 2026-11-06, and the page says so |
 | Honest confidence | working; sample-data sites are capped at Low because their documents are fictional |
 | Map and filters | working: filters over the sample parcels and the real housing-element points |
-| Saved sites, matchmaking directory, site memo | mocked: Figma screens over fictional sample data |
+| Saved sites and site memo | mocked: Figma screens over fictional sample data |
 | Owner identity, listing prices, Assessor roll | not available in any free public source; shown as unknown |
 
 ## Where it gets things wrong
