@@ -3,8 +3,8 @@
 > For small nonprofits, congregations and city housing staff in Orange County: find land where
 > affordable housing could legally go, and see exactly which public record says so.
 
-**Team:** [team name]
-**Members:** [names]
+**Team:** Unlot
+**Members:** Felix Hallmann, Laurence Chau, Kevin Sohn, Haven Park, Save Soukkaseum
 **Lane:** 1 Find it
 **Built at:** Claude Impact Lab: UCI × SoCal Affordable Housing, November 7, 2026
 
