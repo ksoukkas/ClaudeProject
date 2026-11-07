@@ -62,8 +62,10 @@ export function csvToObjects(text: string): Record<string, string>[] {
  */
 export function normalizeApn(raw: string | null | undefined): string | null {
   if (!raw) return null;
-  // Split on anything that joins several APNs, then keep groups with 6+ digits.
+  // Drop parenthetical notes ("(Lot E)", "(Unit 1234)"), split on anything that
+  // joins several APNs, then keep groups with 6+ digits.
   const groups = raw
+    .replace(/\([^)]*\)|\([^)]*$/g, " ")
     .split(/[&,;/+]|\band\b/i)
     .map((part) => part.replace(/\D/g, ""))
     .filter((digits) => digits.length >= 6);

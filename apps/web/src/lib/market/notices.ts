@@ -54,12 +54,14 @@ export function noticeToSignal(n: SurplusNotice): MarketSignal {
 export function noticeToParcelFacts(n: SurplusNotice): ParcelFacts {
   const zoningText = n.generalPlanZoning;
   const use = n.existingUse;
-  // Only what the text says: vacant words → yes, occupied → no, anything else → unknown.
-  const vacantValue = /vacant|undeveloped|unimproved/i.test(use)
-    ? "yes"
-    : /occupied/i.test(use) && !/unoccupied/i.test(use)
-      ? "no"
-      : "unknown";
+  // Only what the text says, and only when it is unambiguous.
+  const t = use.toLowerCase();
+  const saysVacant =
+    /\b(vacant|undeveloped|unimproved)\b/.test(t) && !/\b(non-?\s?vacant|not vacant)\b/.test(t);
+  const saysOccupied =
+    /\boccupied\b/.test(t) && !/\bunoccupied\b/.test(t) && !/no current use/.test(t);
+  const vacantValue =
+    saysVacant && !saysOccupied ? "yes" : saysOccupied && !saysVacant ? "no" : "unknown";
   const vacant: ParcelFacts["vacant"] = use
     ? { sourceId: SOURCE_ID, value: vacantValue, detail: use }
     : null;
