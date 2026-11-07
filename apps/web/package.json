@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:scout": "tsc -p tsconfig.scout-test.json && node --test .scout-test/lib/scout/scout.test.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
     "next": "16.4.5",
     "react": "19.3.0",
     "react-dom": "19.3.0"
