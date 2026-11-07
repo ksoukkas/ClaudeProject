@@ -2,7 +2,9 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import {
   allCities,
+  boundsOf,
   cityName,
+  goalLabel,
   filterPublicSites,
   meetsGoal,
   readPublicSites,
@@ -75,9 +77,32 @@ describe("public sites", () => {
   });
 
   it("builds map features that carry the id for popups", () => {
-    const fc = toFeatureCollection(readPublicSites(fixture));
+    const fc = toFeatureCollection(readPublicSites(fixture), 40);
     assert.equal(fc.features.length, 4);
     assert.equal(fc.features[0].properties.id, 1);
+    assert.equal(fc.features[0].properties.goal, "meets");
+    assert.equal(fc.features[1].properties.goal, "below");
     assert.equal(fc.features[2].properties.totalCapacity, 0);
+    assert.equal(fc.features[2].properties.goal, "unknown");
+  });
+
+  it("labels the goal the same way for the legend", () => {
+    const sites = readPublicSites(fixture);
+    assert.deepEqual(sites.map((s) => goalLabel(s, 40)), ["meets", "below", "unknown", "meets"]);
+  });
+
+  it("finds the box around points, or null for none", () => {
+    assert.equal(boundsOf([]), null);
+    assert.deepEqual(
+      boundsOf([
+        { lng: -118, lat: 33.7 },
+        { lng: -117.8, lat: 33.9 },
+        { lng: -117.9, lat: 33.8 },
+      ]),
+      [
+        [-118, 33.7],
+        [-117.8, 33.9],
+      ],
+    );
   });
 });

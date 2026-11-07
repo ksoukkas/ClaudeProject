@@ -121,15 +121,47 @@ export function meetsGoal(site: PublicSite, goal: number): boolean | null {
   return site.totalCapacity === null ? null : site.totalCapacity >= goal;
 }
 
-/** GeoJSON for the map layer, with the id kept so a popup can find its record. */
-export function toFeatureCollection(sites: readonly PublicSite[]) {
+export type GoalLabel = "meets" | "below" | "unknown";
+
+/** meetsGoal as a string, for map styling and legends. */
+export function goalLabel(site: PublicSite, goal: number): GoalLabel {
+  const m = meetsGoal(site, goal);
+  return m === null ? "unknown" : m ? "meets" : "below";
+}
+
+/**
+ * GeoJSON for the map layer, with the id kept so a popup can find its record
+ * and the goal label so dots can be colored by it.
+ */
+export function toFeatureCollection(sites: readonly PublicSite[], goal: number) {
   return {
     type: "FeatureCollection" as const,
     features: sites.map((s) => ({
       type: "Feature" as const,
       id: s.id,
       geometry: { type: "Point" as const, coordinates: [s.lng, s.lat] },
-      properties: { id: s.id, totalCapacity: s.totalCapacity ?? 0 },
+      properties: { id: s.id, totalCapacity: s.totalCapacity ?? 0, goal: goalLabel(s, goal) },
     })),
   };
+}
+
+export type Bounds = [[number, number], [number, number]];
+
+/** The box around a set of points, or null when there are none. */
+export function boundsOf(points: readonly { lng: number; lat: number }[]): Bounds | null {
+  if (points.length === 0) return null;
+  let w = Infinity;
+  let s = Infinity;
+  let e = -Infinity;
+  let n = -Infinity;
+  for (const p of points) {
+    w = Math.min(w, p.lng);
+    e = Math.max(e, p.lng);
+    s = Math.min(s, p.lat);
+    n = Math.max(n, p.lat);
+  }
+  return [
+    [w, s],
+    [e, n],
+  ];
 }

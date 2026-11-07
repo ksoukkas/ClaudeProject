@@ -13,7 +13,14 @@ import {
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { feasibilityLabel } from "@/components/ui";
-import { type PublicSite, publicMeta, toFeatureCollection } from "@/lib/public-sites";
+import {
+  type Bounds,
+  type GoalLabel,
+  type PublicSite,
+  goalLabel,
+  publicMeta,
+  toFeatureCollection,
+} from "@/lib/public-sites";
 import type { Feasibility, Parcel } from "@/lib/sample-data";
 
 /*
@@ -54,6 +61,18 @@ const pinColor: Record<Feasibility, string> = {
   blocked: "bg-blocked",
 };
 
+/* Public sites: planned homes vs the unit goal (see --color-plan-* tokens). */
+const planHex: Record<GoalLabel, string> = {
+  meets: "#2f7d5b",
+  below: "#8e8e93",
+  unknown: "#c7c7cc",
+};
+const planBg: Record<GoalLabel, string> = {
+  meets: "bg-plan-meets",
+  below: "bg-plan-below",
+  unknown: "bg-plan-unknown",
+};
+
 export type ParcelMapProps = {
   parcels: Parcel[];
   visibleIds: ReadonlySet<string>;
@@ -67,6 +86,11 @@ export type ParcelMapProps = {
   showSample: boolean;
   showPublic: boolean;
   onToggleLayer: (layer: "sample" | "public") => void;
+  unitGoal: number;
+  /** The top public sites, numbered on the map in the same order as the list. */
+  topPublic: PublicSite[];
+  /** Where to frame the map. The map refits whenever `key` changes. */
+  focus: { key: string; bounds: Bounds } | null;
 };
 
 /** Popup body built with DOM nodes (textContent), so source text is never parsed as HTML. */
@@ -138,10 +162,14 @@ export default function ParcelMap({
   showSample,
   showPublic,
   onToggleLayer,
+  unitGoal,
+  topPublic,
+  focus,
 }: ParcelMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef(new Map<string, Marker>());
+  const topMarkersRef = useRef(new Map<number, Marker>());
   const popupRef = useRef<Popup | null>(null);
   const onSelectRef = useRef(onSelect);
   const onSelectPublicRef = useRef(onSelectPublic);
@@ -161,6 +189,7 @@ export default function ParcelMap({
     const container = containerRef.current;
     if (!container) return;
     const markers = markersRef.current;
+    const topMarkers = topMarkersRef.current;
     let loaded = false;
     const map = new MapLibreMap({
       container,
@@ -188,6 +217,8 @@ export default function ParcelMap({
       observer.disconnect();
       for (const marker of markers.values()) marker.remove();
       markers.clear();
+      for (const marker of topMarkers.values()) marker.remove();
+      topMarkers.clear();
       popupRef.current?.remove();
       popupRef.current = null;
       map.remove();
@@ -255,7 +286,7 @@ export default function ParcelMap({
     if (!map || !ready || map.getSource(HE_SOURCE)) return;
     map.addSource(HE_SOURCE, {
       type: "geojson",
-      data: toFeatureCollection([]),
+      data: toFeatureCollection([], 0),
       cluster: true,
       clusterRadius: 44,
       clusterMaxZoom: 14,
@@ -293,8 +324,16 @@ export default function ParcelMap({
       source: HE_SOURCE,
       filter: ["!", ["has", "point_count"]],
       paint: {
-        "circle-color": "#6e6e73",
-        "circle-opacity": 0.85,
+        "circle-color": [
+          "match",
+          ["get", "goal"],
+          "meets",
+          planHex.meets,
+          "below",
+          planHex.below,
+          planHex.unknown,
+        ],
+        "circle-opacity": 0.9,
         "circle-stroke-color": "#ffffff",
         "circle-stroke-width": 1.5,
         // Bigger dot for more planned homes.
@@ -338,7 +377,10 @@ export default function ParcelMap({
   }, [ready]);
 
   // Effect 5: keep the public data and visibility in step with the props.
-  const publicData = useMemo(() => toFeatureCollection(publicSites ?? []), [publicSites]);
+  const publicData = useMemo(
+    () => toFeatureCollection(publicSites ?? [], unitGoal),
+    [publicSites, unitGoal],
+  );
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready) return;
@@ -347,6 +389,82 @@ export default function ParcelMap({
       if (map.getLayer(layer)) map.setLayoutProperty(layer, "visibility", showPublic ? "visible" : "none");
     }
   }, [ready, publicData, showPublic]);
+
+  // Effect 7: numbered pins for the top public sites, matching the list.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const markers = topMarkersRef.current;
+    const wanted = showPublic ? topPublic : [];
+    const wantedIds = new Set(wanted.map((s) => s.id));
+    for (const [id, marker] of markers) {
+      if (!wantedIds.has(id)) {
+        marker.remove();
+        markers.delete(id);
+      }
+    }
+    wanted.forEach((site, i) => {
+      let marker = markers.get(site.id);
+      if (!marker) {
+        const wrapper = document.createElement("div");
+        const pin = document.createElement("button");
+        pin.type = "button";
+        pin.addEventListener("click", (event) => {
+          event.stopPropagation();
+          onSelectPublicRef.current(site.id);
+        });
+        wrapper.append(pin);
+        marker = new Marker({ element: wrapper, anchor: "center" })
+          .setLngLat([site.lng, site.lat])
+          .addTo(map);
+        markers.set(site.id, marker);
+      }
+      const label = goalLabel(site, unitGoal);
+      const selected = site.id === selectedPublicId;
+      const wrapper = marker.getElement();
+      const pin = wrapper.firstElementChild as HTMLButtonElement;
+      pin.textContent = String(i + 1);
+      // Rounded squares, so they never read as the round sample-site pins.
+      pin.className = [
+        "flex size-[26px] cursor-pointer items-center justify-center rounded-[7px] border-2 border-white text-[11px] font-bold text-white shadow-sm outline-none focus-visible:ring-4 focus-visible:ring-accent/50",
+        planBg[label],
+        selected ? "ring-4 ring-ink/60" : "",
+      ].join(" ");
+      pin.setAttribute(
+        "aria-label",
+        `Public site ${i + 1}: ${site.city}, APN ${site.apn ?? "unknown"}, ${
+          site.totalCapacity ?? "unknown"
+        } planned homes (${label === "meets" ? "meets" : label === "below" ? "below" : "unknown vs"} the ${unitGoal}-home goal)`,
+      );
+      pin.setAttribute("aria-pressed", selected ? "true" : "false");
+      wrapper.style.zIndex = selected ? "9" : "1";
+    });
+  }, [topPublic, showPublic, unitGoal, selectedPublicId]);
+
+  // Effect 8: frame the searched area. Refits only when the focus key changes
+  // (cities picked or the data arriving), not on every render.
+  const focusKey = focus?.key ?? null;
+  const focusRef = useRef(focus);
+  // Runs before the fit effect below (effects run in order), so it sees the latest bounds.
+  useEffect(() => {
+    focusRef.current = focus;
+  }, [focus]);
+  useEffect(() => {
+    const map = mapRef.current;
+    const target = focusRef.current;
+    if (!map || !ready || !target) return;
+    const [[w, s], [e, n]] = target.bounds;
+    const single = w === e && s === n;
+    map.fitBounds(
+      single
+        ? [
+            [w - 0.01, s - 0.01],
+            [e + 0.01, n + 0.01],
+          ]
+        : target.bounds,
+      { padding: 56, maxZoom: 14, duration: 800 },
+    );
+  }, [ready, focusKey]);
 
   // Effect 6: the selected public site gets a ring, a popup and comes into view.
   useEffect(() => {

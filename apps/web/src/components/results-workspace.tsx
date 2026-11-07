@@ -29,7 +29,9 @@ import {
   PUBLIC_DATA_URL,
   type PublicSite,
   allCities,
+  boundsOf,
   filterPublicSites,
+  goalLabel,
   meetsGoal,
   publicCountByCity,
   publicMeta,
@@ -39,6 +41,9 @@ import { type Feasibility, laws, parcels } from "@/lib/sample-data";
 
 /* How many public sites the list shows at first, and per "Show more". */
 const PUBLIC_PAGE = 20;
+/* The top public sites get numbered pins on the map, matching the list. */
+const TOP_PUBLIC = 10;
+const planBadge = { meets: "bg-plan-meets", below: "bg-plan-below", unknown: "bg-plan-unknown" };
 
 /* Lot-size presets for the select. A URL can also carry any other range. */
 const sizePresets: {
@@ -331,6 +336,21 @@ export function ResultsWorkspace({
     () => (publicVisible ?? []).reduce((sum, s) => sum + (s.totalCapacity ?? 0), 0),
     [publicVisible],
   );
+  const topPublic = useMemo(() => (publicVisible ?? []).slice(0, TOP_PUBLIC), [publicVisible]);
+
+  // Frame the searched area: every site in the chosen cities (both layers),
+  // or the whole county when no city is chosen. Refit only when the cities
+  // change or the public data arrives.
+  const focus = useMemo(() => {
+    const chosen = new Set(filters.cities);
+    const samples = parcels
+      .filter((p) => chosen.size === 0 || chosen.has(p.city))
+      .map((p) => p.position);
+    const bounds = boundsOf([...samples, ...(publicVisible ?? [])]);
+    if (!bounds) return null;
+    return { key: `${filters.cities.join("|")}:${allPublic ? "all" : "samples"}`, bounds };
+  }, [filters.cities, publicVisible, allPublic]);
+
   const publicMeetGoal = useMemo(
     () => (publicVisible ?? []).filter((s) => meetsGoal(s, filters.unitGoal)).length,
     [publicVisible, filters.unitGoal],
@@ -567,26 +587,46 @@ export function ResultsWorkspace({
             showSample={showSample}
             showPublic={showPublic}
             onToggleLayer={toggleLayer}
+            unitGoal={filters.unitGoal}
+            topPublic={topPublic}
+            focus={focus}
           />
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-1 py-3">
-            {FEASIBILITIES.map((f) => (
-              <span key={f} className="flex items-center gap-[5px]">
-                <span
-                  className={`size-[7px] rounded-[4px] ${
-                    f === "feasible" ? "bg-feasible" : f === "review" ? "bg-review" : "bg-blocked"
-                  }`}
-                />
-                <span className="text-[10px] leading-[1.5] text-ink-soft">
+          <div className="flex flex-col gap-[6px] py-3 text-[10px] leading-[1.5] text-ink-soft">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+              <span className="font-semibold text-ink">Sample sites (round pins, screened):</span>
+              {FEASIBILITIES.map((f) => (
+                <span key={f} className="flex items-center gap-[5px]">
+                  <span
+                    className={`size-[9px] rounded-full ${
+                      f === "feasible" ? "bg-feasible" : f === "review" ? "bg-review" : "bg-blocked"
+                    }`}
+                  />
                   {feasibilityLabel[f]}
                 </span>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+              <span className="font-semibold text-ink">
+                Public sites (square pins and dots, not screened):
               </span>
-            ))}
-            <span className="flex items-center gap-[5px]">
-              <span className="size-[7px] rounded-full bg-ink-soft opacity-75" />
-              <span className="text-[10px] leading-[1.5] text-ink-soft">
-                Public Housing Element site (grey; bigger = more planned homes; numbers = a cluster)
+              <span className="flex items-center gap-[5px]">
+                <span className="size-[9px] rounded-[3px] bg-plan-meets" />
+                Plans {filters.unitGoal}+ homes
               </span>
-            </span>
+              <span className="flex items-center gap-[5px]">
+                <span className="size-[9px] rounded-[3px] bg-plan-below" />
+                Fewer than {filters.unitGoal}
+              </span>
+              <span className="flex items-center gap-[5px]">
+                <span className="size-[9px] rounded-[3px] bg-plan-unknown" />
+                Capacity unknown
+              </span>
+            </div>
+            <p className="text-muted">
+              Numbered squares are the top {TOP_PUBLIC} public sites by planned homes, as in the
+              list. Bigger dots plan more homes; grey circles with a number are clusters, click to
+              zoom in. The map zooms to the cities in your search.
+            </p>
           </div>
           <div className="flex flex-col gap-2 rounded-[12px] bg-canvas p-5">
             <p className="font-display text-[14px] leading-[1.2] text-ink">
@@ -796,9 +836,10 @@ export function ResultsWorkspace({
 
             {publicVisible && publicVisible.length > 0 ? (
               <ul className="flex flex-col overflow-hidden rounded-[12px] border border-line bg-surface">
-                {publicVisible.slice(0, publicShown).map((site) => {
+                {publicVisible.slice(0, publicShown).map((site, index) => {
                   const isSelected = site.id === selectedPublicId;
                   const goal = meetsGoal(site, filters.unitGoal);
+                  const label = goalLabel(site, filters.unitGoal);
                   return (
                     <li
                       key={site.id}
@@ -816,6 +857,19 @@ export function ResultsWorkspace({
                           isSelected ? "bg-accent-soft" : ""
                         }`}
                       >
+                        {index < TOP_PUBLIC ? (
+                          <span
+                            aria-hidden
+                            className={`flex size-[22px] shrink-0 items-center justify-center rounded-[6px] text-[10px] font-bold text-white ${planBadge[label]}`}
+                          >
+                            {index + 1}
+                          </span>
+                        ) : (
+                          <span
+                            aria-hidden
+                            className={`ml-[7px] size-[8px] shrink-0 rounded-full ${planBadge[label]}`}
+                          />
+                        )}
                         <span className="flex min-w-0 flex-1 flex-col leading-[1.5]">
                           <span className="text-[12px] font-semibold text-ink">{site.city}</span>
                           <span className="text-[10px] text-muted">

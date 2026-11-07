@@ -81,6 +81,15 @@ on by default):
   centroids. **Santa Ana has no records in this source.** No feasibility,
   law or ownership verdict is attached to them.
 
+**The map follows the search.** Whenever the cities change (from the search
+text or the City filter) it zooms to fit every site in those cities, or the
+whole county when no city is chosen.
+
+**Public sites are colored by planned homes vs your unit goal** (green: meets
+it, grey: fewer, light grey: unknown). These are deliberately not the
+feasibility colors, because public sites have no feasibility screen. The top
+10 by planned homes get numbered square pins, matching the numbers in the list.
+
 The **Public Housing Element sites** list under the ranked sample sites shows
 the same records, largest planned capacity first. Clicking a row flies the
 map to the site and opens its popup, and clicking a dot highlights its row.
