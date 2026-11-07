@@ -25,7 +25,7 @@ ASSUMPTION: no statute gives these numbers. Label them ASSUMPTION in the code, t
    Check N, else Looks good. Do not derive Fail from `Finding.tone`: the easement's `tone: "blocked"`
    would create a false Fail.
 5. **No new facts.** Sample rows come only from text already in `sample-data.ts` or limits in
-   `data/law-rules.json`. Everything else is Unknown. Sample results never cite real layers such as
+   `apps/web/src/lib/law-rules.json`. Everything else is Unknown. Sample results never cite real layers such as
    FEMA or CAL FIRE.
 
 ## Rubric
@@ -74,9 +74,9 @@ homes planned <= 2), `not_very_high_fire_zone` (public), `not_historic_district`
 `not_regulatory_floodway`, `heavy_industrial_1200ft`, `not_earthquake_fault_zone`, `not_wetlands`,
 `not_farmland`, `not_hazardous_waste_site`, `not_habitat_conservation`,
 `title_v_industrial_1600ft`, `oil_gas_refinery_3200ft`. SB 4 has no `tests` array in
-`data/law-rules.json`, so this list lives in `law-tests.ts`.
+`apps/web/src/lib/law-rules.json`, so this list lives in `law-tests.ts`.
 
-**AB 2011, SB 684 / SB 1123:** use the `tests` in `data/law-rules.json`. Mark anything without a
+**AB 2011, SB 684 / SB 1123:** use the `tests` in `apps/web/src/lib/law-rules.json`. Mark anything without a
 listed layer `layer_gap`.
 
 ## Files (under `apps/web/src`)
@@ -123,7 +123,7 @@ Fail: Red flag, High.
 
 ## Out of scope
 
-Live data pipeline, recomputing rank, confidence filter or sort, editing `data/law-rules.json`.
+Live data pipeline, recomputing rank, confidence filter or sort, editing `apps/web/src/lib/law-rules.json`.
 
 **Stretch, only if the core is done:** a what-if tick on human tests in the breakdown, labelled
 "What-if preview. Nothing is saved or verified."

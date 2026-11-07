@@ -9,12 +9,14 @@
  * from lanes/1-find-it/data/pathways.json (checked 2026-11-06).
  */
 
+import type { LawId } from "./types";
+
 export type Feasibility = "feasible" | "review" | "blocked";
-export type Confidence = "High" | "Medium" | "Low";
-export type LawId = "SB9" | "SB684_SB1123" | "AB2011" | "SB4";
+export type { LawId };
 export type OwnerType = "Faith-owned" | "Commercial" | "Private" | "Public";
 
 export const SNAPSHOT_DATE = "07 Nov 2026";
+export const SNAPSHOT_ISO = "2026-11-07";
 
 export const workspace = {
   organization: "Harbor Housing Collaborative",
@@ -70,7 +72,6 @@ export type Parcel = {
   belowGoal: boolean;
   onMarket: boolean;
   reasoning: string;
-  confidence: Confidence;
   evidence: string;
 };
 
@@ -90,7 +91,6 @@ export const parcels: Parcel[] = [
     onMarket: true,
     reasoning:
       "Faith ownership supports an SB 4 pathway; a private covenant still needs counsel review.",
-    confidence: "Medium",
     evidence: "Sample deed + SB 4 screen",
   },
   {
@@ -107,7 +107,6 @@ export const parcels: Parcel[] = [
     onMarket: true,
     reasoning:
       "Commercial corridor screen passes; labor, affordability and site exclusions need confirmation.",
-    confidence: "Medium",
     evidence: "Sample zoning + AB 2011 screen",
   },
   {
@@ -124,7 +123,6 @@ export const parcels: Parcel[] = [
     onMarket: false,
     reasoning:
       "Single-family zoning fits an SB 9 screen; owner occupancy and exclusions remain unverified.",
-    confidence: "Medium",
     evidence: "Sample parcel + SB 9 screen",
   },
   {
@@ -141,7 +139,6 @@ export const parcels: Parcel[] = [
     onMarket: false,
     reasoning:
       "Small-site pathway may fit; public disposal process and subdivision conditions are unresolved.",
-    confidence: "Low",
     evidence: "Sample parcel + subdivision screen",
   },
   {
@@ -158,7 +155,6 @@ export const parcels: Parcel[] = [
     onMarket: false,
     reasoning:
       "Sample recorded access easement covers the buildable area. No usable envelope identified.",
-    confidence: "High",
     evidence: "Sample easement exhibit",
   },
 ];
@@ -177,7 +173,7 @@ export type Finding = {
   status: string;
   tone: Feasibility | "neutral";
   body: string;
-  confidence: string;
+  evidence: string;
   link?: { label: string; href: string };
 };
 
@@ -190,7 +186,7 @@ export const reports: Record<
     summary: string;
     facts: { label: string; value: string }[];
     factsNote: string;
-    caveat: { title: string; body: string; confidence: string };
+    caveat: { title: string; body: string; evidence: string };
     stateLaw: Finding[];
     zoning: Finding[];
     zoningSource: string;
@@ -210,12 +206,12 @@ export const reports: Record<
       { label: "Sample zoning", value: "CF · Community" },
     ],
     factsNote:
-      "Medium confidence · Sample parcel P-01 + capacity study C-01. Yield is an early estimate, not an entitlement.",
+      "Sample parcel P-01 + capacity study C-01. Yield is an early estimate, not an entitlement.",
     caveat: {
       title: "State-law fit ≠ title clearance.",
       body: "A parcel may be legal under state law but blocked on title. Here, a private covenant may be overridden by state law — verify with an attorney before relying on that pathway.",
-      confidence:
-        "Medium confidence · Sample covenant D-02 + SB 4 title review checklist. No legal clearance has been given.",
+      evidence:
+        "Sample covenant D-02 + SB 4 title review checklist. No legal clearance has been given.",
     },
     stateLaw: [
       {
@@ -224,8 +220,8 @@ export const reports: Record<
         status: "Doesn’t qualify",
         tone: "blocked",
         body: "The sample site is zoned for community facilities, not single-family residential use.",
-        confidence:
-          "High confidence · Sample zoning extract Z-01 + SB 9 screening criteria",
+        evidence:
+          "Sample zoning extract Z-01 + SB 9 screening criteria",
         link: { label: "View source ↗", href: laws.SB9.sources[0] },
       },
       {
@@ -234,7 +230,7 @@ export const reports: Record<
         status: "Unclear",
         tone: "review",
         body: "Acreage is within the small-site screen; qualifying residential designation and all subdivision conditions are not confirmed.",
-        confidence: "Low confidence · Sample parcel P-01 + SB 684 / 1123 checklist",
+        evidence: "Sample parcel P-01 + SB 684 / 1123 checklist",
         link: { label: "View source ↗", href: laws.SB684_SB1123.sources[0] },
       },
       {
@@ -243,18 +239,18 @@ export const reports: Record<
         status: "Doesn’t qualify",
         tone: "blocked",
         body: "The sample institutional use does not meet the qualifying commercial-zoning screen. Corridor frontage alone is not enough.",
-        confidence:
-          "Medium confidence · Sample zoning extract Z-01 + AB 2011 checklist",
+        evidence:
+          "Sample zoning extract Z-01 + AB 2011 checklist",
         link: { label: "View statute ↗", href: laws.AB2011.sources[0] },
       },
       {
         title: "SB 4",
         subtitle: laws.SB4.summary,
-        status: "Qualifies",
-        tone: "feasible",
+        status: "Possible fit",
+        tone: "review",
         body: "Sample deed shows eligible nonprofit religious ownership before the statutory cutoff. Affordability, labor and exclusion tests still require verification.",
-        confidence:
-          "Medium confidence · Sample deed D-01 (2020) + SB 4 eligibility checklist",
+        evidence:
+          "Sample deed D-01 (2020) + SB 4 eligibility checklist",
         link: { label: "View source ↗", href: laws.SB4.sources[0] },
       },
     ],
@@ -264,16 +260,16 @@ export const reports: Record<
         status: "Needs review",
         tone: "review",
         body: "This sample designation is intended for civic or religious uses, not ordinary apartments. An eligible SB 4 project may use a state-law pathway; confirm which local objective standards still apply.",
-        confidence:
-          "Medium confidence · Sample Anaheim code extract Z-01 + SB 4 standards checklist",
+        evidence:
+          "Sample Anaheim code extract Z-01 + SB 4 standards checklist",
       },
       {
         title: "Height, setbacks & access",
         status: "Unclear",
         tone: "review",
         body: "The 44–60 home range is a test fit, not a code envelope. Fire access, setbacks, utility capacity and applicable height standards have not been verified.",
-        confidence:
-          "Low confidence · Sample capacity study C-01; city planning confirmation outstanding",
+        evidence:
+          "Sample capacity study C-01; city planning confirmation outstanding",
       },
     ],
     zoningSource:
@@ -284,23 +280,23 @@ export const reports: Record<
         status: "Restriction found",
         tone: "review",
         body: "Restriction found — may be overridden by state law, verify with attorney. The sample 1988 deed limits use to religious purposes; enforceability and any statutory override remain unresolved.",
-        confidence:
-          "Medium confidence · Sample recorded covenant D-02, clause 4 + SB 4 review checklist",
+        evidence:
+          "Sample recorded covenant D-02, clause 4 + SB 4 review checklist",
       },
       {
         title: "Utility easement",
         status: "Restriction found",
-        tone: "blocked",
+        tone: "review",
         body: "A sample 12-foot utility strip crosses the east edge. It may reduce the buildable area; obtain a survey and utility consent before using the yield estimate.",
-        confidence:
-          "High confidence on document; low on impact · Sample easement E-01, exhibit B",
+        evidence:
+          "Sample easement E-01, exhibit B",
       },
       {
         title: "HOA covenants",
-        status: "Clear",
-        tone: "feasible",
-        body: "No HOA covenant appears in the sample document set. “Clear” applies only to the records reviewed; order a current preliminary title report to confirm.",
-        confidence: `Medium confidence · Sample title index T-01, reviewed ${SNAPSHOT_DATE}`,
+        status: "Unknown",
+        tone: "neutral",
+        body: "No HOA covenant appears in the sample document set. That does not prove there is none: order a current preliminary title report to confirm.",
+        evidence: `Sample title index T-01, reviewed ${SNAPSHOT_DATE}`,
       },
     ],
     nextStep: {
@@ -317,7 +313,7 @@ export type PipelineCard = {
   feasibility: Feasibility;
   pathway: string;
   reasoning: string;
-  confidence: string;
+  evidence: string;
   task: string;
   date: string;
   parcelId?: string;
@@ -342,7 +338,7 @@ export const pipeline: {
         pathway: "SB 9",
         reasoning:
           "Single-family zoning fits an SB 9 screen; owner occupancy and exclusions remain unverified.",
-        confidence: "Medium confidence · Sample parcel + SB 9 screen",
+        evidence: "Sample parcel + SB 9 screen",
         task: "Check occupancy and site exclusions",
         date: "Review Nov 12",
         parcelId: "laurel-court",
@@ -355,7 +351,7 @@ export const pipeline: {
         pathway: "SB 684 / 1123",
         reasoning:
           "Small-site pathway may fit; public disposal process and subdivision conditions are unresolved.",
-        confidence: "Low confidence · Sample parcel + subdivision screen",
+        evidence: "Sample parcel + subdivision screen",
         task: "Confirm public disposal process",
         date: "Review Nov 14",
         parcelId: "lantern-way",
@@ -375,7 +371,7 @@ export const pipeline: {
         pathway: "SB 4",
         reasoning:
           "Faith ownership supports an SB 4 pathway; a private covenant still needs counsel review.",
-        confidence: "Medium confidence · Sample deed + SB 4 screen",
+        evidence: "Sample deed + SB 4 screen",
         task: "Ask counsel to review use covenant",
         date: "Due Nov 10",
         parcelId: "olive-commons",
@@ -388,7 +384,7 @@ export const pipeline: {
         pathway: "SB 9",
         reasoning:
           "Sample recorded access easement covers the buildable area. No usable envelope identified.",
-        confidence: "High confidence · Sample easement exhibit",
+        evidence: "Sample easement exhibit",
         task: "Verify easement; consider archiving",
         date: "Due Nov 11",
         parcelId: "juniper-mews",
@@ -408,7 +404,7 @@ export const pipeline: {
         pathway: "AB 2011",
         reasoning:
           "Commercial corridor screen passes; labor, affordability and site exclusions need confirmation.",
-        confidence: "Medium confidence · Sample zoning + AB 2011 screen",
+        evidence: "Sample zoning + AB 2011 screen",
         task: "Follow up with Civic Orchard Partners",
         date: "Sent Nov 05",
         parcelId: "civic-orchard",
@@ -421,7 +417,7 @@ export const pipeline: {
         pathway: "SB 4 screen pending",
         reasoning:
           "Eligibility, zoning and title have not been screened. Due diligence is outstanding.",
-        confidence: "Low confidence · Sample owner profile only",
+        evidence: "Sample owner profile only",
         task: "Meet Mesa Lantern Congregation",
         date: "Meeting Nov 16",
       },
@@ -440,7 +436,7 @@ export const pipeline: {
         pathway: "SB 4 screen pending",
         reasoning:
           "Eligibility, zoning and title have not been screened. Due diligence is outstanding.",
-        confidence: "Low confidence · Sample owner profile only",
+        evidence: "Sample owner profile only",
         task: "Commission survey and test fit",
         date: "Option ends Jan 15",
       },
@@ -452,7 +448,7 @@ export const pipeline: {
         pathway: "AB 2011 screen pending",
         reasoning:
           "Eligibility, zoning and title have not been screened. Due diligence is outstanding.",
-        confidence: "Low confidence · Sample owner profile only",
+        evidence: "Sample owner profile only",
         task: "Verify corridor and labor requirements",
         date: "Option ends Feb 01",
       },
