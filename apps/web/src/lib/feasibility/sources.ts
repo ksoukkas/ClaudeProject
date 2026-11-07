@@ -158,6 +158,17 @@ const LIST: Source[] = [
   src("irs-eo-bmf", "IRS Exempt Organizations Business Master File", "https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-file-extract-eo-bmf", "data-layer", "VERIFIED", CHECKED, "Page loads; file not downloaded. A proxy for ownership, not a fact."),
   src("hcd-surplus-notices", "HCD Surplus Land Act Notices of Availability (data.ca.gov)", "https://data.ca.gov/dataset/surplus-land-act-notices-of-availability-received", "data-layer", "VERIFIED", CHECKED, "CSV downloaded and parsed; last modified 2026-10-30."),
 
+  // Data the user brings in themselves
+  src(
+    "user-uploaded-listings",
+    "Listings you pasted (your broker or MLS export)",
+    "",
+    "user-data",
+    "UNVERIFIED",
+    null,
+    "Siteline never fetches listings. Rows come from the user and are not verified.",
+  ),
+
   // Repo documents
   src("repo-pathways-json", "lanes/1-find-it/data/pathways.json (this repo)", `${REPO}/lanes/1-find-it/data/pathways.json`, "repo-doc", "VERIFIED", CHECKED, "Note: SB 684 / SB 1123 lot-size limits differ by source and by bill."),
   src("repo-background", "docs/background.md (this repo)", `${REPO}/docs/background.md`, "repo-doc", "VERIFIED", CHECKED, "One-paragraph law summaries that stay close to HCD fact sheets."),

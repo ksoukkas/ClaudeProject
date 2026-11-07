@@ -15,7 +15,8 @@ export type SourceKind =
   | "fact-sheet"
   | "bill-page"
   | "data-layer"
-  | "repo-doc";
+  | "repo-doc"
+  | "user-data";
 
 export interface Source {
   id: string;
