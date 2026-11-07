@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { OcMap } from "@/components/oc-map";
+import { DEFAULT_FILTERS, goalFit } from "@/lib/filters";
 import { FigmaIcon, StatusTag, feasibilityLabel } from "@/components/ui";
 import {
   type Feasibility,
@@ -282,7 +283,7 @@ export function ResultsWorkspace() {
                   <span className="text-[12px] leading-[1.5] font-semibold text-ink">
                     {p.yieldLabel}
                   </span>
-                  {p.belowGoal ? (
+                  {goalFit(p, DEFAULT_FILTERS.unitGoal) === "below" ? (
                     <span className="text-[10px] leading-[1.5] text-ink-soft">
                       Below 40-unit goal
                     </span>
