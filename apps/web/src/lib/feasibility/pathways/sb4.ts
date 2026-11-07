@@ -1,6 +1,7 @@
 import {
   describeCombined,
   HAZARD_LABELS,
+  HAZARD_PHRASES,
   hazard,
   invertedTriVerdict,
   makeTest,
@@ -18,11 +19,14 @@ const WINDOW_END = new Date("2036-01-01T00:00:00-08:00");
 function exclusionTest(facts: ParcelFacts, id: string, key: HazardKey): TestResult {
   const c = hazard(facts, key);
   const label = HAZARD_LABELS[key];
+  const phrase = HAZARD_PHRASES[key];
   const src = c.sourceIds.map(sourceName).join("; ");
-  const verdict: Verdict = c.conflict ? "unknown" : invertedTriVerdict(c.value);
+  // A mapped hazard is "likely blocked", not a hard fail: the summary we hold
+  // lists the exclusion but does not settle whether the statute's exceptions apply.
+  const verdict: Verdict = c.value === "no" && !c.conflict ? "pass" : "unknown";
   return makeTest({
     id,
-    requirement: `Site is not in a ${label.toLowerCase()} (HCD summary of the SB 4 site exclusions).`,
+    requirement: `Site is not ${phrase} (HCD summary of the SB 4 site exclusions).`,
     requirementSourceIds: [...REQ, "repo-background"],
     dataSourceIds: c.sourceIds,
     valueFound: describeCombined(c, label),
@@ -30,11 +34,11 @@ function exclusionTest(facts: ParcelFacts, id: string, key: HazardKey): TestResu
     reason: c.conflict
       ? "Hazard layers disagree; see Disagreements."
       : c.value === "yes"
-        ? `Mapped in a ${label.toLowerCase()} per ${src}. The HCD summary lists this as an exclusion; read Gov Code 65913.16 for any exceptions.`
+        ? `Likely blocked: mapped ${phrase} per ${src}. The HCD summary lists this as an exclusion, and the statute may carry exceptions that were not read. Confirm against Gov Code 65913.16 before dropping the site.`
         : c.value === "no"
-          ? `Not mapped in a ${label.toLowerCase()} by ${src}.`
+          ? `Not mapped ${phrase} by ${src}.`
           : `No ${label.toLowerCase()} layer has been queried for this parcel.`,
-    resolver: "data-layer",
+    resolver: c.value === "yes" ? "statute" : "data-layer",
   });
 }
 
@@ -149,12 +153,12 @@ export function assessSb4(facts: ParcelFacts, now: Date): PathwayResult {
       requirementSourceIds: [...REQ, "repo-background"],
       dataSourceIds: [],
       valueFound: `Planned affordability: ${aff}.`,
-      verdict: aff === "100-lower" ? "pass" : aff === "mixed" ? "fail" : "unknown",
+      verdict: aff === "100-lower" ? "pass" : "unknown",
       reason:
         aff === "100-lower"
           ? "The plan is 100% lower income."
           : aff === "mixed"
-            ? "A mixed-income plan does not meet the SB 4 affordability requirement."
+            ? "The plan is mixed income. The HCD summary allows up to 20% moderate income and 5% for staff, so whether this mix fits depends on percentages the plan does not record yet."
             : "The project plan has no affordability mix yet.",
       resolver: "project-design",
     }),

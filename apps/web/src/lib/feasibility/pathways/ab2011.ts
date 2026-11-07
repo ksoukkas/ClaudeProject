@@ -5,6 +5,8 @@ import {
   makeTest,
   readZoning,
   single,
+  zoningUndecided,
+  zoningUndecidedReason,
 } from "../helpers";
 import type { ParcelFacts, PathwayResult, TestResult } from "../types";
 
@@ -19,27 +21,25 @@ export function assessAb2011(facts: ParcelFacts): PathwayResult {
     makeTest({
       id: "ab2011-commercial-zone",
       requirement:
-        "Site is in a zone where office, retail or parking are principally permitted uses.",
+        "Site is in a zone where office, retail or parking are principally permitted uses. Wording not traced to a repo document; confirm in the fact sheet.",
       requirementSourceIds: REQ,
+      requirementStatus: "unverified",
       dataSourceIds: zoning.sourceIds,
       valueFound: zoning.summary,
-      verdict:
-        zoning.conflict || zoning.category === "unknown"
-          ? "unknown"
-          : zoning.category === "commercial"
-            ? "pass"
-            : zoning.category === "mixed-use"
-              ? "unknown"
-              : "fail",
-      reason: zoning.conflict
-        ? "Zoning sources disagree; see Disagreements."
-        : zoning.category === "unknown"
-          ? "No zoning reading for this parcel."
-          : zoning.category === "commercial"
-            ? "Zoning reads as commercial."
-            : zoning.category === "mixed-use"
-              ? "Mixed-use zoning may or may not list office, retail or parking as principally permitted. Check the zone's permitted-use table."
-              : `Zoning reads as ${zoning.category}, not a commercial zone.`,
+      verdict: zoningUndecided(zoning)
+        ? "unknown"
+        : zoning.category === "commercial"
+          ? "pass"
+          : zoning.category === "mixed-use"
+            ? "unknown"
+            : "fail",
+      reason: zoningUndecided(zoning)
+        ? zoningUndecidedReason(zoning)
+        : zoning.category === "commercial"
+          ? "Zoning reads as commercial."
+          : zoning.category === "mixed-use"
+            ? "Mixed-use zoning may or may not list office, retail or parking as principally permitted. Check the zone's permitted-use table."
+            : `Zoning reads as ${zoning.category}, not a commercial zone.`,
       resolver: "city-planning",
     }),
   );
@@ -49,8 +49,9 @@ export function assessAb2011(facts: ParcelFacts): PathwayResult {
     makeTest({
       id: "ab2011-industrial-adjacency",
       requirement:
-        "Site is not adjacent to industrial use. The statute defines the adjacency test; read Gov Code 65912.100 to 65912.140.",
+        "Site is not adjacent to industrial use. The statute defines the adjacency test; read Gov Code 65912.100 to 65912.140. Wording not traced to a repo document.",
       requirementSourceIds: REQ,
+      requirementStatus: "unverified",
       dataSourceIds: industrial.sourceIds,
       valueFound: describeCombined(industrial, "Adjacent industrial use"),
       verdict: invertedTriVerdict(industrial.value),
@@ -68,8 +69,9 @@ export function assessAb2011(facts: ParcelFacts): PathwayResult {
     makeTest({
       id: "ab2011-corridor",
       requirement:
-        "For the mixed-income track, the site fronts a commercial corridor that meets the statute's street-width test. The 100% affordable track does not carry the corridor test per the HCD summary; confirm in the statute.",
+        "For the mixed-income track, the site fronts a commercial corridor that meets the statute's street-width test. As this tool understands it the 100% affordable track does not carry the corridor test. Wording not traced to a repo document; confirm in the fact sheet and statute.",
       requirementSourceIds: REQ,
+      requirementStatus: "unverified",
       dataSourceIds: [],
       valueFound: "Street width not checked.",
       verdict: "unknown",

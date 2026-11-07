@@ -57,8 +57,16 @@ keyword. It is a heuristic (ASSUMPTION); check it against the layer's legend.
 - A proxy (worship-site map, IRS file) is a lead, never a pass.
 - Title is never resolved from public data. The section drafts the request a
   user sends themselves. The tool sends nothing.
-- Hazard exclusions with statutory mitigation exceptions (SB 9, AB 2011) return
-  unknown when a hazard is mapped. SB 4 exclusions follow the HCD summary.
+- A mapped hazard returns unknown ("likely blocked") with the reason, never a
+  hard fail: the summaries we hold list the exclusions but do not settle
+  whether a statute's exceptions apply.
+- Requirement wording that traces to a document in this repo is marked
+  `repo-sourced`; wording that rests on the author's reading of the law is
+  marked `unverified` in the data and badged in the UI. Reading the cited fact
+  sheet and recording the page flips it.
+- Disagreements about the parcel (zoning, hazard layers) are counted in
+  coverage. Disagreements that live in the sources themselves (the SB 684
+  lot-size note) are listed separately and not counted.
 
 ## Adding a test
 

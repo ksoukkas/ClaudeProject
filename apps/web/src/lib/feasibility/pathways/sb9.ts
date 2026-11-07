@@ -6,6 +6,8 @@ import {
   readZoning,
   single,
   triVerdict,
+  zoningUndecided,
+  zoningUndecidedReason,
 } from "../helpers";
 import type { ParcelFacts, PathwayResult, TestResult } from "../types";
 
@@ -23,19 +25,16 @@ export function assessSb9(facts: ParcelFacts): PathwayResult {
       requirementSourceIds: REQ,
       dataSourceIds: zoning.sourceIds,
       valueFound: zoning.summary,
-      verdict:
-        zoning.conflict || zoning.category === "unknown"
-          ? "unknown"
-          : zoning.category === "single-family"
-            ? "pass"
-            : "fail",
-      reason: zoning.conflict
-        ? "Zoning sources disagree; see Disagreements."
-        : zoning.category === "unknown"
-          ? "No zoning reading for this parcel."
-          : zoning.category === "single-family"
-            ? "Zoning reads as single-family residential."
-            : `Zoning reads as ${zoning.category}, not single-family.`,
+      verdict: zoningUndecided(zoning)
+        ? "unknown"
+        : zoning.category === "single-family"
+          ? "pass"
+          : "fail",
+      reason: zoningUndecided(zoning)
+        ? zoningUndecidedReason(zoning)
+        : zoning.category === "single-family"
+          ? "Zoning reads as single-family residential."
+          : `Zoning reads as ${zoning.category}, not single-family.`,
       resolver: "city-planning",
     }),
   );
@@ -45,8 +44,9 @@ export function assessSb9(facts: ParcelFacts): PathwayResult {
     makeTest({
       id: "sb9-urbanized",
       requirement:
-        "Parcel is in an urbanized area or urban cluster as designated by the Census Bureau.",
+        "Parcel is in an urbanized area or urban cluster as designated by the Census Bureau. Wording not traced to a repo document; confirm in the fact sheet.",
       requirementSourceIds: REQ,
+      requirementStatus: "unverified",
       dataSourceIds: urban.sourceIds,
       valueFound: describeCombined(urban, "Urbanized area"),
       verdict: triVerdict(urban.value),

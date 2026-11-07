@@ -30,6 +30,16 @@ export const HAZARD_LABELS: Record<HazardKey, string> = {
   liquefaction: "Liquefaction zone",
 };
 
+/** Prepositional phrases for sentences: "mapped in an earthquake fault zone", "mapped on wetlands". */
+export const HAZARD_PHRASES: Record<HazardKey, string> = {
+  veryHighFire: "in a very high fire hazard severity zone",
+  floodSfha: "in a special flood hazard area",
+  faultZone: "in an earthquake fault zone",
+  wetlands: "on wetlands",
+  farmland: "on protected farmland",
+  liquefaction: "in a liquefaction zone",
+};
+
 export function sourceName(id: string): string {
   return getSource(id).name;
 }
@@ -131,10 +141,30 @@ export function categorizeZoningText(text: string): ZoningCategory {
   return "other";
 }
 
+/** True when the zoning reading cannot carry a verdict: nothing observed, sources disagree, or the code was not recognised. */
+export function zoningUndecided(z: ZoningReading): boolean {
+  return z.conflict || z.category === "unknown" || z.category === "other";
+}
+
+export function zoningUndecidedReason(z: ZoningReading): string {
+  if (z.conflict) return "Zoning sources disagree; see Disagreements.";
+  if (z.category === "other") {
+    return "Zoning code not recognised by the keyword mapping; ask the city which category applies.";
+  }
+  return "No zoning reading for this parcel.";
+}
+
 export function makeTest(
-  t: Omit<TestResult, "resolver"> & { resolver?: Resolver | null },
+  t: Omit<TestResult, "resolver" | "requirementStatus"> & {
+    resolver?: Resolver | null;
+    requirementStatus?: TestResult["requirementStatus"];
+  },
 ): TestResult {
-  return { ...t, resolver: t.resolver ?? null };
+  return {
+    ...t,
+    resolver: t.resolver ?? null,
+    requirementStatus: t.requirementStatus ?? "repo-sourced",
+  };
 }
 
 /**
@@ -179,8 +209,9 @@ export function conditionalHazardTest(opts: {
 
   return makeTest({
     id: opts.id,
-    requirement: `Site is not in an excluded hazard area. ${opts.lawName} applies site exclusions including very high fire hazard severity zones and special flood hazard areas, some with mitigation exceptions (HCD summary).`,
+    requirement: `Site is not in an excluded hazard area. ${opts.lawName} is understood to apply site exclusions like other streamlining laws, including very high fire hazard severity zones and special flood hazard areas, some with mitigation exceptions. This wording is not traced to a document in this repo: read the cited fact sheet and statute before relying on this row.`,
     requirementSourceIds: opts.requirementSourceIds,
+    requirementStatus: "unverified",
     dataSourceIds: unique([...fire.sourceIds, ...flood.sourceIds]),
     valueFound: `${describeCombined(fire, HAZARD_LABELS.veryHighFire)} ${describeCombined(flood, HAZARD_LABELS.floodSfha)}`,
     verdict,

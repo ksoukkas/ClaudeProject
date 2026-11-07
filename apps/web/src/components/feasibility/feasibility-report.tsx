@@ -121,6 +121,11 @@ function TestTable({ tests }: { tests: TestResult[] }) {
             <tr key={t.id} className="border-b border-neutral-100 align-top">
               <td className="py-2 pr-3">
                 <p>{t.requirement}</p>
+                {t.requirementStatus === "unverified" ? (
+                  <span className="mt-1 inline-block rounded bg-amber-50 px-1 text-xs text-amber-800">
+                    Requirement wording unverified
+                  </span>
+                ) : null}
                 <div className="mt-1">
                   <SourceList ids={t.requirementSourceIds} emptyText="No requirement source." />
                 </div>
@@ -301,10 +306,19 @@ export function FeasibilityReportView({ report }: { report: FeasibilityReport })
 
       {report.conflicts.length ? (
         <Section
-          title="Sources disagree"
+          title="Sources disagree about this parcel"
           intro="Shown as found. Nothing here is resolved silently."
         >
           <ConflictList conflicts={report.conflicts} />
+        </Section>
+      ) : null}
+
+      {report.knownSourceDisagreements.length ? (
+        <Section
+          title="Known disagreements in the sources"
+          intro="Not specific to this parcel and not counted above. They limit what any report can say."
+        >
+          <ConflictList conflicts={report.knownSourceDisagreements} />
         </Section>
       ) : null}
 

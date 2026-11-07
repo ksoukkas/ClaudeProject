@@ -7,7 +7,7 @@ import type { Source } from "./types";
  * UNVERIFIED were not fetched; treat them as leads.
  */
 const CHECKED = "2026-11-06";
-const REPO = "https://github.com/ksoukkas/ClaudeProject/blob/main";
+const REPO = "https://github.com/ksoukkas/Unlot/blob/main";
 
 function src(
   id: string,

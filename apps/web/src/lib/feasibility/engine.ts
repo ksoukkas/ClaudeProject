@@ -83,7 +83,9 @@ export function assessParcel(facts: ParcelFacts, now: Date = new Date()): Feasib
     assessSb4(facts, now),
   ];
   const allTests = pathways.flatMap((p) => p.tests);
-  const conflicts = [...detectConflicts(facts), ...staticConflicts()];
+  // Parcel-level disagreements count toward coverage; source-level ones are listed apart.
+  const conflicts = detectConflicts(facts);
+  const knownSourceDisagreements = staticConflicts();
   const coverage = computeCoverage(allTests, conflicts);
   const nextSteps = computeNextSteps(allTests);
   const title = buildTitleCheck(facts);
@@ -125,6 +127,7 @@ export function assessParcel(facts: ParcelFacts, now: Date = new Date()): Feasib
     pathways,
     delta,
     conflicts,
+    knownSourceDisagreements,
     coverage,
     nextSteps,
     title,

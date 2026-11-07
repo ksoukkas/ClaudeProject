@@ -135,6 +135,13 @@ export interface TestResult {
   verdict: Verdict;
   reason: string;
   resolver: Resolver | null;
+  /**
+   * "repo-sourced" when the requirement wording traces to a document in this
+   * repo (docs/background.md, pathways.json, DATA-SOURCES.md). "unverified"
+   * when it rests on the author's reading of the law and still has to be
+   * checked against the cited fact sheet or statute.
+   */
+  requirementStatus: "repo-sourced" | "unverified";
 }
 
 export type PathwayId = "SB9" | "SB684_SB1123" | "AB2011" | "SB4";
@@ -202,7 +209,10 @@ export interface FeasibilityReport {
   generatedAt: string;
   pathways: PathwayResult[];
   delta: LawDelta;
+  /** Disagreements between sources about THIS parcel. Counted in coverage. */
   conflicts: Conflict[];
+  /** Disagreements that live in the sources themselves, whatever the parcel. Not counted. */
+  knownSourceDisagreements: Conflict[];
   coverage: Coverage;
   nextSteps: NextStep[];
   title: TitleCheck;

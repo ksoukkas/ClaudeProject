@@ -1,4 +1,11 @@
-import { makeTest, readZoning, single, sourceName } from "../helpers";
+import {
+  makeTest,
+  readZoning,
+  single,
+  sourceName,
+  zoningUndecided,
+  zoningUndecidedReason,
+} from "../helpers";
 import type { ParcelFacts, PathwayResult, TestResult, Verdict } from "../types";
 
 const REQ = ["hcd-law-factsheets", "calmatters-sb684", "calmatters-sb1123"];
@@ -11,12 +18,9 @@ export function assessSb684Sb1123(facts: ParcelFacts): PathwayResult {
 
   let zoningVerdict: Verdict;
   let zoningReason: string;
-  if (zoning.conflict) {
+  if (zoningUndecided(zoning)) {
     zoningVerdict = "unknown";
-    zoningReason = "Zoning sources disagree; see Disagreements.";
-  } else if (zoning.category === "unknown") {
-    zoningVerdict = "unknown";
-    zoningReason = "No zoning reading for this parcel.";
+    zoningReason = zoningUndecidedReason(zoning);
   } else if (zoning.category === "multifamily") {
     zoningVerdict = "pass";
     zoningReason = "Zoning reads as multifamily residential (SB 684).";
@@ -43,8 +47,9 @@ export function assessSb684Sb1123(facts: ParcelFacts): PathwayResult {
     makeTest({
       id: "sb684-zoning",
       requirement:
-        "Lot is zoned for multifamily residential (SB 684), or is a vacant lot zoned for single-family residential (added by SB 1123). HCD summary; confirm the text.",
+        "Lot is zoned for multifamily residential (SB 684), or is a vacant lot zoned for single-family residential (added by SB 1123). Wording not traced to a repo document; confirm in the fact sheet and the bill text.",
       requirementSourceIds: REQ,
+      requirementStatus: "unverified",
       dataSourceIds: [...zoning.sourceIds, ...vacant.sourceIds],
       valueFound: `${zoning.summary} Vacant: ${vacant.sourceIds.length ? `${vacant.value} per ${vacant.sourceIds.map(sourceName).join("; ")}` : "no data"}.`,
       verdict: zoningVerdict,
@@ -75,17 +80,19 @@ export function assessSb684Sb1123(facts: ParcelFacts): PathwayResult {
   tests.push(
     makeTest({
       id: "sb684-unit-count",
-      requirement: "The project creates 10 or fewer homes or parcels.",
-      requirementSourceIds: REQ,
+      requirement:
+        "The subdivision creates 10 or fewer parcels (docs/background.md says parcels; pathways.json says homes). Planned homes are used here as a proxy for parcels. ASSUMPTION.",
+      requirementSourceIds: [...REQ, "repo-background", "repo-pathways-json"],
       dataSourceIds: [],
-      valueFound: homes === null ? "Planned homes: not set." : `Planned homes: ${homes}.`,
+      valueFound:
+        homes === null ? "Planned homes: not set." : `Planned homes: ${homes} (proxy for parcels).`,
       verdict: homes === null ? "unknown" : homes <= 10 ? "pass" : "fail",
       reason:
         homes === null
           ? "The project plan has no unit count yet."
           : homes <= 10
-            ? "Within the 10-home limit in the HCD summary."
-            : "More than 10 homes; this pathway is for small-lot subdivisions.",
+            ? "Within the limit of 10 given in both repo summaries, counting homes as a proxy for parcels."
+            : "More than 10, counting homes as a proxy for parcels; this pathway is for small-lot subdivisions. Re-check if the plan has fewer parcels than homes.",
       resolver: "project-design",
     }),
   );

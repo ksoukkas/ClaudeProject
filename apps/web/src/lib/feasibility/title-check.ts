@@ -64,7 +64,7 @@ export function buildTitleCheck(facts: ParcelFacts): TitleCheck {
     flags.push({
       label: "Surplus Land Act disposition",
       reason:
-        "Land disposed of under the Surplus Land Act carries affordable-housing requirements that are recorded against it. Read the HCD guidelines for the exact terms.",
+        "Land disposed of under the Surplus Land Act comes with affordable-housing requirements (HCD Surplus Land Act Guidelines). Read the guidelines for the exact terms and whether they are recorded against the land.",
       sourceIds: ["hcd-sla-guidelines-2024", facts.publicSurplusNotice.sourceId],
       assumption: false,
     });
@@ -82,7 +82,7 @@ export function buildTitleCheck(facts: ParcelFacts): TitleCheck {
 
   const notes = [
     "No free public dataset lists CC&Rs, easements or deed restrictions by parcel. A preliminary title report from a title company is the standard way to see them.",
-    "State ADU law voids covenants that prohibit accessory dwelling units (Civil Code 4751, added by AB 670 in 2019; not fetched, verify before citing). No equivalent override is known to this tool for SB 9 lot splits, SB 684 / SB 1123 subdivisions, AB 2011 or SB 4, so a recorded covenant can still block a site that passes every state-law test. Confirm with counsel.",
+    "Lead, not verified from any document in this repo: state ADU law is understood to limit covenants that ban accessory dwelling units (Civil Code 4751 via AB 670, 2019, marked UNVERIFIED in the sources list). No override of private covenants is known to this tool for SB 9 lot splits, SB 684 / SB 1123 subdivisions, AB 2011 or SB 4, so a recorded covenant can still block a site that passes every state-law test. Confirm with counsel.",
     "A parcel can pass every state test and still be dead on title. This section never returns pass.",
   ];
 
