@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { ConfidenceBadge } from "@/components/confidence-badge";
 import { OcMap } from "@/components/oc-map";
 import { FigmaIcon, StatusTag, feasibilityLabel } from "@/components/ui";
+import { sampleConfidence } from "@/lib/sample-checks";
 import {
   type Feasibility,
   type LawId,
@@ -158,7 +160,7 @@ export function ResultsWorkspace() {
         </div>
         <div className="flex items-center justify-between text-[11px] leading-[1.5]">
           <p className="text-ink-soft">
-            {visible.length} sample sites · {count("feasible")} likely feasible ·{" "}
+            {visible.length} sample sites · {count("feasible")} with no red flags so far ·{" "}
             {count("review")} need review · {count("blocked")} blocked
           </p>
           <button
@@ -231,6 +233,7 @@ export function ResultsWorkspace() {
 
           {visible.map((p) => {
             const isSaved = saved.has(p.id);
+            const result = sampleConfidence(p.id);
             return (
               <article
                 key={p.id}
@@ -298,9 +301,22 @@ export function ResultsWorkspace() {
                 ) : null}
                 <p className="text-[12px] leading-[1.5] text-ink">{p.reasoning}</p>
                 <div className="flex items-center gap-[10px]">
-                  <p className="flex-1 text-[10px] leading-[1.5] text-muted">
-                    {p.confidence} confidence · {p.evidence}
-                  </p>
+                  <div className="flex min-w-0 flex-1 flex-col gap-[2px]">
+                    <div className="flex flex-wrap items-center gap-x-3">
+                      <ConfidenceBadge level={result?.level} />
+                      {result ? (
+                        <span className="text-[11px] leading-[1.5] text-ink-soft">
+                          {result.counts.unknown} of {result.counts.total} tests unknown
+                        </span>
+                      ) : null}
+                    </div>
+                    {result ? (
+                      <p className="text-[11px] leading-[1.5] text-ink-soft">
+                        Next: {result.next}
+                      </p>
+                    ) : null}
+                    <p className="text-[10px] leading-[1.5] text-muted">{p.evidence}</p>
+                  </div>
                   <FigmaIcon src="/figma/results/arrowUpRight.svg" size={16} />
                 </div>
               </article>

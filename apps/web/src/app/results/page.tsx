@@ -48,7 +48,8 @@ export default async function ResultsPage({
         <p className="text-[11px] leading-[1.5] text-muted">
           Sample results: the same five fictional sites show for every search.
           Expanded to 5 nearby cities. Smaller sites are shown as alternatives,
-          not goal matches.
+          not goal matches. Confidence is worked out from the tests on each site,
+          not typed in.
         </p>
       </div>
 

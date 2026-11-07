@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ConfidenceBadge } from "@/components/confidence-badge";
 import { Button, FigmaIcon, StatusTag, feasibilityLabel } from "@/components/ui";
+import { CONFIDENCE_COPY } from "@/lib/confidence";
+import { sampleConfidence } from "@/lib/sample-checks";
 import { type PipelineCard, alertRules, pipeline } from "@/lib/sample-data";
 
 function CardTitle({ card }: { card: PipelineCard }) {
@@ -15,13 +18,22 @@ function CardTitle({ card }: { card: PipelineCard }) {
   );
 }
 
+/** A card with no parcel has never been screened, so it gets no verdict. */
+function CardStatus({ card }: { card: PipelineCard }) {
+  return card.parcelId ? (
+    <StatusTag tone={card.feasibility} shape="soft">
+      {feasibilityLabel[card.feasibility]}
+    </StatusTag>
+  ) : (
+    <StatusTag shape="soft">{CONFIDENCE_COPY.notScreened}</StatusTag>
+  );
+}
+
 function BoardCard({ card }: { card: PipelineCard }) {
   return (
     <article className="flex flex-col gap-[11px] rounded-[14px] border border-line bg-surface p-[17px]">
       <div className="flex items-center justify-between">
-        <StatusTag tone={card.feasibility} shape="soft">
-          {feasibilityLabel[card.feasibility]}
-        </StatusTag>
+        <CardStatus card={card} />
         <FigmaIcon src="/figma/saved/ellipsis.svg" size={16} />
       </div>
       <div className="flex flex-col gap-1 leading-[1.5]">
@@ -35,7 +47,10 @@ function BoardCard({ card }: { card: PipelineCard }) {
         {card.pathway}
       </StatusTag>
       <p className="text-[10px] leading-[1.5] text-ink-soft">{card.reasoning}</p>
-      <p className="text-[10px] leading-[1.5] text-ink-soft">{card.confidence}</p>
+      <div className="flex flex-col gap-[2px]">
+        {card.parcelId ? <ConfidenceBadge level={sampleConfidence(card.parcelId)?.level} /> : null}
+        <p className="text-[10px] leading-[1.5] text-ink-soft">{card.evidence}</p>
+      </div>
       <div className="flex flex-col gap-2 border-t border-line pt-[10px]">
         <p className="text-[11px] leading-[1.5] text-ink">{card.task}</p>
         <p className="flex items-center gap-[5px] text-[9px] leading-[1.5] text-ink-soft">
@@ -147,9 +162,7 @@ export function SavedPipeline() {
                     </td>
                     <td className="px-4 py-3 text-ink">{column.stage}</td>
                     <td className="px-4 py-3">
-                      <StatusTag tone={card.feasibility} shape="soft">
-                        {feasibilityLabel[card.feasibility]}
-                      </StatusTag>
+                      <CardStatus card={card} />
                     </td>
                     <td className="px-4 py-3 text-ink-soft">{card.pathway}</td>
                     <td className="px-4 py-3 text-ink">{card.task}</td>

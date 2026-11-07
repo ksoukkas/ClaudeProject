@@ -65,7 +65,7 @@ const tagShape = {
 } as const;
 
 export const feasibilityLabel: Record<Feasibility, string> = {
-  feasible: "Likely feasible",
+  feasible: "No red flags so far",
   review: "Needs review",
   blocked: "Blocked",
 };
