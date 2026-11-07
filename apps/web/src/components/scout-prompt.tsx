@@ -1,15 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { FigmaIcon } from "@/components/ui";
+import { EXAMPLE_QUERY } from "@/lib/filters";
 
+/*
+ * Each goal is a query the Results page already understands (see parseQuery
+ * in lib/filters.ts): "faith" sets the owner filter, "commercial" the owner,
+ * "small"/"infill" the lot-size cap.
+ */
 const examples = ["Faith-owned land", "Commercial corridors", "Small infill sites"];
 
 /** The "Find lots in [city] for [goal]" prompt. Submits a GET to /results. */
 export function ScoutPrompt() {
-  const [query, setQuery] = useState(
-    "Anaheim, 40+ affordable units, near transit",
-  );
+  const [query, setQuery] = useState(EXAMPLE_QUERY);
 
   return (
     <div className="flex w-full flex-col gap-[14px]">
@@ -49,14 +54,13 @@ export function ScoutPrompt() {
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-[11px] leading-[1.5] text-step-muted">Or start with</span>
         {examples.map((example) => (
-          <button
+          <Link
             key={example}
-            type="button"
-            onClick={() => setQuery(`Anaheim, ${example.toLowerCase()}`)}
+            href={`/results?${new URLSearchParams({ q: example })}`}
             className="rounded-full border border-line bg-canvas px-3 py-[7px] text-[11px] text-step-muted hover:border-accent hover:text-accent"
           >
             {example}
-          </button>
+          </Link>
         ))}
       </div>
     </div>

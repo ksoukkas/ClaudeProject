@@ -3,16 +3,15 @@ import Link from "next/link";
 import { ResultsWorkspace } from "@/components/results-workspace";
 import { ScoutCriteria } from "@/components/scout-criteria";
 import { Button, Eyebrow, FigmaIcon } from "@/components/ui";
+import { EXAMPLE_QUERY, describeQuery, resolveFilters } from "@/lib/filters";
+import { allCities } from "@/lib/public-sites";
 import { runScout } from "@/lib/scout/scout";
 import { scoutSources } from "@/lib/scout/sources";
+import type { ScoutResult } from "@/lib/scout/types";
 
 export const metadata: Metadata = { title: "Results" };
 
 type SearchParams = Record<string, string | string[] | undefined>;
-
-function first(value: string | string[] | undefined): string {
-  return Array.isArray(value) ? (value[0] ?? "") : (value ?? "");
-}
 
 export default async function ResultsPage({
   searchParams,
@@ -20,13 +19,17 @@ export default async function ResultsPage({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
-  const asked = first(params.q).trim();
-  const query = asked || "Anaheim, 40+ affordable units, near transit";
+  // A bare /results shows the Scout example search, as before.
+  const source = Object.keys(params).length === 0 ? { q: EXAMPLE_QUERY } : params;
+  const initial = resolveFilters(source, allCities);
+  const { understood, ignored } = describeQuery(initial, allCities);
 
-  // Only run the live scout for a real search. runScout never throws.
+  // The live scout runs only for real search text (not the bare example view).
+  // runScout never throws; on failure the map and lists below still work.
+  const rawQ = Array.isArray(params.q) ? params.q[0] : params.q;
+  const asked = (rawQ ?? "").trim();
   const scout = asked ? await runScout(asked) : null;
   const live = scout && scout.status === "ok" && scout.candidates.length ? scout : null;
-  const he = scoutSources["scag-he"];
 
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 px-6 py-8 lg:px-12">
@@ -47,49 +50,61 @@ export default async function ResultsPage({
         </Button>
       </div>
 
-      <div className="flex flex-col gap-[10px]">
+      <ResultsWorkspace
+        initial={initial}
+        understood={understood}
+        ignored={ignored}
+        live={live}
+        liveIntro={scout ? <ScoutIntro scout={scout} live={Boolean(live)} /> : null}
+      >
         <Eyebrow>Your search, made explainable</Eyebrow>
         <h1 className="font-display text-[40px] leading-[1.2] font-bold text-ink">
           A shortlist, with the why.
         </h1>
-        <p className="text-[14px] leading-[1.5] text-ink-soft">{query}</p>
-        {scout ? <ScoutCriteria criteria={scout.criteria} parser={scout.parser} /> : null}
-        {live ? (
-          <p className="text-[11px] leading-[1.5] text-muted">
-            <a href={he.url} target="_blank" rel="noreferrer" className="text-accent hover:underline">
-              Live public data · SCAG housing element sites (checked {he.checked})
-            </a>{" "}
-            · prototype, not legal advice. Ownership, hazards and utilities are not in these data and
-            show as unknown.
-          </p>
-        ) : scout ? (
-          <p className="rounded-[10px] bg-review-soft px-4 py-3 text-[12px] leading-[1.5] text-review">
-            Live data unavailable: {(scout.reason ?? "no results").replace(/\.?$/, ".")} Showing
-            fictional samples below.
-            {scout.status === "city-not-in-layer" ? (
-              <>
-                {" "}
-                <a
-                  href={scoutSources["hcd-sites"].url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="underline"
-                >
-                  HCD sites inventory ↗
-                </a>
-              </>
-            ) : null}
-          </p>
-        ) : (
-          <p className="text-[11px] leading-[1.5] text-muted">
-            Sample results: the same five fictional sites show for every search. Expanded to 5
-            nearby cities. Smaller sites are shown as alternatives, not goal matches. Run a search
-            from Scout to see live public data.
-          </p>
-        )}
-      </div>
+        <p className="text-[11px] leading-[1.5] text-muted">
+          Sample sites are fictional. Confidence is worked out from the tests on each site, not
+          typed in.
+        </p>
+      </ResultsWorkspace>
+    </div>
+  );
+}
 
-      <ResultsWorkspace live={live ?? undefined} />
+/** The live scout's banner and parsed criteria, under main's query line. */
+function ScoutIntro({ scout, live }: { scout: ScoutResult; live: boolean }) {
+  const he = scoutSources["scag-he"];
+  return (
+    <div className="flex flex-col gap-2 rounded-[12px] border border-line bg-surface p-4">
+      <p className="text-[12px] font-semibold text-ink">Live scout</p>
+      <ScoutCriteria criteria={scout.criteria} parser={scout.parser} />
+      {live ? (
+        <p className="text-[11px] leading-[1.5] text-muted">
+          <a href={he.url} target="_blank" rel="noreferrer" className="text-accent hover:underline">
+            Live public data · SCAG housing element sites (checked {he.checked})
+          </a>{" "}
+          · prototype, not legal advice. Ownership, hazards and utilities are not in these data and
+          show as unknown. The ranked shortlist is above the sample sites; its numbers match the
+          square pins on the map.
+        </p>
+      ) : (
+        <p className="rounded-[10px] bg-review-soft px-4 py-3 text-[12px] leading-[1.5] text-review">
+          Live scout unavailable: {(scout.reason ?? "no results").replace(/\.?$/, ".")} The map and
+          lists below still show the cached public sites and the fictional samples.
+          {scout.status === "city-not-in-layer" ? (
+            <>
+              {" "}
+              <a
+                href={scoutSources["hcd-sites"].url}
+                target="_blank"
+                rel="noreferrer"
+                className="underline"
+              >
+                HCD sites inventory ↗
+              </a>
+            </>
+          ) : null}
+        </p>
+      )}
     </div>
   );
 }

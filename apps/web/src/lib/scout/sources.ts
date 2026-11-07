@@ -41,7 +41,7 @@ export const scoutSources: Record<SourceId, ScoutSource> = {
     checked: SOURCE_CHECKED,
     status: "VERIFIED",
     how:
-      "Read layer metadata (?f=json) and queried COUNTY='Orange': 2,126 sites in 28 jurisdictions, all YEAR=2025. Anaheim returned 124 sites with APNs and capacity values. Santa Ana, Costa Mesa, Huntington Beach, Orange, Tustin, Laguna Woods and Rancho Santa Margarita returned 0 sites.",
+      "Read layer metadata (?f=json) and queried COUNTY='Orange': 2,126 sites in 28 jurisdictions, all YEAR=2025. Anaheim returned 124 sites with APNs and capacity values. Santa Ana, Costa Mesa, Huntington Beach, Orange, Tustin, Laguna Woods and Rancho Santa Margarita returned 0 sites. The Results map shows a cached snapshot of this same layer (public/data/he-sites.geojson, same date); the scout reads it live per city for PID24 and polygon area, and matches the two by APN.",
     fields: [
       "PID24",
       "APN24",

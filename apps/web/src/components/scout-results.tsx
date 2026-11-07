@@ -1,13 +1,14 @@
 import Link from "next/link";
+import { ConfidenceBadge } from "@/components/confidence-badge";
 import { StatusTag, feasibilityLabel } from "@/components/ui";
 import { ASSUMPTIONS } from "@/lib/scout/config";
 import { scoutSources } from "@/lib/scout/sources";
 import type { Observation, ScoutCandidate, ScoutResult, TransitFact } from "@/lib/scout/types";
 
 /*
- * Live scout results. No hooks, so it renders inside the client
- * ResultsWorkspace or on its own. Every fact shows where it came from;
- * every gap says "unknown".
+ * Live scout results. No hooks, so they render inside the client
+ * ResultsWorkspace (next to main's map and lists) or on their own. Every fact
+ * shows where it came from; every gap says "unknown".
  */
 
 const fmt = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(2));
@@ -49,54 +50,32 @@ export function liveHref(c: ScoutCandidate, query: string) {
   return `/results/live/${encodeURIComponent(c.id)}?q=${encodeURIComponent(query)}`;
 }
 
-/**
- * Honest geography: parcel centroids plotted by real longitude/latitude
- * (equirectangular, scaled by cos(latitude)). No basemap, no invented pins.
- */
-function CentroidPlot({ candidates, query }: { candidates: ScoutCandidate[]; query: string }) {
-  const pts = candidates.filter((c) => c.centroid);
-  if (pts.length < 2) return null;
-  const lons = pts.map((c) => c.centroid![0]);
-  const lats = pts.map((c) => c.centroid![1]);
-  const midLat = (Math.min(...lats) + Math.max(...lats)) / 2;
-  const k = Math.cos((midLat * Math.PI) / 180);
-  const xs = lons.map((x) => x * k);
-  const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...lats), Math.max(...lats)];
-  const span = Math.max(x1 - x0, y1 - y0) || 0.01;
-  const W = 400;
-  const pad = 24;
-  const scale = (W - 2 * pad) / span;
-  const H = Math.max(160, (y1 - y0) * scale + 2 * pad);
-  const kmAcross = span * 111.32;
-
+function CandidateCard({
+  c,
+  query,
+  goal,
+  mapNumber,
+  mapLoaded,
+  selected,
+  onShowOnMap,
+}: {
+  c: ScoutCandidate;
+  query: string;
+  goal: number | null;
+  /** Number of this site's square pin on the map, or null when it is not on the map. */
+  mapNumber: number | null;
+  /** False while the map's public-site snapshot is still loading. */
+  mapLoaded: boolean;
+  selected: boolean;
+  onShowOnMap?: () => void;
+}) {
   return (
-    <figure className="flex flex-col gap-2 rounded-[12px] border border-line bg-surface p-4">
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Relative positions of the ranked sites">
-        <rect x="0" y="0" width={W} height={H} rx="8" className="fill-canvas" />
-        {pts.map((c) => {
-          const cx = pad + (c.centroid![0] * k - x0) * scale;
-          const cy = H - pad - (c.centroid![1] - y0) * scale;
-          return (
-            <a key={c.id} href={liveHref(c, query)} aria-label={`${c.rank}. APN ${c.apn}`}>
-              <circle cx={cx} cy={cy} r="11" className="fill-review stroke-white" strokeWidth="2" />
-              <text x={cx} y={cy + 4} textAnchor="middle" className="fill-white text-[10px] font-bold">
-                {c.rank}
-              </text>
-            </a>
-          );
-        })}
-      </svg>
-      <figcaption className="text-[10px] leading-[1.5] text-muted">
-        Relative positions of parcel centroids from SCAG geometry (WGS84), about {kmAcross.toFixed(1)} km
-        across. No basemap: this is a position plot, not a map. North is up.
-      </figcaption>
-    </figure>
-  );
-}
-
-function CandidateCard({ c, query, goal }: { c: ScoutCandidate; query: string; goal: number | null }) {
-  return (
-    <article className="flex flex-col gap-[10px] rounded-[12px] border border-line bg-surface p-5">
+    <article
+      id={`live-${c.id}`}
+      className={`flex scroll-mt-6 flex-col gap-[10px] rounded-[12px] border bg-surface p-5 ${
+        selected ? "border-accent ring-2 ring-accent/25" : "border-line"
+      }`}
+    >
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-[7px]">
           <span className="text-[10px] leading-[1.5] text-muted">{String(c.rank).padStart(2, "0")}</span>
@@ -142,12 +121,31 @@ function CandidateCard({ c, query, goal }: { c: ScoutCandidate; query: string; g
         Unknown: {c.openChecks.map((o) => o.label).join(" · ")}
       </p>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-[10px] leading-[1.5] text-muted">
-          Low confidence · SCAG housing element listing ({c.capacity.year ?? "year unknown"}); nothing checked on site
-        </p>
-        <Link href={liveHref(c, query)} className="text-[11px] font-semibold text-accent hover:underline">
-          Site details →
-        </Link>
+        <div className="flex flex-wrap items-center gap-x-3">
+          {/* No pathway tests are run on live sites, so confidence is not rated (honest-confidence rule). */}
+          <ConfidenceBadge />
+          <span className="text-[11px] leading-[1.5] text-ink-soft">
+            Pathway tests not run · {c.openChecks.length} open checks unknown
+          </span>
+        </div>
+        <span className="flex items-center gap-3">
+          {onShowOnMap && mapNumber !== null ? (
+            <button
+              type="button"
+              onClick={onShowOnMap}
+              className="text-[11px] font-semibold text-accent hover:underline"
+            >
+              Show on map (square {mapNumber})
+            </button>
+          ) : (
+            <span className="text-[10px] text-muted">
+              {mapLoaded ? "Not in the map snapshot" : "Finding on the map…"}
+            </span>
+          )}
+          <Link href={liveHref(c, query)} className="text-[11px] font-semibold text-accent hover:underline">
+            Site details →
+          </Link>
+        </span>
       </div>
       <SourceLinks links={c.links} />
     </article>
@@ -201,56 +199,93 @@ export function ScoutSourcesList({ ids }: { ids: ScoutResult["sources"] }) {
   );
 }
 
-export function ScoutResults({ result }: { result: ScoutResult }) {
+/**
+ * The live scout shortlist, shown above main's sample and public lists. The
+ * map's numbered squares use the same numbers (see ResultsWorkspace).
+ */
+export function LiveShortlist({
+  result,
+  mapIdByCandidate,
+  mapLoaded,
+  selectedMapId,
+  onShowOnMap,
+}: {
+  result: ScoutResult;
+  /** False while the map's public-site snapshot is still loading. */
+  mapLoaded: boolean;
+  /** Candidate id -> public-site id on the map, for candidates in the map snapshot. */
+  mapIdByCandidate: ReadonlyMap<string, number>;
+  selectedMapId: number | null;
+  onShowOnMap: (publicId: number) => void;
+}) {
   const { candidates, criteria } = result;
   const meets = candidates.filter((c) => c.meetsGoal === true).length;
   return (
-    <div className="flex w-full flex-col gap-7 lg:flex-row lg:items-start">
-      <div className="flex w-full flex-col gap-4 lg:w-[440px] lg:shrink-0">
-        <CentroidPlot candidates={candidates} query={result.query} />
-        {result.warnings.length ? (
-          <div className="flex flex-col gap-1 rounded-[12px] bg-review-soft p-4">
-            {result.warnings.map((w) => (
-              <p key={w} className="text-[11px] leading-[1.5] text-review">
-                {w}
-              </p>
-            ))}
-          </div>
-        ) : null}
-        <div className="flex flex-col gap-2 rounded-[12px] bg-canvas p-5">
-          <p className="font-display text-[14px] leading-[1.2] text-ink">
-            A housing element listing is a lead, not a green light.
-          </p>
-          <p className="text-[12px] leading-[1.5] text-ink-soft">
-            Each site below is in its city&apos;s adopted housing element inventory, as published by
-            SCAG. That says the city counted it toward its housing need. It does not say who owns it,
-            whether it is for sale, or which state law applies. Every site starts at &quot;Needs
-            review&quot;.
-          </p>
-        </div>
-        <ScoutAssumptions />
-        <ScoutSourcesList ids={result.sources} />
-      </div>
-
-      <div className="flex min-w-0 flex-1 flex-col gap-3">
-        <div className="flex flex-wrap items-center justify-between gap-2 leading-[1.5]">
-          <p className="text-[12px] font-semibold text-ink">
-            Top {candidates.length} of {result.sitesInCity ?? "?"} housing element sites in {criteria.city}
-          </p>
-          <p className="text-[11px] text-muted">
-            {criteria.minUnits ? `${meets} meet the ${criteria.minUnits}-unit goal · ` : ""}Sort: score ↓
-          </p>
-        </div>
-        {candidates.map((c) => (
-          <CandidateCard key={c.id} c={c} query={result.query} goal={criteria.minUnits} />
-        ))}
-        <p className="text-[10px] leading-[1.5] text-muted">
-          Capacity is the unit count the city listed in its housing element, not an entitlement or a
-          yield estimate. Explanations: {result.explainer.kind === "claude" ? `Claude (${result.explainer.model})` : "template"}
-          {result.explainer.note ? ` · ${result.explainer.note}` : ""}. Generated {result.generatedAt}.
-          Prototype, not legal or financial advice.
+    <section aria-labelledby="live-shortlist-heading" className="flex flex-col gap-3">
+      <div className="flex flex-col gap-1">
+        <h2
+          id="live-shortlist-heading"
+          className="font-display text-[21px] leading-[1.2] font-semibold text-ink"
+        >
+          Live scout shortlist
+        </h2>
+        <p className="text-[11px] leading-[1.5] text-ink-soft">
+          Top {candidates.length} of {result.sitesInCity ?? "?"} housing element sites in {criteria.city}
+          {criteria.minUnits ? ` · ${meets} meet the ${criteria.minUnits}-unit goal` : ""} · sorted by
+          score. Same numbers as the square pins on the map.
         </p>
       </div>
-    </div>
+      {result.warnings.length ? (
+        <div className="flex flex-col gap-1 rounded-[12px] bg-review-soft p-4">
+          {result.warnings.map((w) => (
+            <p key={w} className="text-[11px] leading-[1.5] text-review">
+              {w}
+            </p>
+          ))}
+        </div>
+      ) : null}
+      <div className="flex flex-col gap-2 rounded-[12px] bg-canvas p-5">
+        <p className="font-display text-[14px] leading-[1.2] text-ink">
+          A housing element listing is a lead, not a green light.
+        </p>
+        <p className="text-[12px] leading-[1.5] text-ink-soft">
+          Each site is in its city&apos;s adopted housing element inventory, as published by SCAG.
+          That says the city counted it toward its housing need. It does not say who owns it,
+          whether it is for sale, or which state law applies. Every site starts at &quot;
+          {feasibilityLabel.review}&quot;.
+        </p>
+      </div>
+      {candidates.map((c) => {
+        const mapId = mapIdByCandidate.get(c.id);
+        return (
+          <CandidateCard
+            key={c.id}
+            c={c}
+            query={result.query}
+            goal={criteria.minUnits}
+            mapNumber={mapId !== undefined ? c.rank : null}
+            mapLoaded={mapLoaded}
+            selected={mapId !== undefined && mapId === selectedMapId}
+            onShowOnMap={mapId !== undefined ? () => onShowOnMap(mapId) : undefined}
+          />
+        );
+      })}
+      <p className="text-[10px] leading-[1.5] text-muted">
+        Capacity is the unit count the city listed in its housing element, not an entitlement or a
+        yield estimate. Explanations:{" "}
+        {result.explainer.kind === "claude" ? `Claude (${result.explainer.model})` : "template"}
+        {result.explainer.note ? ` · ${result.explainer.note}` : ""}. Generated {result.generatedAt}.
+        Prototype, not legal or financial advice.
+      </p>
+      <details className="rounded-[12px] border border-line bg-surface p-4">
+        <summary className="cursor-pointer text-[12px] font-semibold text-ink">
+          Assumptions and sources behind this shortlist
+        </summary>
+        <div className="mt-3 flex flex-col gap-3">
+          <ScoutAssumptions />
+          <ScoutSourcesList ids={result.sources} />
+        </div>
+      </details>
+    </section>
   );
 }
