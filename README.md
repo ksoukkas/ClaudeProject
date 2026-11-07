@@ -18,7 +18,8 @@ them by luck: a city calls about surplus land, or a congregation offers a parkin
 has opened land under SB 9, SB 684 / SB 1123, AB 2011 and SB 4, but nobody has joined those laws to
 the parcel data in a way they can use.
 
-**Before:** they read 34 city websites, call planning counters one at a time, and still cannot
+**Before:** they read the websites of the county's 34 incorporated cities
+(`lanes/2-clear-it/data/oc-cities.json`), call planning counters one at a time, and still cannot
 tell a legal site from a usable one.
 **After:** they type a city and a goal, get ranked sites from public data, and open a report that
 shows every test, the record behind it, and what is still unknown, with a drafted next step.
@@ -51,10 +52,12 @@ A web workspace with five parts. Every screen says it is a prototype and not leg
 ## How Claude is used
 
 - We built the app with Claude Code, in parallel branches, with a cheap Claude review on every
-  push before a human merged.
-- Inside the tool, with an `ANTHROPIC_API_KEY` set, Claude turns the search text into explicit
-  criteria and drafts the one-line "why call" for each candidate. Both are labelled as drafted by
-  Claude and shown next to the facts they came from. Without a key, a keyword parser runs instead.
+  push before a human merged (see the pull request history).
+- Inside the tool, the scout in [pull request 7](https://github.com/ksoukkas/Unlot/pull/7) (not
+  yet merged at the time of writing) uses Claude, when an `ANTHROPIC_API_KEY` is set, to turn the
+  search text into explicit criteria and to draft the one-line "why call" for each candidate.
+  Both are labelled as drafted by Claude and shown next to the facts they came from. Without a
+  key, a keyword parser runs instead. Nothing on `main` reads the key until that PR merges.
   Claude never decides a verdict: every pass, fail or unknown comes from a rule and a record.
 - A person checks the sources, confirms unknowns with the city or a title company, and sends any
   outreach themselves. The tool sends nothing.
@@ -72,13 +75,15 @@ npm run dev
 
 Open <http://localhost:3000>. Then:
 
-- `/results?q=Anaheim, 40+ affordable units, near transit` for the ranked list and map
+- `/results?q=Anaheim, 40+ affordable units, near transit` for the filtered list and map (sample
+  parcels plus real housing-element points; the live scout arrives with pull request 7)
 - `/report` for the feasibility reports (three synthetic parcels, then real public-land notices)
 - `/market` for the Surplus Land Act notices and the listings paste box
 - `/about` for how confidence works and what is real versus mocked
 
-Optional: copy `apps/web/.env.example` to `apps/web/.env.local` and set `ANTHROPIC_API_KEY` to turn
-on Claude parsing in the scout. The app runs without it. Never commit `.env.local`.
+Optional, once pull request 7 is merged: copy `apps/web/.env.example` to `apps/web/.env.local` and
+set `ANTHROPIC_API_KEY` to turn on Claude parsing in the scout. The app runs without it, and
+nothing on `main` reads the key today. Never commit `.env.local`.
 
 Other commands, from `apps/web`: `npm run build` (production build and type check), `npm run lint`,
 `npm test` (offline unit tests).
@@ -114,8 +119,8 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
 
 | Part | Status |
 |---|---|
-| Scout search over live SCAG, Caltrans and zoning layers | working on live public data, with a labelled sample fallback (pull request 7, pending merge) |
-| Claude parsing of the goal and "why call" lines | working with an API key; keyword parser without |
+| Scout search over live SCAG, Caltrans and zoning layers | in pull request 7, not yet merged: live public data with a labelled sample fallback. On `main` today, `/results` filters sample parcels and real housing-element points |
+| Claude parsing of the goal and "why call" lines | in pull request 7, not yet merged: works with an API key, keyword parser without. Nothing on `main` calls Claude today |
 | Feasibility report: state-law tests with sources and verdicts | working; most hazard and local-code tests return unknown because those layers are not queried per parcel yet |
 | Feasibility report: local zoning plain-English translation | mocked: the slot exists, no city code text is wired |
 | Title and CC&R check | partly working: checklist, flags from parcel signals, and a draft request; no title data exists in public sources, so it never returns pass |
@@ -133,8 +138,9 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
   step.
 - **The zoning keyword mapping is crude.** "Open Space with Commercial Option" reads as
   commercial. The original text is always shown so a person can override it.
-- **Unknown dominates.** On a real public-land notice, roughly four of 22 tests resolve. That is
-  honest, but it means the tool points at what to check rather than answering.
+- **Unknown dominates.** On the first real public-land notice we opened (`/report/sla-001`),
+  4 of 22 tests resolved. That is honest, but it means the tool points at what to check rather
+  than answering.
 - **Two rule engines exist today** (`lib/feasibility` and `lib/law-tests`), written in parallel.
   They agree on the laws but not on every test list or number, so the same parcel can read
   differently on different pages. Unifying them is the first item below.

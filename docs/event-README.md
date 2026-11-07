@@ -9,11 +9,11 @@ figures per home. Small teams build a working prototype with Claude that helps c
 Organized by Claude Community Orange County with the UCI Center for Real Estate. Sponsor: EyeOn
 Automations.
 
-**The challenge brief** (3 pages: the $0 equation, the three lanes, a worked example, judging): [docs/challenge-brief.pdf](docs/challenge-brief.pdf).
-The kickoff slides: [docs/kickoff-slides.pdf](docs/kickoff-slides.pdf).
+**The challenge brief** (3 pages: the $0 equation, the three lanes, a worked example, judging): [docs/challenge-brief.pdf](challenge-brief.pdf).
+The kickoff slides: [docs/kickoff-slides.pdf](kickoff-slides.pdf).
 
 **First hackathon?** You do not need a team, an idea or coding experience to start. Read
-[your first hackathon](docs/first-hackathon.md). Two minutes.
+[your first hackathon](first-hackathon.md). Two minutes.
 
 ## One link for everything
 
@@ -58,20 +58,20 @@ lane together. Any lane works in any room.
 
 | | Lane | The question | Who is stuck |
 |---|---|---|---|
-| 1 | [**Find it**](lanes/1-find-it/README.md) | Where can the next affordable home go? | An acquisitions lead with no GIS team, a congregation with an underused lot, city housing staff |
-| 2 | [**Clear it**](lanes/2-clear-it/README.md) | How do we turn four years into two? | A nonprofit project manager, a small builder, a homeowner adding an ADU, a city permit tech |
-| 3 | [**Fund it**](lanes/3-fund-it/README.md) | Does it pencil, and who closes the gap? | A nonprofit finance lead, a development director, a donor, a city housing analyst |
+| 1 | [**Find it**](../lanes/1-find-it/README.md) | Where can the next affordable home go? | An acquisitions lead with no GIS team, a congregation with an underused lot, city housing staff |
+| 2 | [**Clear it**](../lanes/2-clear-it/README.md) | How do we turn four years into two? | A nonprofit project manager, a small builder, a homeowner adding an ADU, a city permit tech |
+| 3 | [**Fund it**](../lanes/3-fund-it/README.md) | Does it pencil, and who closes the gap? | A nonprofit finance lead, a development director, a donor, a city housing analyst |
 
 Each lane page has the problem, who is stuck, the open question, a few ideas to get you thinking
 (not a spec) and a list of data to start from. Build what your team thinks will help.
 
-New to this field? The short [background](docs/background.md) and the [glossary](docs/glossary.md)
+New to this field? The short [background](background.md) and the [glossary](glossary.md)
 cover the equation, the laws and the terms you will hear.
 
 ## Your first 15 minutes
 
 1. **Get the files.** Use this repo as a template for your team, or download it as a ZIP.
-   [Getting started](docs/getting-started.md) shows both, and three ways to work with Claude:
+   [Getting started](getting-started.md) shows both, and three ways to work with Claude:
    in the browser, in the desktop app, or in a terminal.
 2. **Claim your credits** from the hub (`#credits`) once the link is up at 9:15 AM.
 3. **Register your team** on the hub (`#teams`) by 10:00 AM.
@@ -86,17 +86,17 @@ cover the equation, the laws and the terms you will hear.
    No private plans or blueprints without permission, and no personal information about real
    tenants, buyers or residents.
 
-The full version, with the reasons, is in [ground rules](docs/ground-rules.md).
+The full version, with the reasons, is in [ground rules](ground-rules.md).
 
 ## Submit by 2:30 PM
 
 One per team:
 
 - the submission form at [claudesocal.com/uci-impact-lab](https://claudesocal.com/uci-impact-lab) (`#submit`)
-- a public GitHub repo with a README (see the [repo rules](docs/submission.md#repo-rules-so-judges-can-check-it-works))
+- a public GitHub repo with a README (see the [repo rules](submission.md#repo-rules-so-judges-can-check-it-works))
 - a demo video made with Claude's help (30 seconds is ideal, up to 2 minutes)
 
-[How to submit](docs/submission.md).
+[How to submit](submission.md).
 
 ## Judging
 
@@ -113,7 +113,7 @@ finalist is scored from 1 to 5 in four areas. The areas have equal weight.
 Ties go to Impact.
 
 Prizes: overall 1st, 2nd and 3rd, plus a winner in each lane. A live demo is required for
-finalists. Slides alone do not place. More in [judging](docs/judging.md).
+finalists. Slides alone do not place. More in [judging](judging.md).
 
 ## Help
 
@@ -146,8 +146,8 @@ templates/TEAM-README.md          the README your team's repo needs
 
 ## License
 
-Code in this repo is released under the [MIT License](LICENSE). The brief, lane pages and glossary
+Code in this repo is released under the [MIT License](../LICENSE). The brief, lane pages and glossary
 text are dedicated to the public domain (CC0). Third-party data, laws and documents linked here
 stay under their own terms.
 
-Teams own what they build. See [ground rules](docs/ground-rules.md).
+Teams own what they build. See [ground rules](ground-rules.md).
