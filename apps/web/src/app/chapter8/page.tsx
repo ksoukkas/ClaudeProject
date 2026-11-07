@@ -6,7 +6,7 @@ import { listCandidates, type Candidate } from "@/lib/chapter8/candidates";
 import { listSource, money, parcels, typeLabel } from "@/lib/chapter8/county-list";
 import { housingElementLayerInfo } from "@/lib/chapter8/he-join";
 import { TIER_LABELS, type DeadlineTone, type Tier } from "@/lib/chapter8/score";
-import { FOCUS_CITIES, FOCUS_LABEL, isFocusCity } from "@/lib/focus";
+import { canonicalFocusCity, FOCUS_CITIES, FOCUS_LABEL } from "@/lib/focus";
 
 export const metadata: Metadata = { title: "Chapter 8 scout" };
 export const dynamic = "force-dynamic";
@@ -93,9 +93,9 @@ function Row({ c }: { c: Candidate }) {
           </p>
         </div>
 
-        <div className={`shrink-0 text-[12px] leading-[1.5] md:w-44 md:text-right ${DEADLINE_STYLES[c.deadline.tone]}`}>
+        <div className={`shrink-0 text-[12px] leading-[1.5] md:w-52 md:text-right ${DEADLINE_STYLES[c.deadline.tone]}`}>
           <span aria-hidden>{c.deadline.symbol}</span> {c.deadline.label}
-          <span className="block text-[11px] text-muted">Deadline sits beside the score, not in it</span>
+          <span className="block text-[11px] text-muted">{c.deadlineNote}</span>
         </div>
       </div>
 
@@ -126,8 +126,7 @@ function Row({ c }: { c: Candidate }) {
 
 export default async function Chapter8ScoutPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const params = await searchParams;
-  const cityParam = first(params.city).trim();
-  const city = isFocusCity(cityParam) ? cityParam : null;
+  const city = canonicalFocusCity(first(params.city));
   const tierParam = first(params.tier).trim();
   const tier = (TIERS as string[]).includes(tierParam) ? (tierParam as Tier) : null;
 
@@ -207,9 +206,12 @@ export default async function Chapter8ScoutPage({ searchParams }: { searchParams
       )}
 
       <p className="text-[11px] leading-[1.5] text-ink-soft">
-        Minimum bids are from the {listSource.auctionDate} public auction; a Chapter 8 price is set
-        in the agreement with the county and may differ. Scores rank attention, not value: every
-        metric and point value is the team&apos;s convention (ASSUMPTION).
+        Minimum bids are from the {listSource.auctionDate} public auction. As this team understands
+        Chapter 8 (statute UNVERIFIED, see About), the price is set in the agreement with the county
+        and may differ. Scores rank attention, not value: every metric and point value is the
+        team&apos;s convention (ASSUMPTION). The deadline column shows no Chapter 8 cutoff because
+        none is on record for this list; it turns red, orange or green when a pasted list carries a
+        future auction date.
       </p>
 
       <Chapter8Checklist />

@@ -20,4 +20,12 @@ export function isFocusCity(nameOrAgency: string | null | undefined): boolean {
   return LOWER.some((c) => t === c || t === `city of ${c}`);
 }
 
+/** The canonical focus-city name for a city or agency string, or null. */
+export function canonicalFocusCity(nameOrAgency: string | null | undefined): FocusCity | null {
+  const t = (nameOrAgency ?? "").trim().toLowerCase();
+  if (!t) return null;
+  const i = LOWER.findIndex((c) => t === c || t === `city of ${c}`);
+  return i >= 0 ? FOCUS_CITIES[i] : null;
+}
+
 export const FOCUS_LABEL = FOCUS_CITIES.join(", ");

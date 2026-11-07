@@ -216,13 +216,16 @@ export interface DeadlineBadge {
   daysLeft: number | null;
 }
 
-/** Shown beside the score, never inside it. 🔴 under 30 days · 🟠 30 to 90 · 🟢 90 and up. */
+/**
+ * Shown beside the score, never inside it. 🔴 under 30 days · 🟠 30 to 89 · 🟢 90 and up.
+ * ASSUMPTION: exactly 90 days reads as green ("90+").
+ */
 export function deadlineBadge(deadlineIso: string | null, today: Date): DeadlineBadge {
-  if (!deadlineIso) return { tone: "none", symbol: "⚪", label: "No deadline on record", daysLeft: null };
+  if (!deadlineIso) return { tone: "none", symbol: "⚪", label: "No Chapter 8 deadline on record", daysLeft: null };
   const end = new Date(`${deadlineIso}T17:00:00`);
   const days = Math.floor((end.getTime() - today.getTime()) / 86_400_000);
   if (days < 0) return { tone: "passed", symbol: "⚫", label: `Deadline ${deadlineIso} has passed`, daysLeft: days };
   if (days < 30) return { tone: "red", symbol: "🔴", label: `${days} days left (${deadlineIso})`, daysLeft: days };
-  if (days <= 90) return { tone: "orange", symbol: "🟠", label: `${days} days left (${deadlineIso})`, daysLeft: days };
+  if (days < 90) return { tone: "orange", symbol: "🟠", label: `${days} days left (${deadlineIso})`, daysLeft: days };
   return { tone: "green", symbol: "🟢", label: `${days} days left (${deadlineIso})`, daysLeft: days };
 }
