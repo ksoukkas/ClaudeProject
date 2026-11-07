@@ -25,7 +25,20 @@ import {
   toSearchParams,
   updateFilters,
 } from "@/lib/filters";
-import { type Feasibility, laws, parcels, sampleCities } from "@/lib/sample-data";
+import {
+  PUBLIC_DATA_URL,
+  type PublicSite,
+  allCities,
+  filterPublicSites,
+  meetsGoal,
+  publicCountByCity,
+  publicMeta,
+  readPublicSites,
+} from "@/lib/public-sites";
+import { type Feasibility, laws, parcels } from "@/lib/sample-data";
+
+/* How many public sites the list shows at first, and per "Show more". */
+const PUBLIC_PAGE = 20;
 
 /* Lot-size presets for the select. A URL can also carry any other range. */
 const sizePresets: {
@@ -119,16 +132,16 @@ function CityFilter({
 
   const summary =
     selected.length === 0
-      ? `All ${sampleCities.length} cities (${counts.all ?? 0})`
+      ? `All ${allCities.length} cities`
       : selected.length === 1
-        ? `${selected[0]} (${counts[selected[0]] ?? 0})`
+        ? selected[0]
         : `${selected.length} cities selected`;
 
   function toggle(city: string) {
     onChange(
       selected.includes(city)
         ? selected.filter((c) => c !== city)
-        : sampleCities.filter((c) => c === city || selected.includes(c)),
+        : allCities.filter((c) => c === city || selected.includes(c)),
     );
   }
 
@@ -155,7 +168,7 @@ function CityFilter({
         <div
           role="group"
           aria-label="Cities"
-          className="absolute top-full left-0 z-30 mt-1 flex w-full min-w-[210px] flex-col gap-px rounded-[10px] border border-line bg-surface p-2 shadow-[0_6px_20px_rgba(0,0,0,0.08)]"
+          className="absolute top-full left-0 z-30 mt-1 flex max-h-80 w-full min-w-[260px] flex-col gap-px overflow-y-auto rounded-[10px] border border-line bg-surface p-2 shadow-[0_6px_20px_rgba(0,0,0,0.08)]"
         >
           <label className={row}>
             <input
@@ -164,19 +177,26 @@ function CityFilter({
               onChange={() => onChange([])}
               className="accent-accent"
             />
-            All cities ({counts.all ?? 0})
+            All cities
           </label>
-          {sampleCities.map((city) => (
-            <label key={city} className={row}>
-              <input
-                type="checkbox"
-                checked={selected.includes(city)}
-                onChange={() => toggle(city)}
-                className="accent-accent"
-              />
-              {city} ({counts[city] ?? 0})
-            </label>
-          ))}
+          {allCities.map((city) => {
+            const sample = counts[city] ?? 0;
+            const pub = publicCountByCity[city] ?? 0;
+            return (
+              <label key={city} className={row}>
+                <input
+                  type="checkbox"
+                  checked={selected.includes(city)}
+                  onChange={() => toggle(city)}
+                  className="accent-accent"
+                />
+                <span className="flex-1">{city}</span>
+                <span className="text-[10px] text-muted">
+                  {pub} public{sample ? ` · ${sample} sample` : ""}
+                </span>
+              </label>
+            );
+          })}
         </div>
       ) : null}
     </div>
@@ -252,22 +272,45 @@ export function ResultsWorkspace({
   const [filters, setFilters] = useState(initial);
   const [saved, setSaved] = useState<Set<string>>(new Set(["olive-commons"]));
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [allPublic, setAllPublic] = useState<PublicSite[] | null>(null);
+  const [publicError, setPublicError] = useState<string | null>(null);
+  const [selectedPublicId, setSelectedPublicId] = useState<number | null>(null);
+  const [publicShown, setPublicShown] = useState(PUBLIC_PAGE);
+  const [showSample, setShowSample] = useState(true);
+  const [showPublic, setShowPublic] = useState(true);
 
-  // Keep the URL in step with the filters, without a server round trip. The
-  // first render already matches the URL the server rendered.
-  const firstRender = useRef(true);
+  // The real Housing Element sites, cached as a static file (about 600 KB).
   useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
+    let cancelled = false;
+    fetch(PUBLIC_DATA_URL)
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then((data) => {
+        if (!cancelled) setAllPublic(readPublicSites(data));
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) setPublicError(err instanceof Error ? err.message : "failed to load");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Keep the URL in step with the filters, without a server round trip. Skip
+  // the initial state (it came from the URL; strict mode runs this twice, so a
+  // "first render" flag is not enough) and anything that would not change it.
+  useEffect(() => {
+    if (filters === initial) return;
     const qs = toSearchParams(filters).toString();
+    if (qs === window.location.search.replace(/^\?/, "")) return;
     window.history.replaceState(null, "", `${window.location.pathname}${qs ? `?${qs}` : ""}`);
-  }, [filters]);
+  }, [filters, initial]);
 
   // What the query says. The server already worked this out for the first render.
   const query = useMemo(() => {
-    const described = describeQuery(filters, sampleCities);
+    const described = describeQuery(filters, allCities);
     return filters === initial
       ? { ...described, understood: initialUnderstood, ignored: initialIgnored }
       : described;
@@ -278,6 +321,20 @@ export function ResultsWorkspace({
     [filters],
   );
   const visibleIds = useMemo(() => new Set(visible.map((p) => p.id)), [visible]);
+
+  // Only the city filter applies to the public sites (see filterPublicSites).
+  const publicVisible = useMemo(
+    () => (allPublic ? filterPublicSites(allPublic, filters.cities) : null),
+    [allPublic, filters.cities],
+  );
+  const publicHomes = useMemo(
+    () => (publicVisible ?? []).reduce((sum, s) => sum + (s.totalCapacity ?? 0), 0),
+    [publicVisible],
+  );
+  const publicMeetGoal = useMemo(
+    () => (publicVisible ?? []).filter((s) => meetsGoal(s, filters.unitGoal)).length,
+    [publicVisible, filters.unitGoal],
+  );
 
   const counts = useMemo(
     () => ({
@@ -290,13 +347,36 @@ export function ResultsWorkspace({
     [filters],
   );
 
-  const set = (patch: Partial<FilterState>) =>
-    setFilters((prev) => updateFilters(prev, patch, sampleCities));
+  const set = (patch: Partial<FilterState>) => {
+    setFilters((prev) => updateFilters(prev, patch, allCities));
+    setPublicShown(PUBLIC_PAGE);
+  };
 
   // Pin clicked: highlight it and bring its card into view.
   const handlePinSelect = useCallback((id: string) => {
     setSelectedId(id);
     document.getElementById(`site-${id}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, []);
+
+  // Public dot clicked: show it in the list (paging further if needed).
+  const handlePublicSelect = useCallback(
+    (id: number | null) => {
+      setSelectedPublicId(id);
+      if (id === null || !publicVisible) return;
+      const index = publicVisible.findIndex((s) => s.id === id);
+      if (index >= 0) setPublicShown((n) => Math.max(n, index + 1));
+      requestAnimationFrame(() =>
+        document
+          .getElementById(`public-${id}`)
+          ?.scrollIntoView({ behavior: "smooth", block: "nearest" }),
+      );
+    },
+    [publicVisible],
+  );
+
+  const toggleLayer = useCallback((layer: "sample" | "public") => {
+    if (layer === "sample") setShowSample((v) => !v);
+    else setShowPublic((v) => !v);
   }, []);
 
   const count = (f: Feasibility) => visible.filter((p) => p.feasibility === f).length;
@@ -358,7 +438,7 @@ export function ResultsWorkspace({
                   <Chip
                     key={`${u.key}-${u.value}`}
                     label={u.label}
-                    onRemove={() => setFilters((prev) => removeUnderstood(prev, u, sampleCities))}
+                    onRemove={() => setFilters((prev) => removeUnderstood(prev, u, allCities))}
                   >
                     {u.label}
                   </Chip>
@@ -385,8 +465,10 @@ export function ResultsWorkspace({
         ) : null}
 
         <p className="text-[11px] leading-[1.5] text-muted">
-          Sample results: five fictional sites across five cities. Your search sets the
-          filters below; sites under your unit goal stay visible and are labelled, not hidden.
+          Two kinds of sites: five fictional sample sites with a full screen, and{" "}
+          {publicMeta.recordCount.toLocaleString()} real Housing Element sites from SCAG across
+          Orange County, shown as published. Your search sets the filters below; sites under
+          your unit goal stay visible and are labelled, not hidden.
         </p>
       </div>
 
@@ -453,10 +535,16 @@ export function ResultsWorkspace({
           <p className="text-ink-soft">
             {visible.length} of {parcels.length} sample sites · {count("feasible")} likely
             feasible · {count("review")} need review · {count("blocked")} blocked
+            {publicVisible ? (
+              <>
+                {" "}· {publicVisible.length.toLocaleString()} public Housing Element sites
+                {filters.cities.length > 0 ? " in the chosen cities" : ""}
+              </>
+            ) : null}
           </p>
           <button
             type="button"
-            onClick={() => setFilters((prev) => resetFilters(prev, sampleCities))}
+            onClick={() => setFilters((prev) => resetFilters(prev, allCities))}
             className="shrink-0 text-[10px] text-accent hover:underline"
             title="Clear filters back to what your search says"
           >
@@ -472,6 +560,13 @@ export function ResultsWorkspace({
             visibleIds={visibleIds}
             selectedId={selectedId}
             onSelect={handlePinSelect}
+            publicSites={publicVisible}
+            publicError={publicError}
+            selectedPublicId={selectedPublicId}
+            onSelectPublic={handlePublicSelect}
+            showSample={showSample}
+            showPublic={showPublic}
+            onToggleLayer={toggleLayer}
           />
           <div className="flex flex-wrap items-center gap-x-5 gap-y-1 py-3">
             {FEASIBILITIES.map((f) => (
@@ -489,7 +584,7 @@ export function ResultsWorkspace({
             <span className="flex items-center gap-[5px]">
               <span className="size-[7px] rounded-full bg-ink-soft opacity-75" />
               <span className="text-[10px] leading-[1.5] text-ink-soft">
-                Public Housing Element site (no screen)
+                Public Housing Element site (grey; bigger = more planned homes; numbers = a cluster)
               </span>
             </span>
           </div>
@@ -560,8 +655,8 @@ export function ResultsWorkspace({
               <article
                 key={p.id}
                 id={`site-${p.id}`}
-                onMouseEnter={() => setSelectedId(p.id)}
                 onFocus={() => setSelectedId(p.id)}
+                onClick={() => setSelectedId(p.id)}
                 className={`relative flex scroll-mt-6 flex-col gap-[10px] rounded-[12px] border bg-surface p-5 transition-colors hover:border-accent ${
                   isSelected
                     ? "border-accent ring-2 ring-accent/25"
@@ -641,6 +736,122 @@ export function ResultsWorkspace({
             Unit ranges are early capacity estimates, not entitlements. *Blocked
             site shows pre-title screening capacity.
           </p>
+
+          <section
+            aria-labelledby="public-sites-heading"
+            className="mt-4 flex flex-col gap-3 border-t border-line pt-6"
+          >
+            <div className="flex flex-col gap-1">
+              <h2
+                id="public-sites-heading"
+                className="font-display text-[21px] leading-[1.2] font-semibold text-ink"
+              >
+                Public Housing Element sites
+              </h2>
+              <p className="text-[11px] leading-[1.5] text-ink-soft">
+                {publicVisible
+                  ? `${publicVisible.length.toLocaleString()} sites · ${publicHomes.toLocaleString()} planned homes · ${publicMeetGoal.toLocaleString()} plan ${filters.unitGoal}+ homes${
+                      filters.cities.length > 0
+                        ? ` · ${filters.cities.join(", ")}`
+                        : " · all of Orange County"
+                    }`
+                  : publicError
+                    ? `Could not load the public sites (${publicError}).`
+                    : "Loading public sites…"}
+              </p>
+              <p className="text-[10px] leading-[1.5] text-muted">
+                Real parcels that cities listed in their adopted housing elements, from{" "}
+                <a
+                  href={publicMeta.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-accent hover:underline"
+                >
+                  SCAG
+                </a>{" "}
+                (checked {publicMeta.checked}). Only the city filter applies: the source has no
+                law, owner, lot size, listing or feasibility data. Santa Ana has no sites in this
+                source. Largest planned capacity first.
+              </p>
+            </div>
+
+            {!showPublic ? (
+              <p className="rounded-[10px] bg-canvas px-4 py-3 text-[11px] text-ink-soft">
+                The public layer is hidden on the map.{" "}
+                <button
+                  type="button"
+                  onClick={() => setShowPublic(true)}
+                  className="text-accent hover:underline"
+                >
+                  Show it
+                </button>
+              </p>
+            ) : null}
+
+            {publicVisible && publicVisible.length === 0 ? (
+              <p className="rounded-[12px] border border-dashed border-line bg-surface p-6 text-[12px] text-ink-soft">
+                No public Housing Element sites in the chosen cities.
+              </p>
+            ) : null}
+
+            {publicVisible && publicVisible.length > 0 ? (
+              <ul className="flex flex-col overflow-hidden rounded-[12px] border border-line bg-surface">
+                {publicVisible.slice(0, publicShown).map((site) => {
+                  const isSelected = site.id === selectedPublicId;
+                  const goal = meetsGoal(site, filters.unitGoal);
+                  return (
+                    <li
+                      key={site.id}
+                      id={`public-${site.id}`}
+                      className="scroll-mt-6 border-b border-line last:border-0"
+                    >
+                      <button
+                        type="button"
+                        aria-pressed={isSelected}
+                        onClick={() => {
+                          setShowPublic(true);
+                          handlePublicSelect(isSelected ? null : site.id);
+                        }}
+                        className={`flex w-full items-center gap-4 px-4 py-3 text-left hover:bg-canvas ${
+                          isSelected ? "bg-accent-soft" : ""
+                        }`}
+                      >
+                        <span className="flex min-w-0 flex-1 flex-col leading-[1.5]">
+                          <span className="text-[12px] font-semibold text-ink">{site.city}</span>
+                          <span className="text-[10px] text-muted">
+                            APN {site.apn ?? "unknown"}
+                            {site.year ? ` · ${site.year}` : ""}
+                          </span>
+                        </span>
+                        <span className="flex flex-col items-end leading-[1.5]">
+                          <span className="text-[12px] font-semibold text-ink">
+                            {site.totalCapacity === null
+                              ? "Capacity unknown"
+                              : `${site.totalCapacity.toLocaleString()} planned homes`}
+                          </span>
+                          <span className="text-[10px] text-muted">
+                            {site.lowIncomeCapacity ?? 0} lower-income
+                            {goal === false ? ` · below ${filters.unitGoal}` : ""}
+                          </span>
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : null}
+
+            {publicVisible && publicShown < publicVisible.length ? (
+              <button
+                type="button"
+                onClick={() => setPublicShown((n) => n + PUBLIC_PAGE)}
+                className="self-start text-[11px] text-accent hover:underline"
+              >
+                Show {Math.min(PUBLIC_PAGE, publicVisible.length - publicShown)} more (
+                {(publicVisible.length - publicShown).toLocaleString()} remaining)
+              </button>
+            ) : null}
+          </section>
         </div>
       </div>
     </>

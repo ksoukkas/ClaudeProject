@@ -445,3 +445,43 @@ describe("precedence and query edits", () => {
     assert.equal(stripQueryTerms("Anaheim", ["Anaheim"]), "");
   });
 });
+
+describe("parseQuery: bill numbers and years", () => {
+  it("reads a bill as the law filter, not a unit goal", () => {
+    const r = parseQuery("SB 9 lots in Anaheim", cities);
+    assert.equal(r.patch.law, "SB9");
+    assert.equal(r.patch.unitGoal, undefined);
+    assert.deepEqual(r.patch.cities, ["Anaheim"]);
+    assert.deepEqual(r.ignored, []);
+  });
+
+  it("handles AB 2011 and the SB 684 / 1123 pair", () => {
+    assert.equal(parseQuery("AB 2011 commercial corridors", cities).patch.law, "AB2011");
+    assert.equal(parseQuery("AB 2011 commercial corridors", cities).patch.unitGoal, undefined);
+    const pair = parseQuery("SB 684 / 1123 small sites", cities).patch;
+    assert.equal(pair.law, "SB684_SB1123");
+    assert.equal(pair.unitGoal, undefined);
+  });
+
+  it("leaves unknown bills unused and keeps their digits out of the goal", () => {
+    const r = parseQuery("SB 35 sites", cities);
+    assert.equal(r.patch.law, undefined);
+    assert.equal(r.patch.unitGoal, undefined);
+    assert.deepEqual(r.ignored, ["SB 35"]);
+  });
+
+  it("ignores a bare year but still reads a year-sized number of homes", () => {
+    assert.equal(parseQuery("sites from 2025", cities).patch.unitGoal, undefined);
+    assert.equal(parseQuery("2025 homes", cities).patch.unitGoal, 2025);
+  });
+
+  it("removing a law chip clears the law filter", () => {
+    const state = resolveFilters({ q: "SB 4 land in Anaheim" }, cities);
+    assert.equal(state.law, "SB4");
+    const item = describeQuery(state, cities).understood.find((u) => u.key === "law");
+    assert.ok(item);
+    const next = removeUnderstood(state, item, cities);
+    assert.equal(next.law, null);
+    assert.equal(next.q, "land in Anaheim");
+  });
+});

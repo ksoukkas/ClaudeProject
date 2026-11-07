@@ -65,17 +65,28 @@ like the ranked list. Clicking a pin selects its card and vice versa, and
 filtered-out sites are dimmed, not removed. The Scout page still uses the
 static illustrative `OcMap`.
 
-**Two layers, never mixed** (toggle at the top-left of the map):
+**Two layers, each with its own toggle and look** (top-left of the map; both
+on by default):
 
-- *Sample sites*: the five fictional parcels. Their positions are
-  **illustrative** points near each city's centre, not real lots.
-- *Public data: Housing Element sites*: a cached copy of
+- *Sample sites*: the five fictional parcels as numbered, colored pins. Their
+  positions are **illustrative** points near each city's centre, not real
+  lots. Only these have a feasibility screen and a report.
+- *Public Housing Element sites*: **all 2,126 Orange County sites** in
   [SCAG HousingElementSite_poly_scag](https://maps.scag.ca.gov/scaggis/rest/services/LDX/HousingElementSite_poly_scag/MapServer/0)
-  for Anaheim and Santa Ana, pulled once on 2026-11-07 by
-  `scripts/fetch-he-sites.mjs` into `public/data/he-sites.geojson` (with
-  `he-sites.meta.json`). That returned 124 Anaheim sites and **0 Santa Ana
-  sites**. Points are polygon centroids. No feasibility, law or ownership
-  verdict is attached to them; the popup shows only fields in the source.
+  (28 cities plus unincorporated county land), pulled on 2026-11-07 by
+  `scripts/fetch-he-sites.mjs` (2 pages of 2,000, capped at 3) into
+  `public/data/he-sites.geojson` (about 620 KB) and `he-sites.meta.json`.
+  Shown as grey clusters; click a cluster to zoom in, click a dot for its
+  APN, planned homes by income level and year. Points are polygon
+  centroids. **Santa Ana has no records in this source.** No feasibility,
+  law or ownership verdict is attached to them.
+
+The **Public Housing Element sites** list under the ranked sample sites shows
+the same records, largest planned capacity first. Clicking a row flies the
+map to the site and opens its popup, and clicking a dot highlights its row.
+Only the city filter applies to public sites (the source has no law, owner,
+lot size, listing or feasibility data); the city filter lists every city in
+either layer.
 
 **Filters live in the URL**, so a view can be shared:
 `q`, `city` (repeatable), `law`, `owner`, `minAcres`, `maxAcres`, `goal`,
@@ -83,8 +94,10 @@ static illustrative `OcMap`.
 search text says, then the default. The logic is plain TypeScript in
 `src/lib/filters.ts`, with tests in `src/lib/filters.test.ts`.
 
-The search text is read for city names, "faith"/"church", "commercial",
-"small"/"infill" and a unit goal like "40+". What was understood shows as
+The search text is read for city names, bill numbers ("SB 9", "AB 2011",
+"SB 684 / 1123", "SB 4" set the law filter), "faith"/"church", "commercial",
+"small"/"infill" and a unit goal like "40+". Bill numbers and bare years are
+never read as a unit goal. What was understood shows as
 removable chips. Words it can't use (e.g. "near transit") are listed as "Not
 used", never dropped silently.
 

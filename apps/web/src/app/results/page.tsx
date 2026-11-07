@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ResultsWorkspace } from "@/components/results-workspace";
 import { Button, Eyebrow, FigmaIcon } from "@/components/ui";
 import { EXAMPLE_QUERY, describeQuery, resolveFilters } from "@/lib/filters";
-import { sampleCities } from "@/lib/sample-data";
+import { allCities } from "@/lib/public-sites";
 
 export const metadata: Metadata = { title: "Results" };
 
@@ -17,8 +17,8 @@ export default async function ResultsPage({
   const params = await searchParams;
   // A bare /results shows the Scout example search, as before.
   const source = Object.keys(params).length === 0 ? { q: EXAMPLE_QUERY } : params;
-  const initial = resolveFilters(source, sampleCities);
-  const { understood, ignored } = describeQuery(initial, sampleCities);
+  const initial = resolveFilters(source, allCities);
+  const { understood, ignored } = describeQuery(initial, allCities);
 
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 px-6 py-8 lg:px-12">

@@ -306,7 +306,7 @@ export function goalFit(
 /* Query reader                                                              */
 /* ------------------------------------------------------------------------ */
 
-export type QueryKey = "cities" | "owner" | "maxAcres" | "unitGoal";
+export type QueryKey = "cities" | "law" | "owner" | "maxAcres" | "unitGoal";
 
 export type UnderstoodItem = {
   key: QueryKey;
@@ -335,6 +335,25 @@ const OWNER_PATTERNS: { re: RegExp; owner: OwnerType }[] = [
   { re: /\b(?:commercial|corridors?)\b/gi, owner: "Commercial" },
 ];
 const SMALL_RE = /\b(?:small|infill)\b/gi;
+// Bill numbers, e.g. "SB 9", "AB 2011", "SB 684 / 1123". Read as the law
+// filter so their digits are never mistaken for a unit goal.
+const LAW_RE = /\b(SB|AB)\s*(\d{1,4})(?:\s*\/\s*(?:SB\s*)?(\d{1,4}))?\b/gi;
+const LAW_BY_BILL: Record<string, LawId> = {
+  "SB 9": "SB9",
+  "SB 684": "SB684_SB1123",
+  "SB 1123": "SB684_SB1123",
+  "AB 2011": "AB2011",
+  "SB 4": "SB4",
+};
+const LAW_LABEL: Record<LawId, string> = {
+  SB9: "SB 9",
+  SB684_SB1123: "SB 684 / 1123",
+  AB2011: "AB 2011",
+  SB4: "SB 4",
+};
+// A bare four-digit year (e.g. "2025") is not a unit goal unless it says units/homes.
+const YEAR_MIN = 1900;
+const YEAR_MAX = 2100;
 // A number not part of a decimal and not followed by acres or %, e.g. "40+",
 // "40 units", "25 homes".
 const GOAL_RE = /(?<![\d.])(\d{1,5})(?:\s*\+)?(?:\s*(?:units?|homes?)\b)?(?![\d.]|\s*(?:acres?\b|ac\b|%))/gi;
@@ -389,6 +408,25 @@ export function parseQuery(q: string, cities: readonly string[]): ParsedQuery {
     understood.push({ key: "owner", label: owner, value: owner, matched: same.map((h) => h.text) });
   }
 
+  // Law: the first bill we know wins. Unknown bills stay in `ignored`, but
+  // their digits are still kept away from the unit goal below.
+  const billSpans: Span[] = [];
+  let lawHit: { law: LawId; text: string; at: number } | null = null;
+  for (const m of text.matchAll(LAW_RE)) {
+    if (overlaps(m.index, m.index + m[0].length)) continue;
+    billSpans.push({ start: m.index, end: m.index + m[0].length });
+    const prefix = m[1].toUpperCase();
+    const law = LAW_BY_BILL[`${prefix} ${Number(m[2])}`] ??
+      (m[3] ? LAW_BY_BILL[`${prefix} ${Number(m[3])}`] : undefined);
+    if (law && !lawHit) lawHit = { law, text: m[0], at: m.index };
+  }
+  if (lawHit) {
+    used.push({ start: lawHit.at, end: lawHit.at + lawHit.text.length });
+    patch.law = lawHit.law;
+    understood.push({ key: "law", label: LAW_LABEL[lawHit.law], value: lawHit.law, matched: [lawHit.text] });
+  }
+  const inBill = (s: number, e: number) => billSpans.some((b) => s < b.end && e > b.start);
+
   // "small" / "infill" -> lot size cap (ASSUMPTION, see SMALL_SITE_MAX_ACRES).
   const smallHits = [...text.matchAll(SMALL_RE)].filter(
     (m) => !overlaps(m.index, m.index + m[0].length),
@@ -406,9 +444,11 @@ export function parseQuery(q: string, cities: readonly string[]): ParsedQuery {
 
   // Unit goal: the first usable number.
   for (const m of text.matchAll(GOAL_RE)) {
-    if (overlaps(m.index, m.index + m[0].length)) continue;
+    if (overlaps(m.index, m.index + m[0].length) || inBill(m.index, m.index + m[0].length)) continue;
     const n = Number(m[1]);
     if (n < 1 || n > 10_000) continue;
+    const saysUnits = /\+|units?|homes?/i.test(m[0]);
+    if (!saysUnits && m[1].length === 4 && n >= YEAR_MIN && n <= YEAR_MAX) continue;
     used.push({ start: m.index, end: m.index + m[0].length });
     patch.unitGoal = n;
     understood.push({ key: "unitGoal", label: `${n}+ homes`, value: n, matched: [m[0]] });
@@ -445,6 +485,8 @@ function inForce(item: UnderstoodItem, state: FilterState): boolean {
   switch (item.key) {
     case "cities":
       return state.cities.includes(item.value as string);
+    case "law":
+      return state.law === item.value;
     case "owner":
       return state.owner === item.value;
     case "maxAcres":
@@ -505,6 +547,7 @@ export function removeUnderstood(
 ): FilterState {
   const patch: Partial<FilterState> = {
     cities: { cities: state.cities.filter((c) => c !== item.value) },
+    law: { law: null },
     owner: { owner: null },
     maxAcres: { maxAcres: null },
     unitGoal: { unitGoal: DEFAULT_FILTERS.unitGoal },

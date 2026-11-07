@@ -5,9 +5,10 @@
  *   node scripts/fetch-he-sites.mjs
  *
  * Source: SCAG HousingElementSite_poly_scag (VERIFIED in
- * lanes/1-find-it/data/DATA-SOURCES.md). Three requests in total: layer
- * metadata, a count, and one query. No paging loop: if the server says the
- * result was truncated, the script stops instead of crawling.
+ * lanes/1-find-it/data/DATA-SOURCES.md). Every Orange County site (about
+ * 2,100). A handful of requests in total: layer metadata, a count, and at most
+ * MAX_PAGES pages of 2,000. If the count would need more pages, the script
+ * stops instead of crawling.
  *
  * Writes public/data/he-sites.geojson (one point per site, at the polygon's
  * centroid) and public/data/he-sites.meta.json. Commit both so the demo works
@@ -19,8 +20,9 @@ import { fileURLToPath } from "node:url";
 
 const LAYER =
   "https://maps.scag.ca.gov/scaggis/rest/services/LDX/HousingElementSite_poly_scag/MapServer/0";
-// Jurisdiction values are upper case in this layer.
-const JURISDICTIONS = ["ANAHEIM", "SANTA ANA"];
+const WHERE = "COUNTY='Orange'";
+// 2,126 OC sites on 2026-11-07, so two pages. Hard cap so this never crawls.
+const MAX_PAGES = 3;
 const FIELDS = [
   "OBJECTID",
   "Assessor_Parcel_Number",
@@ -86,14 +88,15 @@ async function main() {
   const missing = FIELDS.filter((f) => !available.has(f));
   if (missing.length) throw new Error(`Schema changed; missing fields: ${missing.join(", ")}`);
 
-  const where = `Jurisdiction IN (${JURISDICTIONS.map((j) => `'${j}'`).join(",")})`;
+  const where = WHERE;
 
-  // 2. Count first, so we never page.
+  // 2. Count first, so the number of pages is known up front.
   const { count } = await getJson(queryUrl({ where, returnCountOnly: "true" }));
   const max = layer.maxRecordCount ?? 1000;
-  if (count > max) throw new Error(`${count} records exceeds one request (${max}); narrow the query`);
+  const pages = Math.ceil(count / max);
+  if (pages > MAX_PAGES) throw new Error(`${count} records needs ${pages} pages (cap ${MAX_PAGES}); narrow the query`);
 
-  // 3. One query for the records, polygons in WGS84 (this MapServer ignores returnCentroid).
+  // 3. The records, polygons in WGS84 (this MapServer ignores returnCentroid).
   const query = {
     where,
     outFields: FIELDS.join(","),
@@ -103,19 +106,22 @@ async function main() {
     orderByFields: "OBJECTID",
     f: "geojson",
   };
-  const url = `${LAYER}/query?${new URLSearchParams(query)}`;
-  const res = await fetch(url, { headers: { "User-Agent": "siteline-hackathon-prototype" } });
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
-  const fc = await res.json();
-  if (fc.error) throw new Error(`ArcGIS error: ${JSON.stringify(fc.error)}`);
-  if (fc.exceededTransferLimit || fc.properties?.exceededTransferLimit) {
-    throw new Error("Result was truncated; narrow the query instead of paging");
+  const raw = [];
+  for (let page = 0; page < pages; page++) {
+    const params = { ...query, resultOffset: String(page * max), resultRecordCount: String(max) };
+    const url = `${LAYER}/query?${new URLSearchParams(params)}`;
+    const res = await fetch(url, { headers: { "User-Agent": "siteline-hackathon-prototype" } });
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
+    const fc = await res.json();
+    if (fc.error) throw new Error(`ArcGIS error: ${JSON.stringify(fc.error)}`);
+    raw.push(...(fc.features ?? []));
   }
+  if (raw.length !== count) throw new Error(`Got ${raw.length} records but the count said ${count}`);
 
   const checked = new Date().toISOString().slice(0, 10);
-  const byJurisdiction = Object.fromEntries(JURISDICTIONS.map((j) => [j, 0]));
+  const byJurisdiction = {};
   const features = [];
-  for (const f of fc.features ?? []) {
+  for (const f of raw) {
     const point = f.geometry ? centroid(f.geometry) : null;
     if (!point) continue;
     const p = f.properties ?? {};
@@ -141,15 +147,13 @@ async function main() {
   const meta = {
     source: "SCAG HousingElementSite_poly_scag (adopted housing element sites)",
     sourceUrl: LAYER,
-    query: { ...query, note: "Polygons were reduced to their centroid locally (largest ring)." },
+    query: { ...query, pages, pageSize: max, note: "Polygons were reduced to their centroid locally (largest ring)." },
     checked,
     recordCount: features.length,
     serverCount: count,
     recordsByJurisdiction: byJurisdiction,
     notes: [
-      ...JURISDICTIONS.filter((j) => byJurisdiction[j] === 0).map(
-        (j) => `${j} was requested but returned 0 records: the layer had no sites for it on ${checked}.`,
-      ),
+      "Santa Ana has no records in this layer (its jurisdiction value does not appear at all), so the map shows none for it.",
       "Points are polygon centroids, for display only. Use the APN to look up the real parcel.",
       "No feasibility, law or ownership verdict is attached to these records.",
     ],

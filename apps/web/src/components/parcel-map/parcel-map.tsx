@@ -1,16 +1,19 @@
 "use client";
 
 import {
+  type GeoJSONSource,
   LngLatBounds,
   Map as MapLibreMap,
+  type MapLayerMouseEvent,
   Marker,
   NavigationControl,
   Popup,
   setWorkerUrl,
 } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { feasibilityLabel } from "@/components/ui";
+import { type PublicSite, publicMeta, toFeatureCollection } from "@/lib/public-sites";
 import type { Feasibility, Parcel } from "@/lib/sample-data";
 
 /*
@@ -20,9 +23,10 @@ import type { Feasibility, Parcel } from "@/lib/sample-data";
  * control stays on so the OpenFreeMap / OpenMapTiles / OpenStreetMap credit
  * shows.
  *
- * Two layers, never mixed: the fictional sample sites (numbered pins at
- * ILLUSTRATIVE positions), or the cached public Housing Element sites
- * (public/data/he-sites.geojson). Public points carry no feasibility verdict.
+ * Two layers, each with its own toggle and its own look, so they are never
+ * confused: the fictional sample sites (numbered, colored pins at
+ * ILLUSTRATIVE positions) and the real public Housing Element sites
+ * (clustered grey dots, no feasibility verdict).
  */
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
@@ -32,7 +36,11 @@ const INITIAL_BOUNDS: [[number, number], [number, number]] = [
   [-117.82, 33.9],
 ];
 const HE_SOURCE = "he-sites";
-const HE_LAYER = "he-sites-points";
+const HE_CLUSTERS = "he-clusters";
+const HE_CLUSTER_COUNT = "he-cluster-count";
+const HE_POINTS = "he-points";
+const HE_SELECTED = "he-selected";
+const HE_LAYERS = [HE_CLUSTERS, HE_CLUSTER_COUNT, HE_POINTS, HE_SELECTED];
 
 // The worker ships as its own module. MapLibre looks for it next to its own
 // file, which a bundler moves, so point it at the bundled copy instead.
@@ -46,43 +54,36 @@ const pinColor: Record<Feasibility, string> = {
   blocked: "bg-blocked",
 };
 
-type Mode = "sample" | "public";
-
-type HeMeta = { checked: string; recordCount: number; sourceUrl: string };
-
-type HeProps = {
-  apn: string | null;
-  jurisdiction: string | null;
-  lowIncomeCapacity: number | null;
-  moderateIncomeCapacity: number | null;
-  aboveModerateIncomeCapacity: number | null;
-  totalCapacity: number | null;
-  year: number | null;
-};
-
 export type ParcelMapProps = {
   parcels: Parcel[];
   visibleIds: ReadonlySet<string>;
   selectedId: string | null;
   onSelect: (id: string) => void;
+  /** Public sites that pass the current filters, or null while loading. */
+  publicSites: PublicSite[] | null;
+  publicError: string | null;
+  selectedPublicId: number | null;
+  onSelectPublic: (id: number | null) => void;
+  showSample: boolean;
+  showPublic: boolean;
+  onToggleLayer: (layer: "sample" | "public") => void;
 };
 
 /** Popup body built with DOM nodes (textContent), so source text is never parsed as HTML. */
-function hePopup(p: HeProps, checked: string): HTMLElement {
+function publicPopup(site: PublicSite): HTMLElement {
   const root = document.createElement("div");
   root.className = "flex flex-col gap-1 text-[11px] leading-[1.4] text-ink";
   const title = document.createElement("p");
   title.className = "font-semibold";
-  title.textContent = "Housing Element site";
+  title.textContent = `Housing Element site · ${site.city}`;
   root.append(title);
   const rows: [string, string | number | null][] = [
-    ["APN", p.apn],
-    ["Jurisdiction", p.jurisdiction],
-    ["Total capacity (units)", p.totalCapacity],
-    ["Lower income", p.lowIncomeCapacity],
-    ["Moderate income", p.moderateIncomeCapacity],
-    ["Above moderate", p.aboveModerateIncomeCapacity],
-    ["YEAR (source field)", p.year],
+    ["APN", site.apn],
+    ["Planned homes (total)", site.totalCapacity],
+    ["Lower income", site.lowIncomeCapacity],
+    ["Moderate income", site.moderateIncomeCapacity],
+    ["Above moderate", site.aboveModerateIncomeCapacity],
+    ["YEAR (source field)", site.year],
   ];
   for (const [label, value] of rows) {
     if (value === null || value === undefined || value === "") continue;
@@ -95,17 +96,12 @@ function hePopup(p: HeProps, checked: string): HTMLElement {
   }
   const source = document.createElement("p");
   source.className = "pt-1 text-[10px] text-muted";
-  source.textContent = `Source: SCAG Housing Element sites, checked ${checked}. No feasibility or law screen applied.`;
+  source.textContent = `Source: SCAG Housing Element sites, checked ${publicMeta.checked}. Planned capacity from the city's housing element, not a feasibility or law screen.`;
   root.append(source);
   return root;
 }
 
-function stylePin(
-  el: HTMLButtonElement,
-  parcel: Parcel,
-  dimmed: boolean,
-  selected: boolean,
-) {
+function stylePin(el: HTMLButtonElement, parcel: Parcel, dimmed: boolean, selected: boolean) {
   el.className = [
     "flex size-[30px] cursor-pointer items-center justify-center rounded-full border-3 border-white text-[11px] font-bold text-white shadow-sm transition-[opacity,box-shadow] outline-none focus-visible:ring-4 focus-visible:ring-accent/50",
     pinColor[parcel.feasibility],
@@ -119,43 +115,70 @@ function stylePin(
   el.setAttribute("aria-pressed", selected ? "true" : "false");
 }
 
-export default function ParcelMap({ parcels, visibleIds, selectedId, onSelect }: ParcelMapProps) {
+/** True if the point sits inside the map's view, ignoring an 8% edge. */
+function inView(map: MapLibreMap, at: [number, number]) {
+  const b = map.getBounds();
+  const dx = (b.getEast() - b.getWest()) * 0.08;
+  const dy = (b.getNorth() - b.getSouth()) * 0.08;
+  return new LngLatBounds(
+    [b.getWest() + dx, b.getSouth() + dy],
+    [b.getEast() - dx, b.getNorth() - dy],
+  ).contains(at);
+}
+
+export default function ParcelMap({
+  parcels,
+  visibleIds,
+  selectedId,
+  onSelect,
+  publicSites,
+  publicError,
+  selectedPublicId,
+  onSelectPublic,
+  showSample,
+  showPublic,
+  onToggleLayer,
+}: ParcelMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
   const markersRef = useRef(new Map<string, Marker>());
-  const onSelectRef = useRef(onSelect);
   const popupRef = useRef<Popup | null>(null);
-  const modeRef = useRef<Mode>("sample");
-  const [mode, setMode] = useState<Mode>("sample");
-  const [heMeta, setHeMeta] = useState<HeMeta | null>(null);
-  const [heError, setHeError] = useState<string | null>(null);
+  const onSelectRef = useRef(onSelect);
+  const onSelectPublicRef = useRef(onSelectPublic);
+  // Set once the style has loaded. Every effect that adds sources or layers
+  // waits on this instead of map.isStyleLoaded(), which is also false while
+  // any tile is still streaming in.
+  const [ready, setReady] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
 
   useEffect(() => {
     onSelectRef.current = onSelect;
-  }, [onSelect]);
-  useEffect(() => {
-    modeRef.current = mode;
-  }, [mode]);
+    onSelectPublicRef.current = onSelectPublic;
+  }, [onSelect, onSelectPublic]);
 
   // Effect 1: create the map once. Strict mode mounts twice, so clean up fully.
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
     const markers = markersRef.current;
+    let loaded = false;
     const map = new MapLibreMap({
       container,
       style: STYLE_URL,
       bounds: INITIAL_BOUNDS,
       fitBoundsOptions: { padding: 24 },
-      cooperativeGestures: false,
     });
     map.addControl(new NavigationControl({ showCompass: false }), "top-right");
     map.on("error", (e) => {
-      // Tile or style failures: say so instead of showing a blank box.
-      if (!map.isStyleLoaded()) setMapError(e.error?.message ?? "Map failed to load");
+      // Only a failure before the first load means the base map is missing.
+      // A single bad tile later on is not worth a banner.
+      if (!loaded) setMapError(e.error?.message ?? "Map failed to load");
     });
-    map.on("load", () => setMapError(null));
+    map.on("load", () => {
+      loaded = true;
+      setMapError(null);
+      setReady(true);
+    });
     mapRef.current = map;
 
     const observer = new ResizeObserver(() => map.resize());
@@ -165,8 +188,11 @@ export default function ParcelMap({ parcels, visibleIds, selectedId, onSelect }:
       observer.disconnect();
       for (const marker of markers.values()) marker.remove();
       markers.clear();
+      popupRef.current?.remove();
+      popupRef.current = null;
       map.remove();
       mapRef.current = null;
+      setReady(false);
     };
   }, []);
 
@@ -175,7 +201,7 @@ export default function ParcelMap({ parcels, visibleIds, selectedId, onSelect }:
     const map = mapRef.current;
     if (!map) return;
     const markers = markersRef.current;
-    const wanted = mode === "sample" ? parcels : [];
+    const wanted = showSample ? parcels : [];
     const wantedIds = new Set(wanted.map((p) => p.id));
 
     for (const [id, marker] of markers) {
@@ -211,93 +237,148 @@ export default function ParcelMap({ parcels, visibleIds, selectedId, onSelect }:
       // Selected pin on top; otherwise keep rank order so 1 sits above 5.
       wrapper.style.zIndex = selected ? "10" : String(6 - Math.min(parcel.rank, 5));
     }
-  }, [parcels, visibleIds, selectedId, mode]);
+  }, [parcels, visibleIds, selectedId, showSample]);
 
-  // Effect 3: bring the selected pin into view (only moves if it is off-screen).
+  // Effect 3: bring the selected sample pin into view (only if off-screen).
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !selectedId || mode !== "sample") return;
+    if (!map || !selectedId || !showSample) return;
     const parcel = parcels.find((p) => p.id === selectedId);
     if (!parcel) return;
     const at: [number, number] = [parcel.position.lng, parcel.position.lat];
-    const b = map.getBounds();
-    const inset = new LngLatBounds(
-      [b.getWest() + (b.getEast() - b.getWest()) * 0.08, b.getSouth() + (b.getNorth() - b.getSouth()) * 0.08],
-      [b.getEast() - (b.getEast() - b.getWest()) * 0.08, b.getNorth() - (b.getNorth() - b.getSouth()) * 0.08],
-    );
-    if (!inset.contains(at)) map.easeTo({ center: at, duration: 500 });
-  }, [selectedId, parcels, mode]);
+    if (!inView(map, at)) map.easeTo({ center: at, duration: 500 });
+  }, [selectedId, parcels, showSample]);
 
-  // Effect 4: the public Housing Element layer, added on first use.
+  // Effect 4: create the public layers once the style is ready.
   useEffect(() => {
     const map = mapRef.current;
-    if (!map) return;
-    let cancelled = false;
+    if (!map || !ready || map.getSource(HE_SOURCE)) return;
+    map.addSource(HE_SOURCE, {
+      type: "geojson",
+      data: toFeatureCollection([]),
+      cluster: true,
+      clusterRadius: 44,
+      clusterMaxZoom: 14,
+      clusterProperties: { homes: ["+", ["get", "totalCapacity"]] },
+    });
+    map.addLayer({
+      id: HE_CLUSTERS,
+      type: "circle",
+      source: HE_SOURCE,
+      filter: ["has", "point_count"],
+      paint: {
+        "circle-color": "#6e6e73",
+        "circle-opacity": 0.82,
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 2,
+        "circle-radius": ["step", ["get", "point_count"], 14, 25, 18, 100, 23, 400, 28],
+      },
+    });
+    map.addLayer({
+      id: HE_CLUSTER_COUNT,
+      type: "symbol",
+      source: HE_SOURCE,
+      filter: ["has", "point_count"],
+      layout: {
+        "text-field": ["get", "point_count_abbreviated"],
+        "text-font": ["Noto Sans Bold"],
+        "text-size": 11,
+        "text-allow-overlap": true,
+      },
+      paint: { "text-color": "#ffffff" },
+    });
+    map.addLayer({
+      id: HE_POINTS,
+      type: "circle",
+      source: HE_SOURCE,
+      filter: ["!", ["has", "point_count"]],
+      paint: {
+        "circle-color": "#6e6e73",
+        "circle-opacity": 0.85,
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 1.5,
+        // Bigger dot for more planned homes.
+        "circle-radius": ["interpolate", ["linear"], ["get", "totalCapacity"], 0, 4, 50, 7, 300, 11],
+      },
+    });
+    map.addLayer({
+      id: HE_SELECTED,
+      type: "circle",
+      source: HE_SOURCE,
+      filter: ["==", ["get", "id"], -1],
+      paint: {
+        "circle-color": "rgba(0,0,0,0)",
+        "circle-radius": 13,
+        "circle-stroke-color": "#1c1c1e",
+        "circle-stroke-width": 3,
+      },
+    });
 
-    async function ensureLayer(m: MapLibreMap) {
-      if (m.getSource(HE_SOURCE)) return;
-      try {
-        const [meta, data] = await Promise.all([
-          fetch("/data/he-sites.meta.json").then((r) => {
-            if (!r.ok) throw new Error(`meta ${r.status}`);
-            return r.json() as Promise<HeMeta>;
-          }),
-          fetch("/data/he-sites.geojson").then((r) => {
-            if (!r.ok) throw new Error(`data ${r.status}`);
-            return r.json();
-          }),
-        ]);
-        if (cancelled || m.getSource(HE_SOURCE)) return;
-        setHeMeta(meta);
-        m.addSource(HE_SOURCE, { type: "geojson", data });
-        m.addLayer({
-          id: HE_LAYER,
-          type: "circle",
-          source: HE_SOURCE,
-          layout: { visibility: modeRef.current === "public" ? "visible" : "none" },
-          paint: {
-            "circle-radius": ["interpolate", ["linear"], ["zoom"], 10, 3, 15, 6],
-            "circle-color": "#6e6e73",
-            "circle-opacity": 0.75,
-            "circle-stroke-color": "#ffffff",
-            "circle-stroke-width": 1,
-          },
-        });
-        m.on("click", HE_LAYER, (e) => {
-          const f = e.features?.[0];
-          if (!f) return;
-          popupRef.current?.remove();
-          popupRef.current = new Popup({ closeButton: true, maxWidth: "260px" })
-            .setLngLat(e.lngLat)
-            .setDOMContent(hePopup(f.properties as HeProps, meta.checked))
-            .addTo(m);
-        });
-        m.on("mouseenter", HE_LAYER, () => (m.getCanvas().style.cursor = "pointer"));
-        m.on("mouseleave", HE_LAYER, () => (m.getCanvas().style.cursor = ""));
-      } catch (err) {
-        if (!cancelled) setHeError(err instanceof Error ? err.message : "failed to load");
-      }
-    }
-
-    function apply() {
-      if (!map) return;
-      if (mode === "public") {
-        void ensureLayer(map);
-      }
-      if (map.getLayer(HE_LAYER)) {
-        map.setLayoutProperty(HE_LAYER, "visibility", mode === "public" ? "visible" : "none");
-      }
-      if (mode !== "public") popupRef.current?.remove();
-    }
-
-    if (map.isStyleLoaded()) apply();
-    else map.once("load", apply);
-
-    return () => {
-      cancelled = true;
-      map.off("load", apply);
+    const onClusterClick = async (e: MapLayerMouseEvent) => {
+      const feature = e.features?.[0];
+      const clusterId = feature?.properties?.cluster_id;
+      if (clusterId === undefined || feature?.geometry.type !== "Point") return;
+      const source = map.getSource<GeoJSONSource>(HE_SOURCE);
+      const zoom = await source?.getClusterExpansionZoom(clusterId);
+      if (zoom === undefined) return;
+      map.easeTo({ center: feature.geometry.coordinates as [number, number], zoom });
     };
-  }, [mode]);
+    const onPointClick = (e: MapLayerMouseEvent) => {
+      const id = e.features?.[0]?.properties?.id;
+      if (typeof id === "number") onSelectPublicRef.current(id);
+    };
+    const pointer = () => (map.getCanvas().style.cursor = "pointer");
+    const unpointer = () => (map.getCanvas().style.cursor = "");
+    map.on("click", HE_CLUSTERS, onClusterClick);
+    map.on("click", HE_POINTS, onPointClick);
+    for (const layer of [HE_CLUSTERS, HE_POINTS]) {
+      map.on("mouseenter", layer, pointer);
+      map.on("mouseleave", layer, unpointer);
+    }
+  }, [ready]);
+
+  // Effect 5: keep the public data and visibility in step with the props.
+  const publicData = useMemo(() => toFeatureCollection(publicSites ?? []), [publicSites]);
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready) return;
+    map.getSource<GeoJSONSource>(HE_SOURCE)?.setData(publicData);
+    for (const layer of HE_LAYERS) {
+      if (map.getLayer(layer)) map.setLayoutProperty(layer, "visibility", showPublic ? "visible" : "none");
+    }
+  }, [ready, publicData, showPublic]);
+
+  // Effect 6: the selected public site gets a ring, a popup and comes into view.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready) return;
+    popupRef.current?.remove();
+    popupRef.current = null;
+    const site =
+      showPublic && selectedPublicId !== null
+        ? publicSites?.find((s) => s.id === selectedPublicId)
+        : undefined;
+    if (map.getLayer(HE_SELECTED)) {
+      map.setFilter(HE_SELECTED, ["==", ["get", "id"], site ? site.id : -1]);
+    }
+    if (!site) return;
+    const at: [number, number] = [site.lng, site.lat];
+    // Zoom in far enough that the site is out of its cluster.
+    if (map.getZoom() < 15 || !inView(map, at)) {
+      map.easeTo({ center: at, zoom: Math.max(map.getZoom(), 15), duration: 600 });
+    }
+    const popup = new Popup({ closeButton: true, maxWidth: "260px", offset: 12 })
+      .setLngLat(at)
+      .setDOMContent(publicPopup(site))
+      .addTo(map);
+    popup.on("close", () => {
+      if (popupRef.current === popup) onSelectPublicRef.current(null);
+    });
+    popupRef.current = popup;
+  }, [ready, selectedPublicId, publicSites, showPublic]);
+
+  const layerButton =
+    "flex items-center gap-[6px] px-3 py-[7px] text-[11px] font-medium aria-pressed:bg-accent aria-pressed:text-white";
 
   return (
     <div className="relative h-[560px] w-full overflow-hidden rounded-[12px] bg-canvas lg:h-[740px]">
@@ -307,44 +388,41 @@ export default function ParcelMap({ parcels, visibleIds, selectedId, onSelect }:
       <div ref={containerRef} className="h-full w-full" />
 
       <div
-        role="radiogroup"
-        aria-label="Map layer"
-        className="absolute top-3 left-3 z-10 flex overflow-hidden rounded-[10px] border border-line bg-surface text-[11px] font-medium shadow-sm"
+        role="group"
+        aria-label="Map layers"
+        className="absolute top-3 left-3 z-10 flex divide-x divide-line overflow-hidden rounded-[10px] border border-line bg-surface text-ink-soft shadow-sm"
       >
-        {(
-          [
-            ["sample", "Sample sites"],
-            ["public", "Public data: Housing Element sites"],
-          ] as const
-        ).map(([value, label]) => (
-          <button
-            key={value}
-            type="button"
-            role="radio"
-            aria-checked={mode === value}
-            onClick={() => setMode(value)}
-            className={`px-3 py-[7px] ${
-              mode === value ? "bg-accent text-white" : "text-ink-soft hover:bg-canvas"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
+        <button
+          type="button"
+          aria-pressed={showSample}
+          onClick={() => onToggleLayer("sample")}
+          className={`${layerButton} hover:bg-canvas`}
+        >
+          Sample sites ({parcels.length})
+        </button>
+        <button
+          type="button"
+          aria-pressed={showPublic}
+          onClick={() => onToggleLayer("public")}
+          className={`${layerButton} hover:bg-canvas`}
+        >
+          Public Housing Element sites ({publicSites?.length ?? "…"})
+        </button>
       </div>
 
       <span className="absolute bottom-[34px] left-3 z-10 max-w-[calc(100%-24px)] rounded-[6px] bg-white/90 px-[9px] py-[5px] text-[10px] leading-[1.4] text-ink-soft shadow-sm">
-        {mode === "sample" ? (
-          <>Sample sites · illustrative locations, not real parcels</>
-        ) : heError ? (
-          <>Public layer unavailable ({heError})</>
-        ) : heMeta ? (
-          <>
-            Public data · {heMeta.recordCount} SCAG Housing Element sites (Anaheim; none for
-            Santa Ana in this layer) · checked {heMeta.checked} · no feasibility screen
-          </>
-        ) : (
-          <>Loading public Housing Element sites…</>
-        )}
+        {showSample ? <>Sample pins: illustrative locations, not real parcels. </> : null}
+        {showPublic ? (
+          publicError ? (
+            <>Public layer unavailable ({publicError}).</>
+          ) : (
+            <>
+              Grey dots: real SCAG Housing Element sites, checked {publicMeta.checked}, no
+              feasibility screen.
+            </>
+          )
+        ) : null}
+        {!showSample && !showPublic ? <>Both layers are off.</> : null}
       </span>
 
       {mapError ? (
