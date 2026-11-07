@@ -1,5 +1,6 @@
 import { categorizeZoningText } from "@/lib/feasibility/helpers";
 import type { ParcelFacts } from "@/lib/feasibility/types";
+import { isFocusCity } from "@/lib/focus";
 import { normalizeApn } from "./csv";
 import noticeFile from "./data/surplus-notices-oc.json";
 import type { MarketSignal, NoticeFile, SurplusNotice } from "./types";
@@ -13,9 +14,25 @@ export function noticeProvenance() {
   return FILE.provenance;
 }
 
-/** All cached OC notices, Active first, then most recent due date first. */
-export function listNotices(opts: { activeOnly?: boolean } = {}): SurplusNotice[] {
-  const kept = opts.activeOnly ? FILE.notices.filter((n) => n.status === "Active") : FILE.notices;
+/** A notice is in focus when its city, or the disposing agency, is a focus city. */
+export function noticeInFocus(n: SurplusNotice): boolean {
+  return isFocusCity(n.city) || isFocusCity(n.agency);
+}
+
+/** Count of every cached OC notice, regardless of focus. */
+export function totalCachedNotices(): number {
+  return FILE.notices.length;
+}
+
+/**
+ * Cached notices, Active first, then most recent due date first.
+ * Focus cities only by default; `allCities: true` returns every OC row.
+ */
+export function listNotices(
+  opts: { activeOnly?: boolean; allCities?: boolean } = {},
+): SurplusNotice[] {
+  let kept = opts.allCities ? FILE.notices : FILE.notices.filter(noticeInFocus);
+  if (opts.activeOnly) kept = kept.filter((n) => n.status === "Active");
   return [...kept].sort((a, b) => {
     if (a.status !== b.status) return a.status === "Active" ? -1 : 1;
     return (b.dueDate ?? "").localeCompare(a.dueDate ?? "");

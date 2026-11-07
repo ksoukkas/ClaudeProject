@@ -1,4 +1,4 @@
-import { CHECKLIST, GUIDE_URL } from "@/lib/chapter8";
+import { CHECKLIST, GUIDE_URL } from "@/lib/chapter8/county-list";
 
 /** The Chapter 8 application steps, each with the code section it rests on. */
 export function Chapter8Checklist() {

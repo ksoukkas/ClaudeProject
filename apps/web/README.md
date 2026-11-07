@@ -79,7 +79,7 @@ engine (`src/lib/confidence.ts`). The list answers two (on the list, power to se
 started). Whether it is still unsold, whether the nonprofit and its intended use
 qualify, and the county and State Controller approvals stay Unknown until a person
 confirms them. The checklist comes from the State Controller's Chapter 8 guide
-(updated 12/2018). **ASSUMPTION:** the confidence cut-offs, and a 90-day age limit
+(updated 12/2018). **ASSUMPTION:** the confidence cut-offs, and a 30-day age limit
 for a tax-sale list, are working choices in `src/lib/thresholds.ts`. Rules for these
 sales have changed since 2023; confirm with the Treasurer-Tax Collector.
 

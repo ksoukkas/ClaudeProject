@@ -1,26 +1,51 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FlagBadge, ListingsPaste } from "@/components/market/listings-paste";
+import { Chapter8Pipeline } from "@/components/chapter8/chapter8-pipeline";
+import { FlagBadge } from "@/components/market/listings-paste";
 import { PageShell } from "@/components/page-shell";
 import { assessParcel } from "@/lib/feasibility/engine";
 import { getSource } from "@/lib/feasibility/sources";
+import { FOCUS_LABEL } from "@/lib/focus";
 import { computeOnMarketFlag } from "@/lib/market/flag";
 import {
   listNotices,
   noticeProvenance,
   noticeToParcelFacts,
   noticeToSignal,
+  totalCachedNotices,
 } from "@/lib/market/notices";
 
-export const metadata: Metadata = { title: "On the market" };
+export const metadata: Metadata = { title: "Chapter 8 pipeline" };
+
+function SourceRow({ id }: { id: string }) {
+  const s = getSource(id);
+  return (
+    <li className="flex flex-wrap items-center gap-1.5">
+      {s.url ? (
+        <a href={s.url} target="_blank" rel="noreferrer" className="underline">
+          {s.name}
+        </a>
+      ) : (
+        <span>{s.name}</span>
+      )}
+      <span
+        className={`rounded px-1 text-xs ${s.status === "VERIFIED" ? "bg-neutral-100 text-neutral-700" : "bg-amber-50 text-amber-800"}`}
+      >
+        {s.status}
+      </span>
+      <span className="text-xs text-neutral-500">
+        {s.checked ? `checked ${s.checked}` : "not fetched"}
+      </span>
+      {s.note ? <span className="block w-full text-xs text-neutral-600">{s.note}</span> : null}
+    </li>
+  );
+}
 
 export default function MarketPage() {
   const prov = noticeProvenance();
   const notices = listNotices();
-  const activeCount = notices.filter((n) => n.status === "Active").length;
-  const source = getSource("hcd-surplus-notices");
-
-  const rows = notices.map((n) => {
+  const activeNotices = listNotices({ activeOnly: true }).length;
+  const noticeRows = notices.map((n) => {
     const report = assessParcel(noticeToParcelFacts(n));
     const open = report.pathways.filter((p) => p.status === "open");
     const hasPass = (p: (typeof open)[number]) => p.tests.some((t) => t.verdict === "pass");
@@ -28,7 +53,6 @@ export default function MarketPage() {
       n,
       flag: computeOnMarketFlag([noticeToSignal(n)]),
       withEvidence: open.filter(hasPass).map((p) => p.id),
-      noEvidence: open.filter((p) => !hasPass(p)).map((p) => p.id),
       unknown: report.coverage.unknown,
       total: report.coverage.totalTests,
     };
@@ -36,93 +60,95 @@ export default function MarketPage() {
 
   return (
     <PageShell
-      title="On the market"
-      description="Land that is, or has been, offered. Public notices are real data; private listings only appear if you paste them."
+      title="Chapter 8 pipeline"
+      description={`Tax-defaulted parcels in ${FOCUS_LABEL} that a nonprofit may be able to acquire by agreement before the county's tax auction.`}
     >
-      <div className="rounded-md border border-line bg-review-soft p-4 text-sm text-review">
-        <p className="font-semibold">
-          {activeCount === 0
-            ? `No active Surplus Land Act notice in Orange County in HCD's list (last modified ${prov.resourceLastModified.slice(0, 10)}, fetched ${prov.fetched}).`
-            : `${activeCount} active Surplus Land Act notice${activeCount === 1 ? "" : "s"} in Orange County (HCD list last modified ${prov.resourceLastModified.slice(0, 10)}).`}
+      <div className="rounded-md border border-neutral-200 bg-neutral-50 p-4 text-sm">
+        <p className="font-semibold">What Chapter 8 is</p>
+        <p className="mt-1 text-neutral-700">
+          When property taxes go unpaid long enough, the county tax collector gains the power to
+          sell the parcel and offers it at public auction. California&apos;s tax-sale law also
+          lets the county sell tax-defaulted property by agreement to a public agency or a
+          nonprofit instead, and a nonprofit may ask that a parcel be withheld from the auction
+          for low-income housing. That is a legal path to land before the open market. The statute
+          sections are cited below with their verification status: they were not readable in
+          automated fetches today, so read them in a browser before acting.
         </p>
-        <p className="mt-1">
-          {prov.rowsKept} Orange County notices are cached, all with a due date and coordinates.
-          Archived notices show which agencies have offered land and where. No public source
-          lists private for-sale listings, so the only way a private listing appears here is the
-          paste box below. Absence of a signal means &quot;not known to be listed&quot;, never
-          &quot;off market&quot;.
+        <p className="mt-2 text-neutral-700">
+          What the county itself says (read 2026-11-07): the most recent Orange County tax
+          auction was June 25, 2025, approved by the Board of Supervisors on March 11, 2025; an
+          owner can redeem until 5 PM the day before an auction; the parcel list can be viewed by
+          anyone and downloaded as a spreadsheet by registered users; a GIS map shows every
+          auction parcel.
+        </p>
+        <ul className="mt-3 flex flex-col gap-1">
+          {["octtc-tax-auction", "octtc-published-notices", "rtc-3692-4", "rtc-3791-4", "rtc-chapter-8"].map(
+            (id) => (
+              <SourceRow key={id} id={id} />
+            ),
+          )}
+        </ul>
+        <p className="mt-3 text-xs text-neutral-500">
+          A prototype, not legal advice. Cucumber sends nothing; the request to the tax collector
+          is yours to make.
         </p>
       </div>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold">Your listings</h2>
-        <ListingsPaste />
+        <h2 className="text-lg font-semibold">The county list</h2>
+        <Chapter8Pipeline />
       </section>
 
-      <section className="flex flex-col gap-3">
-        <div>
-          <h2 className="text-lg font-semibold">Public notices in Orange County</h2>
-          <p className="mt-1 text-sm text-ink-soft">
-            Each row is screened by the feasibility engine using only what the notice says, so
-            most tests are unknown. &quot;Not blocked&quot; lists laws with no failing test and at
-            least one passing one; laws with nothing resolved yet are shown in grey. Neither is a
-            yes. Open the report for the per-test detail and next steps.
-          </p>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[1100px] border-collapse text-sm">
+      <details className="rounded-md border border-neutral-200 p-4">
+        <summary className="cursor-pointer text-base font-semibold">
+          Other public land: Surplus Land Act notices in {FOCUS_LABEL} ({notices.length})
+        </summary>
+        <p className="mt-2 text-sm text-neutral-600">
+          Real HCD data kept as a second public-land channel.{" "}
+          {activeNotices === 0
+            ? "No active notice in these cities"
+            : `${activeNotices} active notice${activeNotices === 1 ? "" : "s"} in these cities`}{" "}
+          in HCD&apos;s list (last modified {prov.resourceLastModified.slice(0, 10)}, fetched{" "}
+          {prov.fetched}); {notices.length} of {totalCachedNotices()} cached Orange County rows are
+          shown. {prov.privacy}
+        </p>
+        <div className="mt-3 overflow-x-auto">
+          <table className="w-full min-w-[900px] border-collapse text-sm">
             <thead>
-              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
+              <tr className="border-b border-neutral-200 text-left text-xs uppercase tracking-wide text-neutral-500">
                 <th className="py-2 pr-3 font-medium">Flag</th>
                 <th className="py-2 pr-3 font-medium">Agency</th>
                 <th className="py-2 pr-3 font-medium">City</th>
                 <th className="py-2 pr-3 font-medium">Address (public land)</th>
                 <th className="py-2 pr-3 font-medium">Acres</th>
                 <th className="py-2 pr-3 font-medium">Zoning text</th>
-                <th className="py-2 pr-3 font-medium">Existing use</th>
-                <th className="py-2 pr-3 font-medium">Issued</th>
                 <th className="py-2 pr-3 font-medium">Due</th>
                 <th className="py-2 pr-3 font-medium">Not blocked</th>
                 <th className="py-2 font-medium">Report</th>
               </tr>
             </thead>
             <tbody>
-              {rows.map(({ n, flag, withEvidence, noEvidence, unknown, total }) => (
-                <tr key={n.id} className="border-b border-line align-top">
+              {noticeRows.map(({ n, flag, withEvidence, unknown, total }) => (
+                <tr key={n.id} className="border-b border-neutral-100 align-top">
                   <td className="py-2 pr-3">
                     <FlagBadge flag={flag} />
                   </td>
-                  <td className="py-2 pr-3">
-                    <p>{n.agency || "—"}</p>
-                    <p className="text-xs text-muted">{n.agencyType}</p>
-                  </td>
+                  <td className="py-2 pr-3">{n.agency || "—"}</td>
                   <td className="py-2 pr-3">{n.city || "—"}</td>
                   <td className="py-2 pr-3">
                     {n.addressWithheld ? (
-                      <p className="text-muted">{n.addressWithheld}</p>
+                      <span className="text-neutral-500">{n.addressWithheld}</span>
                     ) : (
-                      <p>{n.address || "—"}</p>
+                      n.address || "—"
                     )}
-                    <p className="text-xs text-muted">APN {n.apnRaw || "—"}</p>
+                    <span className="block text-xs text-neutral-500">APN {n.apnRaw || "—"}</span>
                   </td>
-                  <td className="py-2 pr-3">
-                    {n.sizeAcres !== null ? n.sizeAcres : "—"}
-                    {n.sizeRaw && n.sizeAcres === null ? (
-                      <span className="block text-xs text-muted">{n.sizeRaw}</span>
-                    ) : null}
-                  </td>
+                  <td className="py-2 pr-3">{n.sizeAcres ?? "—"}</td>
                   <td className="py-2 pr-3">{n.generalPlanZoning || "—"}</td>
-                  <td className="py-2 pr-3">{n.existingUse || "—"}</td>
-                  <td className="py-2 pr-3 whitespace-nowrap">{n.dateIssued ?? n.dateIssuedRaw ?? "—"}</td>
                   <td className="py-2 pr-3 whitespace-nowrap">{n.dueDate ?? n.dueDateRaw ?? "—"}</td>
                   <td className="py-2 pr-3">
                     <p>{withEvidence.length ? withEvidence.join(", ") : "none with a passing test"}</p>
-                    {noEvidence.length ? (
-                      <p className="text-xs text-muted">
-                        {noEvidence.join(", ")}: nothing resolved yet
-                      </p>
-                    ) : null}
-                    <p className="text-xs text-muted">
+                    <p className="text-xs text-neutral-500">
                       {unknown} of {total} unknown
                     </p>
                   </td>
@@ -136,50 +162,14 @@ export default function MarketPage() {
             </tbody>
           </table>
         </div>
-      </section>
-
-      <section className="flex flex-col gap-2 text-sm">
-        <h2 className="text-lg font-semibold">Where this data comes from</h2>
-        <div className="rounded-md border border-line p-4">
-          <p>
-            <a href={prov.datasetUrl} target="_blank" rel="noreferrer" className="underline">
-              {prov.dataset}
-            </a>{" "}
-            <span className="rounded bg-canvas px-1 text-xs text-ink-soft">
-              {source.status}
-            </span>{" "}
-            <span className="text-xs text-muted">
-              checked {source.checked}; resource last modified {prov.resourceLastModified}; fetched{" "}
-              {prov.fetched}
-            </span>
-          </p>
-          <p className="mt-1 text-ink-soft">License: {prov.license}.</p>
-          <p className="mt-1 text-ink-soft">
-            {prov.rowsKept} of {prov.totalRowsStatewide} statewide rows kept. {prov.filter}
-          </p>
-          <p className="mt-1 text-ink-soft">{prov.privacy}</p>
-          <p className="mt-2 text-xs font-medium uppercase tracking-wide text-muted">
-            Columns dropped
-          </p>
-          <ul className="list-disc pl-5 text-ink-soft">
-            {prov.columnsDropped.map((c) => (
-              <li key={c}>{c}</li>
-            ))}
-          </ul>
-          <p className="mt-2 text-xs font-medium uppercase tracking-wide text-muted">
-            Derived fields
-          </p>
-          <ul className="list-disc pl-5 text-ink-soft">
-            {prov.derivedFields.map((c) => (
-              <li key={c}>{c}</li>
-            ))}
-          </ul>
-          <p className="mt-2 text-xs text-muted">
-            Zoning categories on this page come from a keyword reading of the notice text
-            (ASSUMPTION). The notice text is shown as written.
-          </p>
-        </div>
-      </section>
+        <p className="mt-3 text-xs text-neutral-500">
+          Source:{" "}
+          <a href={prov.datasetUrl} target="_blank" rel="noreferrer" className="underline">
+            {prov.dataset}
+          </a>
+          , {prov.license}. Built by apps/web/scripts/build-surplus-notices-oc.mjs.
+        </p>
+      </details>
     </PageShell>
   );
 }

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Chapter8Checklist } from "@/components/chapter8-checklist";
 import { ConfidenceBadge } from "@/components/confidence-badge";
 import { Eyebrow, StatusTag } from "@/components/ui";
-import { assessParcel, listSource, money, parcels, sortedParcels, typeLabel } from "@/lib/chapter8";
+import { assessParcel, listSource, money, parcels, sortedParcels, typeLabel } from "@/lib/chapter8/county-list";
 
 export const metadata: Metadata = { title: "Chapter 8 tax-defaulted land" };
 export const dynamic = "force-dynamic";

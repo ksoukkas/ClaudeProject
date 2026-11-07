@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { CHAPTER8_TESTS, assessParcel, findParcel, parcels, sortedParcels } from "./chapter8";
+import { CHAPTER8_TESTS, assessParcel, findParcel, parcels, sortedParcels } from "./chapter8/county-list";
 
 const today = "2026-11-07";
 

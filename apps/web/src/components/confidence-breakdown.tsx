@@ -148,7 +148,7 @@ export function ConfidenceBreakdown({
       <p className="text-[11px] leading-[1.5] text-ink-soft">
         Confidence counts how many tests have evidence. It is not an approval or legal advice.
         ASSUMPTION: no unknowns is High; at least 75% of public tests answered is Medium; at least
-        a third is Low; a source past its age limit (90 days for a tax-sale list) drops one step.
+        a third is Low; a source past its age limit (30 days for a tax-sale list) drops one step.
       </p>
     </section>
   );

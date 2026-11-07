@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Chapter8Checklist } from "@/components/chapter8-checklist";
 import { ConfidenceBreakdown } from "@/components/confidence-breakdown";
 import { Eyebrow } from "@/components/ui";
-import { assessParcel, findParcel, listSource, money, typeLabel } from "@/lib/chapter8";
+import { assessParcel, findParcel, listSource, money, typeLabel } from "@/lib/chapter8/county-list";
 
 type Params = Promise<{ apn: string }>;
 
