@@ -4,11 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site } from "@/lib/config";
 import { FOCUS_LABEL } from "@/lib/focus";
-import { workspace } from "@/lib/sample-data";
 import { CucumberLogo } from "@/components/cucumber-logo";
 
 function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/" || pathname.startsWith("/results");
+  if (href === "/chapter8") return pathname === "/" || pathname.startsWith("/chapter8") || pathname.startsWith("/report");
   return pathname.startsWith(href);
 }
 
@@ -39,11 +38,6 @@ export function SiteHeader() {
                     }`}
                   >
                     {item.label}
-                    {item.href === "/saved" ? (
-                      <span className="rounded-[6px] bg-line px-[9px] py-[3px] text-[10px] leading-[1.3] font-semibold text-ink">
-                        {workspace.savedCount}
-                      </span>
-                    ) : null}
                   </Link>
                   <span
                     className={`h-[3px] w-full ${active ? "bg-accent" : "bg-transparent"}`}
