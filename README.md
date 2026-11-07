@@ -15,11 +15,12 @@ The event's own README, with the schedule, lanes and submission rules, is at
 ## The real user
 
 A one-person acquisitions team at a small housing nonprofit in north-central Orange County. They
-have no GIS staff and lose every bidding war to cash buyers. The one place the law puts them
-first is tax-defaulted land: California's tax-sale law lets a county sell such parcels by
-agreement to a nonprofit for low-income housing instead of at public auction (Revenue and
-Taxation Code, Part 6, Chapter 8; cited UNVERIFIED on the page until read in full). Nobody has
-joined that list to zoning, the state housing laws and a title checklist in a way they can use.
+have no GIS staff and lose every bidding war to cash buyers. Tax-defaulted land may be the one
+place the law puts them first: as this team understands California's tax-sale law (UNVERIFIED,
+Revenue and Taxation Code, Part 6, Chapter 8, cited on the page until read in full), a county may
+sell such parcels by agreement to a nonprofit for low-income housing instead of at public auction.
+Nobody has joined that list to zoning, the state housing laws and a title checklist in a way they
+can use.
 
 **Before:** they hear about the county auction after it happens, or scan a PDF of parcel numbers
 with no idea which lots could hold homes, and never get a request in before the cutoff.
