@@ -45,10 +45,10 @@ export default function ScoutPage() {
         <div className="flex items-center justify-between border-b border-line px-7 py-5">
           <div className="flex items-center gap-[10px]">
             <FigmaIcon src="/figma/scout/sparkles1.svg" size={18} />
-            <p className="text-[13px] leading-[1.5] text-ink">Your scout is working</p>
+            <p className="text-[13px] leading-[1.5] text-ink">How a scout run works (sample)</p>
           </div>
           <StatusTag tone="accent" solid shape="pill">
-            LIVE SCREEN
+            SAMPLE RUN
           </StatusTag>
         </div>
 
@@ -100,7 +100,8 @@ export default function ScoutPage() {
               })}
             </ol>
             <p className="text-[10px] leading-[1.5] text-muted">
-              We flag uncertainty instead of assuming a green light.
+              Illustrative: steps and counts are fictional, from the design. A real
+              search above runs the live scout on public data.
             </p>
           </div>
 

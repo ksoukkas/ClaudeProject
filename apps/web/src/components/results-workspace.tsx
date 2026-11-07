@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { OcMap } from "@/components/oc-map";
+import { ScoutResults } from "@/components/scout-results";
 import { FigmaIcon, StatusTag, feasibilityLabel } from "@/components/ui";
 import {
   type Feasibility,
@@ -12,6 +13,7 @@ import {
   parcels,
   sampleCities,
 } from "@/lib/sample-data";
+import type { ScoutResult } from "@/lib/scout/types";
 
 type Filters = {
   city: string;
@@ -95,7 +97,15 @@ const filterDefs: {
   },
 ];
 
-export function ResultsWorkspace() {
+/**
+ * With `live`, shows real scout results from public data. Without it, the
+ * fictional Figma sample sites with working filters.
+ */
+export function ResultsWorkspace({ live }: { live?: ScoutResult } = {}) {
+  return live ? <ScoutResults result={live} /> : <SampleWorkspace />;
+}
+
+function SampleWorkspace() {
   const [filters, setFilters] = useState(initialFilters);
   const [saved, setSaved] = useState<Set<string>>(new Set(["olive-commons"]));
 
