@@ -6,8 +6,9 @@ export const site = {
   name: "Cucumber",
   tagline: "Land intelligence for affordable housing.",
   nav: [
+    { href: "/chapter8", label: "Chapter 8" },
+    { href: "/market", label: "Pipeline" },
     { href: "/", label: "Scout" },
-    { href: "/matchmaking", label: "Matchmaking" },
     { href: "/saved", label: "Saved sites" },
   ],
 } as const;

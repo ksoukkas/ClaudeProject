@@ -24,7 +24,7 @@ Other scripts:
 | `npm run build` | Production build (also type-checks) |
 | `npm run start` | Serve the production build |
 | `npm run lint` | Run ESLint |
-| `npm test` | Unit tests for filters and confidence (`node:test` via `tsx`) |
+| `npm test` | Unit tests for the filter logic (`node:test` via `tsx`) |
 | `node scripts/fetch-he-sites.mjs` | Re-pull the cached public Housing Element sites (one small query) |
 | `npm run test:scout` | Offline tests for the scouting agent (parser, ranking, outages) |
 
@@ -37,6 +37,8 @@ the scout still works with a keyword parser. Never commit `.env.local`.
 
 | Route | Purpose | Status |
 |---|---|---|
+| `/chapter8` | Chapter 8 tax-defaulted land: 108 real Orange County parcels, each with Pass / Fail / Unknown tests, computed confidence and the application checklist | **real county data**, 2025 list |
+| `/chapter8/[apn]` | One parcel: its tests, sources and the checklist | **real county data** |
 | `/` | Scout: goal prompt (GET to `/results`) and an illustrative sample run | prompt live; step list is a labelled sample |
 | `/search` | Redirects to `/` | working |
 | `/results` | Interactive map + ranked list, filters in the URL | working, sample data + one public layer |
@@ -46,7 +48,7 @@ the scout still works with a keyword parser. Never commit `.env.local`.
 | `/results/[id]/memo` | One-page site memo; "Download PDF" opens the print dialog | UI from Figma, sample data |
 | `/saved` | Saved-sites pipeline board/list and alert rules | UI from Figma, sample data |
 | `/matchmaking` | Landowner and nonprofit developer directory | UI from Figma, sample data |
-| `/about` | How confidence works, assumptions, what is real vs mocked | confidence rule and status table built; sources list is a placeholder |
+| `/about` | Sources, assumptions, what is real vs mocked | placeholder |
 | `/api/health` | Liveness check, returns JSON | working |
 | `/api/scout?q=...` | The scout as JSON: criteria, parser, candidates, sources, warnings, assumptions | **live public data** |
 
@@ -61,25 +63,25 @@ sends anything: "Contact owner", alerts and "Request intro" are mock-ups.
 Icons and map art are SVGs exported from Figma into `public/figma/<screen>/`.
 Design tokens (colors, fonts) are in `src/app/globals.css`.
 
-## Honest confidence
+## Chapter 8 tax-defaulted land (`/chapter8`)
 
-Confidence is computed from evidence in `src/lib/confidence.ts`. It is never
-typed in. It means "how much can you trust this answer", not "how good is this
-site", so a site can be a Red flag with High confidence.
+Under Chapter 8 of the Revenue and Taxation Code (section 3791 on), an eligible
+nonprofit can apply to buy a tax-defaulted parcel by agreement with the county
+instead of bidding at auction. The page lists the 108 land parcels (44 vacant)
+from the County of Orange Treasurer-Tax Collector's Exhibit I for public auction
+Sale #1398 (June 25, 2025), fetched 2026-11-07, in
+`src/lib/chapter8/tax-defaulted-oc.json`. Row counts and bid totals match the
+exhibit. Street addresses, default numbers and 154 timeshare intervals are left
+out; most parcels with a building are homes.
 
-- Each law has its tests in `src/lib/law-tests.ts`: Pass, Fail or Unknown. A test
-  with no data is Unknown, never Pass.
-- With a Fail, confidence is graded on the Fail's own evidence.
-- With no Fail, an open gate test gives Not enough data. Otherwise: nothing
-  unknown gives High, 75% of public tests answered gives Medium, 1/3 gives Low,
-  and less gives Not enough data.
-- Caps: sample data caps at Low, a secondary source or a law flagged for
-  verification caps at Medium, and a stale source drops one step.
-
-**ASSUMPTION:** every cut-off and age limit is a working choice, not law. They
-all live in `src/lib/thresholds.ts`, and `/about` shows them. Today's five sites
-are fictional, so none can rate above Low. Live data plugs in by passing real
-`RawCheck` records to `computeConfidence`. Rank is still the typed sample order.
+Each parcel runs six tests in `src/lib/chapter8/index.ts` through the confidence
+engine (`src/lib/confidence.ts`). The list answers two (on the list, power to sell
+started). Whether it is still unsold, whether the nonprofit and its intended use
+qualify, and the county and State Controller approvals stay Unknown until a person
+confirms them. The checklist comes from the State Controller's Chapter 8 guide
+(updated 12/2018). **ASSUMPTION:** the confidence cut-offs, and a 30-day age limit
+for a tax-sale list, are working choices in `src/lib/thresholds.ts`. Rules for these
+sales have changed since 2023; confirm with the Treasurer-Tax Collector.
 
 ## Map and filters (`/results`)
 

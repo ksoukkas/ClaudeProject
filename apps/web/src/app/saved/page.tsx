@@ -15,8 +15,8 @@ export default function SavedSitesPage() {
             Your sites, moving forward.
           </h1>
           <p className="text-[14px] leading-[1.5] text-ink-soft">
-            {workspace.savedCount} saved sites · A shared acquisition pipeline
-            for {workspace.organization}
+            {workspace.savedCount} saved sites · A shared acquisition pipeline for Chapter 8
+            candidates in Santa Ana, Stanton and Anaheim (sample)
           </p>
         </div>
         <Button

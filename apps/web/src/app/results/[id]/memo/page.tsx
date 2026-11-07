@@ -2,11 +2,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ConfidenceSummary } from "@/components/confidence-breakdown";
 import { PrintButton } from "@/components/print-button";
 import { Eyebrow, FigmaIcon, StatusTag } from "@/components/ui";
-import { sampleConfidence } from "@/lib/sample-checks";
-import { SNAPSHOT_DATE, parcels, reports, workspace } from "@/lib/sample-data";
+import { SNAPSHOT_DATE, parcels, reports } from "@/lib/sample-data";
 import { CucumberLogo } from "@/components/cucumber-logo";
 
 export const metadata: Metadata = { title: "Site memo" };
@@ -35,8 +33,7 @@ export default async function SiteMemoPage({
   const { id } = await params;
   const parcel = parcels.find((p) => p.id === id);
   const report = reports[id];
-  const result = sampleConfidence(id);
-  if (!parcel || !report || !result) notFound();
+  if (!parcel || !report) notFound();
 
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-7 px-6 pt-8 pb-12 lg:px-14">
@@ -76,7 +73,7 @@ export default async function SiteMemoPage({
               {parcel.address}
             </h2>
             <p className="text-[11px] text-ink-soft">
-              {parcel.city}, California · Prepared for {workspace.organization}
+              {parcel.city}, California · Prepared for the acquisitions team (sample)
             </p>
             <p className="text-[10px] text-ink-soft">
               {SNAPSHOT_DATE} · Fictional site and owner · Screening, not legal advice
@@ -85,7 +82,7 @@ export default async function SiteMemoPage({
 
           <div className="flex flex-col gap-2 rounded-[16px] bg-canvas p-[18px]">
             <p className="text-[9px] leading-[1.5] text-accent">
-              SUGGESTED NEXT STEP · TARGETED DILIGENCE
+              RECOMMENDATION · PROCEED TO TARGETED DILIGENCE
             </p>
             <p className="font-display text-[20px] leading-[1.2] font-semibold text-ink">
               {report.headline}
@@ -103,7 +100,7 @@ export default async function SiteMemoPage({
               {[
                 ["Land area", `${parcel.acres.toFixed(2)} acres`],
                 ["Potential yield", "44–60 homes"],
-                ["Owner type", parcel.owner],
+                ["Owner type", "Faith nonprofit"],
               ].map(([label, value]) => (
                 <div key={label} className="flex flex-col gap-1">
                   <dt className="text-[10px] text-ink-soft">{label}</dt>
@@ -113,28 +110,28 @@ export default async function SiteMemoPage({
             </dl>
             <p>
               Owner: {report.ownerName} · Sample listing: on the market ·
-              Transit: 0.3-mile walk (sample). CF / Community facilities is a fictional
+              Transit: 0.3-mile walk. CF / Community facilities is a fictional
               zoning assignment.
             </p>
             <p className="text-[10px] text-ink-soft">
-              P-01 parcel + C-01 capacity study. Yield is an early test fit, not
-              an entitlement.
+              Medium confidence · P-01 parcel + C-01 capacity study. Yield is an
+              early test fit, not an entitlement.
             </p>
           </MemoSection>
           <hr className="border-line" />
 
           <MemoSection title="02 / ELIGIBILITY REASONING">
-            <ConfidenceSummary result={result} />
             <p>
-              SB 4 — possible fit. Sample deed D-01 shows nonprofit religious
-              ownership before the statutory cutoff. Verify ownership,
-              affordability, labor standards and all exclusions.
+              SB 4 — conditional fit. Sample deed D-01 shows nonprofit religious
+              ownership before the statutory cutoff. Verify affordability, labor
+              standards and all exclusions. Medium confidence.
             </p>
             <p>
-              SB 9 — fails the sample single-family zoning screen. AB 2011 —
-              institutional designation fails the qualifying commercial-zoning
-              screen. SB 684 / 1123 — residential designation and subdivision
-              conditions are unconfirmed.
+              SB 9 — fails the sample single-family zoning screen. High
+              confidence. AB 2011 — institutional designation fails the
+              qualifying commercial-zoning screen. Medium confidence. SB 684 /
+              1123 — residential designation and subdivision conditions are
+              unconfirmed. Low confidence.
             </p>
             <p className="text-[10px] text-ink-soft">
               Sources: Sample deed D-01 (2020), zoning Z-01 and SB 9, SB 684 /
@@ -146,17 +143,19 @@ export default async function SiteMemoPage({
             <p>
               Local zoning: the sample CF code supports civic / religious uses,
               not ordinary apartments. Confirm the SB 4 pathway and applicable
-              objective standards with planning staff. Sample Z-01.
+              objective standards with planning staff. Medium confidence · Z-01.
             </p>
             <p>
               Title: D-02 limits use to religious purposes. Restriction found —
-              may be overridden by state law, verify with attorney. E-01 records
-              a 12-foot utility easement on the east edge; impact on yield is
-              unverified.
+              may be overridden by state law, verify with attorney. Medium
+              confidence. E-01 records a 12-foot utility easement on the east
+              edge; impact on yield is unverified. High confidence on record,
+              low on impact.
             </p>
             <p>
-              HOA: unknown. No covenant appears in sample index T-01, which does
-              not prove there is none. A current title report is still required.
+              HOA: clear only within the sample records reviewed; no HOA
+              covenant found in T-01. Medium confidence. A current title report
+              is still required.
             </p>
           </MemoSection>
 
@@ -190,7 +189,7 @@ export default async function SiteMemoPage({
             <hr className="w-full border-line" />
             {[
               ["Format", "A4 · Portrait · PDF"],
-              ["Prepared for", workspace.organization],
+              ["Prepared for", "The acquisitions team (sample)"],
               ["From report", `${SNAPSHOT_DATE} snapshot`],
             ].map(([label, value]) => (
               <div key={label} className="flex flex-col gap-1 leading-[1.5]">

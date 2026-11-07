@@ -25,6 +25,7 @@ export const SLIVER_PCT = 5;
  */
 export const MAX_AGE: Record<SourceKind, { days: number } | { months: number } | null> = {
   surplus_notice: { days: 90 },
+  tax_sale_list: { days: 30 }, // matches CHAPTER8_LIST_MAX_AGE_DAYS in chapter8/flag.ts
   parcels: { months: 24 },
   footprints: { months: 24 },
   zoning: { months: 36 },

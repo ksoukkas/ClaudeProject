@@ -9,18 +9,14 @@
  * from lanes/1-find-it/data/pathways.json (checked 2026-11-06).
  */
 
-import type { LawId } from "./types";
-
 export type Feasibility = "feasible" | "review" | "blocked";
-export type { LawId };
+export type Confidence = "High" | "Medium" | "Low";
+export type LawId = "SB9" | "SB684_SB1123" | "AB2011" | "SB4";
 export type OwnerType = "Faith-owned" | "Commercial" | "Private" | "Public";
 
 export const SNAPSHOT_DATE = "07 Nov 2026";
-export const SNAPSHOT_ISO = "2026-11-07";
 
 export const workspace = {
-  organization: "Harbor Housing Collaborative",
-  initials: "ML",
   savedCount: 8,
 } as const;
 
@@ -74,6 +70,7 @@ export type Parcel = {
   yieldMax: number | null;
   onMarket: boolean;
   reasoning: string;
+  confidence: Confidence;
   evidence: string;
   /**
    * Where the pin goes on the map. ILLUSTRATIVE: roughly the centre of the
@@ -100,6 +97,7 @@ export const parcels: Parcel[] = [
     onMarket: true,
     reasoning:
       "Faith ownership supports an SB 4 pathway; a private covenant still needs counsel review.",
+    confidence: "Medium",
     evidence: "Sample deed + SB 4 screen",
     // Illustrative: near the centre of Anaheim, not a real lot.
     position: { lng: -117.91, lat: 33.84 },
@@ -113,13 +111,14 @@ export const parcels: Parcel[] = [
     acres: 0.86,
     owner: "Commercial",
     law: "AB2011",
-    feasibility: "review",
+    feasibility: "feasible",
     yieldLabel: "36–48 potential homes",
     yieldMin: 36,
     yieldMax: 48,
     onMarket: true,
     reasoning:
-      "Commercial zoning screen passes; corridor frontage, labor, affordability and site exclusions need confirmation.",
+      "Commercial corridor screen passes; labor, affordability and site exclusions need confirmation.",
+    confidence: "Medium",
     evidence: "Sample zoning + AB 2011 screen",
     // Illustrative: near the centre of Santa Ana, not a real lot.
     position: { lng: -117.87, lat: 33.75 },
@@ -133,13 +132,14 @@ export const parcels: Parcel[] = [
     acres: 0.32,
     owner: "Private",
     law: "SB9",
-    feasibility: "review",
+    feasibility: "feasible",
     yieldLabel: "2–4 potential homes",
     yieldMin: 2,
     yieldMax: 4,
     onMarket: false,
     reasoning:
       "Single-family zoning fits an SB 9 screen; owner occupancy and exclusions remain unverified.",
+    confidence: "Medium",
     evidence: "Sample parcel + SB 9 screen",
     // Illustrative: near the centre of Buena Park, not a real lot.
     position: { lng: -118.0, lat: 33.87 },
@@ -160,6 +160,7 @@ export const parcels: Parcel[] = [
     onMarket: false,
     reasoning:
       "Small-site pathway may fit; public disposal process and subdivision conditions are unresolved.",
+    confidence: "Low",
     evidence: "Sample parcel + subdivision screen",
     // Illustrative: near the centre of Garden Grove, not a real lot.
     position: { lng: -117.94, lat: 33.77 },
@@ -180,6 +181,7 @@ export const parcels: Parcel[] = [
     onMarket: false,
     reasoning:
       "Sample recorded access easement covers the buildable area. No usable envelope identified.",
+    confidence: "High",
     evidence: "Sample easement exhibit",
     // Illustrative: near the centre of Fullerton, not a real lot.
     position: { lng: -117.92, lat: 33.87 },
@@ -201,7 +203,7 @@ export type Finding = {
   status: string;
   tone: Feasibility | "neutral";
   body: string;
-  evidence: string;
+  confidence: string;
   link?: { label: string; href: string };
 };
 
@@ -214,7 +216,7 @@ export const reports: Record<
     summary: string;
     facts: { label: string; value: string }[];
     factsNote: string;
-    caveat: { title: string; body: string; evidence: string };
+    caveat: { title: string; body: string; confidence: string };
     stateLaw: Finding[];
     zoning: Finding[];
     zoningSource: string;
@@ -234,12 +236,12 @@ export const reports: Record<
       { label: "Sample zoning", value: "CF · Community" },
     ],
     factsNote:
-      "Sample parcel P-01 + capacity study C-01. Yield is an early estimate, not an entitlement.",
+      "Medium confidence · Sample parcel P-01 + capacity study C-01. Yield is an early estimate, not an entitlement.",
     caveat: {
       title: "State-law fit ≠ title clearance.",
       body: "A parcel may be legal under state law but blocked on title. Here, a private covenant may be overridden by state law — verify with an attorney before relying on that pathway.",
-      evidence:
-        "Sample covenant D-02 + SB 4 title review checklist. No legal clearance has been given.",
+      confidence:
+        "Medium confidence · Sample covenant D-02 + SB 4 title review checklist. No legal clearance has been given.",
     },
     stateLaw: [
       {
@@ -248,8 +250,8 @@ export const reports: Record<
         status: "Doesn’t qualify",
         tone: "blocked",
         body: "The sample site is zoned for community facilities, not single-family residential use.",
-        evidence:
-          "Sample zoning extract Z-01 + SB 9 screening criteria",
+        confidence:
+          "High confidence · Sample zoning extract Z-01 + SB 9 screening criteria",
         link: { label: "View source ↗", href: laws.SB9.sources[0] },
       },
       {
@@ -258,7 +260,7 @@ export const reports: Record<
         status: "Unclear",
         tone: "review",
         body: "Acreage is within the small-site screen; qualifying residential designation and all subdivision conditions are not confirmed.",
-        evidence: "Sample parcel P-01 + SB 684 / 1123 checklist",
+        confidence: "Low confidence · Sample parcel P-01 + SB 684 / 1123 checklist",
         link: { label: "View source ↗", href: laws.SB684_SB1123.sources[0] },
       },
       {
@@ -267,18 +269,18 @@ export const reports: Record<
         status: "Doesn’t qualify",
         tone: "blocked",
         body: "The sample institutional use does not meet the qualifying commercial-zoning screen. Corridor frontage alone is not enough.",
-        evidence:
-          "Sample zoning extract Z-01 + AB 2011 checklist",
+        confidence:
+          "Medium confidence · Sample zoning extract Z-01 + AB 2011 checklist",
         link: { label: "View statute ↗", href: laws.AB2011.sources[0] },
       },
       {
         title: "SB 4",
         subtitle: laws.SB4.summary,
-        status: "Possible fit",
-        tone: "review",
+        status: "Qualifies",
+        tone: "feasible",
         body: "Sample deed shows eligible nonprofit religious ownership before the statutory cutoff. Affordability, labor and exclusion tests still require verification.",
-        evidence:
-          "Sample deed D-01 (2020) + SB 4 eligibility checklist",
+        confidence:
+          "Medium confidence · Sample deed D-01 (2020) + SB 4 eligibility checklist",
         link: { label: "View source ↗", href: laws.SB4.sources[0] },
       },
     ],
@@ -288,16 +290,16 @@ export const reports: Record<
         status: "Needs review",
         tone: "review",
         body: "This sample designation is intended for civic or religious uses, not ordinary apartments. An eligible SB 4 project may use a state-law pathway; confirm which local objective standards still apply.",
-        evidence:
-          "Sample Anaheim code extract Z-01 + SB 4 standards checklist",
+        confidence:
+          "Medium confidence · Sample Anaheim code extract Z-01 + SB 4 standards checklist",
       },
       {
         title: "Height, setbacks & access",
         status: "Unclear",
         tone: "review",
         body: "The 44–60 home range is a test fit, not a code envelope. Fire access, setbacks, utility capacity and applicable height standards have not been verified.",
-        evidence:
-          "Sample capacity study C-01; city planning confirmation outstanding",
+        confidence:
+          "Low confidence · Sample capacity study C-01; city planning confirmation outstanding",
       },
     ],
     zoningSource:
@@ -308,23 +310,23 @@ export const reports: Record<
         status: "Restriction found",
         tone: "review",
         body: "Restriction found — may be overridden by state law, verify with attorney. The sample 1988 deed limits use to religious purposes; enforceability and any statutory override remain unresolved.",
-        evidence:
-          "Sample recorded covenant D-02, clause 4 + SB 4 review checklist",
+        confidence:
+          "Medium confidence · Sample recorded covenant D-02, clause 4 + SB 4 review checklist",
       },
       {
         title: "Utility easement",
         status: "Restriction found",
-        tone: "review",
+        tone: "blocked",
         body: "A sample 12-foot utility strip crosses the east edge. It may reduce the buildable area; obtain a survey and utility consent before using the yield estimate.",
-        evidence:
-          "Sample easement E-01, exhibit B",
+        confidence:
+          "High confidence on document; low on impact · Sample easement E-01, exhibit B",
       },
       {
         title: "HOA covenants",
-        status: "Unknown",
-        tone: "neutral",
-        body: "No HOA covenant appears in the sample document set. That does not prove there is none: order a current preliminary title report to confirm.",
-        evidence: `Sample title index T-01, reviewed ${SNAPSHOT_DATE}`,
+        status: "Clear",
+        tone: "feasible",
+        body: "No HOA covenant appears in the sample document set. “Clear” applies only to the records reviewed; order a current preliminary title report to confirm.",
+        confidence: `Medium confidence · Sample title index T-01, reviewed ${SNAPSHOT_DATE}`,
       },
     ],
     nextStep: {
@@ -341,7 +343,7 @@ export type PipelineCard = {
   feasibility: Feasibility;
   pathway: string;
   reasoning: string;
-  evidence: string;
+  confidence: string;
   task: string;
   date: string;
   parcelId?: string;
@@ -362,11 +364,11 @@ export const pipeline: {
         address: "6100 Laurel Court",
         city: "Buena Park",
         details: "0.32 ac · Private · 2–4 homes",
-        feasibility: "review",
+        feasibility: "feasible",
         pathway: "SB 9",
         reasoning:
           "Single-family zoning fits an SB 9 screen; owner occupancy and exclusions remain unverified.",
-        evidence: "Sample parcel + SB 9 screen",
+        confidence: "Medium confidence · Sample parcel + SB 9 screen",
         task: "Check occupancy and site exclusions",
         date: "Review Nov 12",
         parcelId: "laurel-court",
@@ -379,7 +381,7 @@ export const pipeline: {
         pathway: "SB 684 / 1123",
         reasoning:
           "Small-site pathway may fit; public disposal process and subdivision conditions are unresolved.",
-        evidence: "Sample parcel + subdivision screen",
+        confidence: "Low confidence · Sample parcel + subdivision screen",
         task: "Confirm public disposal process",
         date: "Review Nov 14",
         parcelId: "lantern-way",
@@ -399,7 +401,7 @@ export const pipeline: {
         pathway: "SB 4",
         reasoning:
           "Faith ownership supports an SB 4 pathway; a private covenant still needs counsel review.",
-        evidence: "Sample deed + SB 4 screen",
+        confidence: "Medium confidence · Sample deed + SB 4 screen",
         task: "Ask counsel to review use covenant",
         date: "Due Nov 10",
         parcelId: "olive-commons",
@@ -412,7 +414,7 @@ export const pipeline: {
         pathway: "SB 9",
         reasoning:
           "Sample recorded access easement covers the buildable area. No usable envelope identified.",
-        evidence: "Sample easement exhibit",
+        confidence: "High confidence · Sample easement exhibit",
         task: "Verify easement; consider archiving",
         date: "Due Nov 11",
         parcelId: "juniper-mews",
@@ -428,11 +430,11 @@ export const pipeline: {
         address: "720 E Civic Orchard",
         city: "Santa Ana",
         details: "0.86 ac · Commercial · 36–48 homes",
-        feasibility: "review",
+        feasibility: "feasible",
         pathway: "AB 2011",
         reasoning:
-          "Commercial zoning screen passes; corridor frontage, labor, affordability and site exclusions need confirmation.",
-        evidence: "Sample zoning + AB 2011 screen",
+          "Commercial corridor screen passes; labor, affordability and site exclusions need confirmation.",
+        confidence: "Medium confidence · Sample zoning + AB 2011 screen",
         task: "Follow up with Civic Orchard Partners",
         date: "Sent Nov 05",
         parcelId: "civic-orchard",
@@ -445,7 +447,7 @@ export const pipeline: {
         pathway: "SB 4 screen pending",
         reasoning:
           "Eligibility, zoning and title have not been screened. Due diligence is outstanding.",
-        evidence: "Sample owner profile only",
+        confidence: "Low confidence · Sample owner profile only",
         task: "Meet Mesa Lantern Congregation",
         date: "Meeting Nov 16",
       },
@@ -464,7 +466,7 @@ export const pipeline: {
         pathway: "SB 4 screen pending",
         reasoning:
           "Eligibility, zoning and title have not been screened. Due diligence is outstanding.",
-        evidence: "Sample owner profile only",
+        confidence: "Low confidence · Sample owner profile only",
         task: "Commission survey and test fit",
         date: "Option ends Jan 15",
       },
@@ -476,7 +478,7 @@ export const pipeline: {
         pathway: "AB 2011 screen pending",
         reasoning:
           "Eligibility, zoning and title have not been screened. Due diligence is outstanding.",
-        evidence: "Sample owner profile only",
+        confidence: "Low confidence · Sample owner profile only",
         task: "Verify corridor and labor requirements",
         date: "Option ends Feb 01",
       },
@@ -501,72 +503,3 @@ export const alertRules = [
   },
 ];
 
-export type Profile = {
-  name: string;
-  kind: string;
-  icon: "church" | "store" | "house" | "building2" | "blocks";
-  location: string;
-  tag: string;
-  goal: string;
-  fit: string;
-};
-
-export const landowners: Profile[] = [
-  {
-    name: "Olive Commons Fellowship",
-    kind: "Congregation",
-    icon: "church",
-    location: "Anaheim · 1.24 acres",
-    tag: "Open to a ground lease",
-    goal: "Retain a worship space and create 40+ affordable homes through a long-term ground lease.",
-    fit: "Potential fit: a nonprofit comfortable with SB 4 diligence and shared-campus design.",
-  },
-  {
-    name: "Mesa Lantern Congregation",
-    kind: "Congregation",
-    icon: "church",
-    location: "Santa Ana · 1.10 acres",
-    tag: "Early conversation",
-    goal: "Explore family housing on underused parking while preserving community meal services.",
-    fit: "Potential fit: an experienced family-housing developer with predevelopment capacity.",
-  },
-  {
-    name: "Civic Orchard Partners",
-    kind: "Commercial owner",
-    icon: "store",
-    location: "Santa Ana · 0.86 acres",
-    tag: "On the market · sample",
-    goal: "Sell a commercial site to a mission-aligned buyer. Open to a conditional diligence period.",
-    fit: "Potential fit: a buyer exploring AB 2011; labor and site exclusions still need review.",
-  },
-];
-
-export const developers: Profile[] = [
-  {
-    name: "Harbor Housing Collaborative",
-    kind: "Nonprofit developer",
-    icon: "house",
-    location: "North & central OC · Seeking 0.75–3 acres",
-    tag: "Seeking sites now",
-    goal: "Build 40–80 affordable family homes near transit. Purchase or a long-term ground lease.",
-    fit: "Looking for: faith-owned or commercial sites in Anaheim, Santa Ana and Garden Grove.",
-  },
-  {
-    name: "Orange Grove Community Homes",
-    kind: "Nonprofit developer",
-    icon: "building2",
-    location: "Santa Ana & Garden Grove · Seeking 0.5–2 acres",
-    tag: "Ground-lease ready",
-    goal: "Create 25–60 homes for low-income families, with space for neighborhood services.",
-    fit: "Looking for: a landowner willing to co-plan and allow a 12-month diligence window.",
-  },
-  {
-    name: "Common Ground Housing Studio",
-    kind: "Nonprofit developer",
-    icon: "blocks",
-    location: "Fullerton & Buena Park · Seeking 0.2–1 acre",
-    tag: "Small-site specialist",
-    goal: "Deliver small ownership communities with 4–10 homes and long-term affordability.",
-    fit: "Looking for: infill sites with subdivision potential and a clear access envelope.",
-  },
-];

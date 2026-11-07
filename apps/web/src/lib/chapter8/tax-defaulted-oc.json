@@ -1,0 +1,883 @@
+{
+ "source": {
+  "title": "County of Orange Treasurer-Tax Collector, Exhibit I: Chapter 7 Public Auction Sale #1398",
+  "url": "https://www.octreasurer.gov/sites/ttc/files/2025-04/Exhibit%20I%20-%20PUBLIC%20AUCTION%20SALE%20%231398.pdf",
+  "auctionPage": "https://octreasurer.gov/taxauction",
+  "auctionDate": "2025-06-25",
+  "fetchedOn": "2026-11-07",
+  "rowsInSource": {
+   "improved": 64,
+   "unimproved": 44,
+   "timeshare": 154
+  },
+  "kept": "Improved and unimproved parcels only. Timeshare intervals are left out because they are not land a nonprofit can build on.",
+  "dropped": "Street addresses, tax default numbers and line numbers. Most improved parcels are lived-in homes, so this app shows the parcel number and city only.",
+  "checks": "Row counts and minimum-bid totals match the totals printed on the exhibit ($5,506,700 improved, $912,100 unimproved)."
+ },
+ "parcels": [
+  {
+   "apn": "002-162-29",
+   "propertyType": "improved",
+   "city": "Santa Ana",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 85500.0
+  },
+  {
+   "apn": "008-091-03",
+   "propertyType": "improved",
+   "city": "Santa Ana",
+   "taxDefaultedOn": "2014-06-30",
+   "powerToSellOn": "2019-07-01",
+   "minimumBid": 75900.0
+  },
+  {
+   "apn": "024-025-16",
+   "propertyType": "improved",
+   "city": "Huntington Beach",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 200800.0
+  },
+  {
+   "apn": "024-082-19",
+   "propertyType": "improved",
+   "city": "Huntington Beach",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 172400.0
+  },
+  {
+   "apn": "033-382-15",
+   "propertyType": "improved",
+   "city": "Fullerton",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 11800.0
+  },
+  {
+   "apn": "035-223-09",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 33400.0
+  },
+  {
+   "apn": "035-223-10",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 33400.0
+  },
+  {
+   "apn": "037-073-21",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 6100.0
+  },
+  {
+   "apn": "037-081-18",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 63800.0
+  },
+  {
+   "apn": "041-031-31",
+   "propertyType": "improved",
+   "city": "Orange",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 14200.0
+  },
+  {
+   "apn": "093-112-48",
+   "propertyType": "improved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2016-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 70600.0
+  },
+  {
+   "apn": "093-333-16",
+   "propertyType": "improved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 132500.0
+  },
+  {
+   "apn": "096-161-03",
+   "propertyType": "improved",
+   "city": "Westminster",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 92000.0
+  },
+  {
+   "apn": "126-434-04",
+   "propertyType": "improved",
+   "city": "Stanton",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 17700.0
+  },
+  {
+   "apn": "130-243-07",
+   "propertyType": "improved",
+   "city": "Garden Grove",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 62500.0
+  },
+  {
+   "apn": "134-242-09",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 11600.0
+  },
+  {
+   "apn": "135-091-29",
+   "propertyType": "improved",
+   "city": "Buena Park",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 80300.0
+  },
+  {
+   "apn": "139-479-09",
+   "propertyType": "improved",
+   "city": "Costa Mesa",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 25400.0
+  },
+  {
+   "apn": "141-164-12",
+   "propertyType": "improved",
+   "city": "Costa Mesa",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 31300.0
+  },
+  {
+   "apn": "165-354-08",
+   "propertyType": "improved",
+   "city": "Huntington Beach",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 42600.0
+  },
+  {
+   "apn": "178-062-27",
+   "propertyType": "improved",
+   "city": "Huntington Beach",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 433900.0
+  },
+  {
+   "apn": "203-611-50",
+   "propertyType": "improved",
+   "city": "Westminster",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 24800.0
+  },
+  {
+   "apn": "222-093-16",
+   "propertyType": "improved",
+   "city": "Los Alamitos",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 19700.0
+  },
+  {
+   "apn": "224-181-01",
+   "propertyType": "improved",
+   "city": "Cypress",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 40100.0
+  },
+  {
+   "apn": "272-034-22",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 25700.0
+  },
+  {
+   "apn": "296-181-10",
+   "propertyType": "improved",
+   "city": "Brea",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 44300.0
+  },
+  {
+   "apn": "346-142-04",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 178500.0
+  },
+  {
+   "apn": "349-241-19",
+   "propertyType": "improved",
+   "city": "Yorba Linda",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 18000.0
+  },
+  {
+   "apn": "359-152-10",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 37500.0
+  },
+  {
+   "apn": "378-341-09",
+   "propertyType": "improved",
+   "city": "Orange",
+   "taxDefaultedOn": "2015-06-30",
+   "powerToSellOn": "2021-07-01",
+   "minimumBid": 26400.0
+  },
+  {
+   "apn": "401-283-07",
+   "propertyType": "improved",
+   "city": "Tustin",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 9100.0
+  },
+  {
+   "apn": "425-471-28",
+   "propertyType": "improved",
+   "city": "Newport Beach",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 445200.0
+  },
+  {
+   "apn": "434-191-48",
+   "propertyType": "improved",
+   "city": "Irvine",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 11900.0
+  },
+  {
+   "apn": "502-391-17",
+   "propertyType": "improved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 593200.0
+  },
+  {
+   "apn": "502-391-18",
+   "propertyType": "improved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 303100.0
+  },
+  {
+   "apn": "502-391-19",
+   "propertyType": "improved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 257400.0
+  },
+  {
+   "apn": "610-621-47",
+   "propertyType": "improved",
+   "city": "Lake Forest",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 126100.0
+  },
+  {
+   "apn": "621-131-21",
+   "propertyType": "improved",
+   "city": "Laguna Woods",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 90900.0
+  },
+  {
+   "apn": "637-154-13",
+   "propertyType": "improved",
+   "city": "Laguna Niguel",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 36000.0
+  },
+  {
+   "apn": "741-073-57",
+   "propertyType": "improved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 86800.0
+  },
+  {
+   "apn": "759-691-09",
+   "propertyType": "improved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 179000.0
+  },
+  {
+   "apn": "780-071-43",
+   "propertyType": "improved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 112100.0
+  },
+  {
+   "apn": "804-771-12",
+   "propertyType": "improved",
+   "city": "Rancho Santa Margarita",
+   "taxDefaultedOn": "2016-06-30",
+   "powerToSellOn": "2021-07-01",
+   "minimumBid": 191100.0
+  },
+  {
+   "apn": "930-199-44",
+   "propertyType": "improved",
+   "city": "Irvine",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 129800.0
+  },
+  {
+   "apn": "930-391-39",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 17200.0
+  },
+  {
+   "apn": "930-393-86",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 20400.0
+  },
+  {
+   "apn": "930-445-52",
+   "propertyType": "improved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 18200.0
+  },
+  {
+   "apn": "931-681-65",
+   "propertyType": "improved",
+   "city": "Laguna Woods",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 44900.0
+  },
+  {
+   "apn": "931-887-24",
+   "propertyType": "improved",
+   "city": "Rancho Santa Margarita",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 15900.0
+  },
+  {
+   "apn": "932-182-15",
+   "propertyType": "improved",
+   "city": "Fountain Valley",
+   "taxDefaultedOn": "2015-06-30",
+   "powerToSellOn": "2020-07-01",
+   "minimumBid": 37700.0
+  },
+  {
+   "apn": "932-760-34",
+   "propertyType": "improved",
+   "city": "Fullerton",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 20600.0
+  },
+  {
+   "apn": "932-891-18",
+   "propertyType": "improved",
+   "city": "Santa Ana",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 12500.0
+  },
+  {
+   "apn": "932-960-78",
+   "propertyType": "improved",
+   "city": "Laguna Woods",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 3000.0
+  },
+  {
+   "apn": "933-063-00",
+   "propertyType": "improved",
+   "city": "Mission Viejo",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 78800.0
+  },
+  {
+   "apn": "933-522-28",
+   "propertyType": "improved",
+   "city": "Huntington Beach",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 72200.0
+  },
+  {
+   "apn": "933-754-36",
+   "propertyType": "improved",
+   "city": "Rancho Santa Margarita",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 108700.0
+  },
+  {
+   "apn": "933-920-74",
+   "propertyType": "improved",
+   "city": "Santa Ana",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 22100.0
+  },
+  {
+   "apn": "934-830-30",
+   "propertyType": "improved",
+   "city": "Newport Beach",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 61100.0
+  },
+  {
+   "apn": "936-290-22",
+   "propertyType": "improved",
+   "city": "Huntington Beach",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 117600.0
+  },
+  {
+   "apn": "937-190-89",
+   "propertyType": "improved",
+   "city": "Huntington Beach",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 31300.0
+  },
+  {
+   "apn": "938-050-33",
+   "propertyType": "improved",
+   "city": "Lake Forest",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 38100.0
+  },
+  {
+   "apn": "938-591-23",
+   "propertyType": "improved",
+   "city": "Fountain Valley",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 65600.0
+  },
+  {
+   "apn": "939-193-95",
+   "propertyType": "improved",
+   "city": "Laguna Niguel",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 30800.0
+  },
+  {
+   "apn": "939-364-50",
+   "propertyType": "improved",
+   "city": "Dana Point",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 5600.0
+  },
+  {
+   "apn": "017-271-21",
+   "propertyType": "unimproved",
+   "city": "La Habra",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 4500.0
+  },
+  {
+   "apn": "056-240-57",
+   "propertyType": "unimproved",
+   "city": "Laguna Beach",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 3000.0
+  },
+  {
+   "apn": "056-240-65",
+   "propertyType": "unimproved",
+   "city": "Laguna Beach",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 11600.0
+  },
+  {
+   "apn": "056-240-67",
+   "propertyType": "unimproved",
+   "city": "Laguna Beach",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 8600.0
+  },
+  {
+   "apn": "057-102-41",
+   "propertyType": "unimproved",
+   "city": "San Clemente",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 1600.0
+  },
+  {
+   "apn": "060-160-04",
+   "propertyType": "unimproved",
+   "city": "San Clemente",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 3600.0
+  },
+  {
+   "apn": "105-101-10",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2014-06-30",
+   "powerToSellOn": "2019-07-01",
+   "minimumBid": 6800.0
+  },
+  {
+   "apn": "105-101-11",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2014-06-30",
+   "powerToSellOn": "2019-07-01",
+   "minimumBid": 4500.0
+  },
+  {
+   "apn": "105-152-16",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2013-06-30",
+   "powerToSellOn": "2018-07-01",
+   "minimumBid": 6000.0
+  },
+  {
+   "apn": "105-192-33",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2015-06-30",
+   "powerToSellOn": "2020-07-01",
+   "minimumBid": 5500.0
+  },
+  {
+   "apn": "105-222-71",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 19200.0
+  },
+  {
+   "apn": "107-665-13",
+   "propertyType": "unimproved",
+   "city": "Huntington Beach",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 5200.0
+  },
+  {
+   "apn": "110-186-09",
+   "propertyType": "unimproved",
+   "city": "Huntington Beach",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 3700.0
+  },
+  {
+   "apn": "110-186-14",
+   "propertyType": "unimproved",
+   "city": "Huntington Beach",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 1700.0
+  },
+  {
+   "apn": "121-254-30",
+   "propertyType": "unimproved",
+   "city": "San Juan Capistrano",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 19900.0
+  },
+  {
+   "apn": "135-123-19",
+   "propertyType": "unimproved",
+   "city": "Buena Park",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 40700.0
+  },
+  {
+   "apn": "199-201-74",
+   "propertyType": "unimproved",
+   "city": "Seal Beach",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 2900.0
+  },
+  {
+   "apn": "199-201-81",
+   "propertyType": "unimproved",
+   "city": "Seal Beach",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 2900.0
+  },
+  {
+   "apn": "222-043-19",
+   "propertyType": "unimproved",
+   "city": "Los Alamitos",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 4300.0
+  },
+  {
+   "apn": "222-052-30",
+   "propertyType": "unimproved",
+   "city": "Los Alamitos",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 37600.0
+  },
+  {
+   "apn": "222-092-18",
+   "propertyType": "unimproved",
+   "city": "Los Alamitos",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 17100.0
+  },
+  {
+   "apn": "280-176-24",
+   "propertyType": "unimproved",
+   "city": "Fullerton",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 3800.0
+  },
+  {
+   "apn": "312-041-06",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 1900.0
+  },
+  {
+   "apn": "323-391-17",
+   "propertyType": "unimproved",
+   "city": "Yorba Linda",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 20900.0
+  },
+  {
+   "apn": "326-021-43",
+   "propertyType": "unimproved",
+   "city": "Yorba Linda",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 16000.0
+  },
+  {
+   "apn": "346-181-02",
+   "propertyType": "unimproved",
+   "city": "Placentia",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 2500.0
+  },
+  {
+   "apn": "356-121-50",
+   "propertyType": "unimproved",
+   "city": "Anaheim",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 61300.0
+  },
+  {
+   "apn": "398-381-03",
+   "propertyType": "unimproved",
+   "city": "Santa Ana",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 1600.0
+  },
+  {
+   "apn": "408-191-12",
+   "propertyType": "unimproved",
+   "city": "Santa Ana",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 42900.0
+  },
+  {
+   "apn": "502-391-10",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 197400.0
+  },
+  {
+   "apn": "641-221-11",
+   "propertyType": "unimproved",
+   "city": "Laguna Beach",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 5600.0
+  },
+  {
+   "apn": "644-414-10",
+   "propertyType": "unimproved",
+   "city": "Laguna Beach",
+   "taxDefaultedOn": "2014-06-30",
+   "powerToSellOn": "2019-07-01",
+   "minimumBid": 14200.0
+  },
+  {
+   "apn": "644-426-08",
+   "propertyType": "unimproved",
+   "city": "Laguna Beach",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 3400.0
+  },
+  {
+   "apn": "656-124-20",
+   "propertyType": "unimproved",
+   "city": "Laguna Beach",
+   "taxDefaultedOn": "2019-06-30",
+   "powerToSellOn": "2024-07-01",
+   "minimumBid": 14100.0
+  },
+  {
+   "apn": "675-172-38",
+   "propertyType": "unimproved",
+   "city": "San Clemente",
+   "taxDefaultedOn": "2016-06-30",
+   "powerToSellOn": "2021-07-01",
+   "minimumBid": 43200.0
+  },
+  {
+   "apn": "679-161-32",
+   "propertyType": "unimproved",
+   "city": "San Clemente",
+   "taxDefaultedOn": "2015-06-30",
+   "powerToSellOn": "2020-07-01",
+   "minimumBid": 3400.0
+  },
+  {
+   "apn": "680-301-09",
+   "propertyType": "unimproved",
+   "city": "San Clemente",
+   "taxDefaultedOn": "2018-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 8200.0
+  },
+  {
+   "apn": "692-121-15",
+   "propertyType": "unimproved",
+   "city": "San Clemente",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 72300.0
+  },
+  {
+   "apn": "692-121-17",
+   "propertyType": "unimproved",
+   "city": "San Clemente",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 45600.0
+  },
+  {
+   "apn": "842-102-17",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2023-07-01",
+   "minimumBid": 8100.0
+  },
+  {
+   "apn": "866-052-31",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 22600.0
+  },
+  {
+   "apn": "867-061-03",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 65900.0
+  },
+  {
+   "apn": "867-061-04",
+   "propertyType": "unimproved",
+   "city": "Unincorporated Orange County",
+   "taxDefaultedOn": "2017-06-30",
+   "powerToSellOn": "2022-07-01",
+   "minimumBid": 17200.0
+  },
+  {
+   "apn": "931-982-85",
+   "propertyType": "unimproved",
+   "city": "San Juan Capistrano",
+   "taxDefaultedOn": "2015-06-30",
+   "powerToSellOn": "2021-07-01",
+   "minimumBid": 29100.0
+  }
+ ]
+}

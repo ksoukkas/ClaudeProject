@@ -32,9 +32,12 @@ unknown, and get the request drafted for them to send before the day-before cuto
 
 One niche, five parts, three cities. Every screen says it is a prototype and not legal advice.
 
-1. **Chapter 8 pipeline** (`/market`). The heart of the product. Paste the Orange County
-   Treasurer-Tax Collector's tax-defaulted auction list and every parcel in Santa Ana, Stanton or
-   Anaheim gets a flag: listed for auction with the cutoff computed as 5 PM the day before (the
+1. **Chapter 8 parcels** (`/chapter8`) and **pipeline** (`/market`). The heart of the product.
+   The county's real list is loaded: 108 Orange County land parcels from the Treasurer-Tax
+   Collector's Exhibit I for the June 25, 2025 auction, each with six Chapter 8 tests run through
+   the confidence engine and the State Controller's ten-step application checklist. Street
+   addresses are left out. When the county publishes a newer list, paste it into the pipeline and
+   every parcel in Santa Ana, Stanton or Anaheim gets a flag: listed for auction with the cutoff computed as 5 PM the day before (the
    county's own stated redemption deadline, read 2026-11-07), power to sell but not yet scheduled,
    cutoff passed, or redeemed. The county's facts are shown with the date read; the statute
    sections are cited UNVERIFIED until read in full. Owner and assessee columns are dropped on
@@ -90,9 +93,10 @@ npm run dev
 
 Open <http://localhost:3000>. Then:
 
-- `/market` first: click **Load SYNTHETIC sample** to see the Chapter 8 flags, or paste the county
-  list you downloaded from the Treasurer-Tax Collector
-- `/results?q=Santa Ana, 10 homes, near transit` for the live scout, filters and map
+- `/chapter8` first: the real June 2025 county list, parcel by parcel, with the application checklist
+- `/market` to paste a newer county list, or click **Load SYNTHETIC sample** to see the flags
+- `/results?q=Anaheim, 10 homes, near transit` for the live scout, filters and map (SCAG's
+  housing-element layer has no Santa Ana sites, and the scout says so for that city)
 - `/report` for the feasibility reports (three synthetic parcels, then real public-land notices)
 - `/about` for how confidence works and what is real versus mocked
 
@@ -142,7 +146,9 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
 | Feasibility report: state-law tests with sources and verdicts | working; most hazard and local-code tests return unknown because those layers are not queried per parcel yet |
 | Feasibility report: local zoning plain-English translation | mocked: the slot exists, no city code text is wired |
 | Title and CC&R check | partly working: checklist, flags from parcel signals, and a draft request; no title data exists in public sources, so it never returns pass |
-| Chapter 8 pipeline: county tax-defaulted list | user-pasted only, with a labelled synthetic sample; no real list is cached yet. Flags and evidence levels work on whatever is pasted |
+| Chapter 8 parcels: county tax-defaulted list | real: 108 land parcels from the county's June 25, 2025 Exhibit I, cached with its source; the list is five months old and the page says so |
+| Chapter 8 pipeline: newer lists | user-pasted, with a labelled synthetic sample; flags and evidence levels work on whatever is pasted |
+| Matchmaking directory | removed; not part of the product |
 | Chapter 8 pipeline: Surplus Land Act notices (second channel) | working on real data; 0 of the 138 focus-city notices were active on 2026-11-06, and the page says so |
 | Honest confidence | working; sample-data sites are capped at Low because their documents are fictional |
 | Map and filters | working: filters over the sample parcels and the real housing-element points |

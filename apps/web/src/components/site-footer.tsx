@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { SNAPSHOT_DATE } from "@/lib/sample-data";
 import { FigmaIcon } from "@/components/ui";
 
@@ -13,10 +12,7 @@ export function SiteFooter() {
           and Caltrans public layers and say what is unknown. Screening only,
           not legal advice. Cucumber is a prototype
           built at the Claude Impact Lab: talk to a professional before making
-          decisions.{" "}
-          <Link href="/about" className="text-accent hover:underline">
-            What is real and what is assumed
-          </Link>
+          decisions.
         </p>
         <p className="whitespace-nowrap">Data snapshot · {SNAPSHOT_DATE}</p>
       </div>
