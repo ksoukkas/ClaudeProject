@@ -29,7 +29,7 @@ export type ArcResponse = {
   error?: { code?: number; message?: string };
 };
 
-const USER_AGENT = "Siteline-hackathon-prototype (UCI Claude Impact Lab; low-volume, cached)";
+const USER_AGENT = "Cucumber-hackathon-prototype (UCI Claude Impact Lab; low-volume, cached)";
 
 async function arcQuery(
   sourceName: string,

@@ -33,7 +33,7 @@ export default function ScoutPage() {
           Find the land. See the possibility.
         </h1>
         <p className="max-w-[700px] text-[16px] leading-[1.5] text-muted">
-          Tell us what you hope to build. Siteline connects parcel data and
+          Tell us what you hope to build. Cucumber connects parcel data and
           California housing laws so you know where to look — and what to
           verify.
         </p>

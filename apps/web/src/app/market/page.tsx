@@ -39,7 +39,7 @@ export default function MarketPage() {
       title="On the market"
       description="Land that is, or has been, offered. Public notices are real data; private listings only appear if you paste them."
     >
-      <div className="rounded-md border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+      <div className="rounded-md border border-line bg-review-soft p-4 text-sm text-review">
         <p className="font-semibold">
           {activeCount === 0
             ? `No active Surplus Land Act notice in Orange County in HCD's list (last modified ${prov.resourceLastModified.slice(0, 10)}, fetched ${prov.fetched}).`
@@ -62,7 +62,7 @@ export default function MarketPage() {
       <section className="flex flex-col gap-3">
         <div>
           <h2 className="text-lg font-semibold">Public notices in Orange County</h2>
-          <p className="mt-1 text-sm text-neutral-600">
+          <p className="mt-1 text-sm text-ink-soft">
             Each row is screened by the feasibility engine using only what the notice says, so
             most tests are unknown. &quot;Not blocked&quot; lists laws with no failing test and at
             least one passing one; laws with nothing resolved yet are shown in grey. Neither is a
@@ -72,7 +72,7 @@ export default function MarketPage() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1100px] border-collapse text-sm">
             <thead>
-              <tr className="border-b border-neutral-200 text-left text-xs uppercase tracking-wide text-neutral-500">
+              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
                 <th className="py-2 pr-3 font-medium">Flag</th>
                 <th className="py-2 pr-3 font-medium">Agency</th>
                 <th className="py-2 pr-3 font-medium">City</th>
@@ -88,27 +88,27 @@ export default function MarketPage() {
             </thead>
             <tbody>
               {rows.map(({ n, flag, withEvidence, noEvidence, unknown, total }) => (
-                <tr key={n.id} className="border-b border-neutral-100 align-top">
+                <tr key={n.id} className="border-b border-line align-top">
                   <td className="py-2 pr-3">
                     <FlagBadge flag={flag} />
                   </td>
                   <td className="py-2 pr-3">
                     <p>{n.agency || "—"}</p>
-                    <p className="text-xs text-neutral-500">{n.agencyType}</p>
+                    <p className="text-xs text-muted">{n.agencyType}</p>
                   </td>
                   <td className="py-2 pr-3">{n.city || "—"}</td>
                   <td className="py-2 pr-3">
                     {n.addressWithheld ? (
-                      <p className="text-neutral-500">{n.addressWithheld}</p>
+                      <p className="text-muted">{n.addressWithheld}</p>
                     ) : (
                       <p>{n.address || "—"}</p>
                     )}
-                    <p className="text-xs text-neutral-500">APN {n.apnRaw || "—"}</p>
+                    <p className="text-xs text-muted">APN {n.apnRaw || "—"}</p>
                   </td>
                   <td className="py-2 pr-3">
                     {n.sizeAcres !== null ? n.sizeAcres : "—"}
                     {n.sizeRaw && n.sizeAcres === null ? (
-                      <span className="block text-xs text-neutral-500">{n.sizeRaw}</span>
+                      <span className="block text-xs text-muted">{n.sizeRaw}</span>
                     ) : null}
                   </td>
                   <td className="py-2 pr-3">{n.generalPlanZoning || "—"}</td>
@@ -118,11 +118,11 @@ export default function MarketPage() {
                   <td className="py-2 pr-3">
                     <p>{withEvidence.length ? withEvidence.join(", ") : "none with a passing test"}</p>
                     {noEvidence.length ? (
-                      <p className="text-xs text-neutral-500">
+                      <p className="text-xs text-muted">
                         {noEvidence.join(", ")}: nothing resolved yet
                       </p>
                     ) : null}
-                    <p className="text-xs text-neutral-500">
+                    <p className="text-xs text-muted">
                       {unknown} of {total} unknown
                     </p>
                   </td>
@@ -140,41 +140,41 @@ export default function MarketPage() {
 
       <section className="flex flex-col gap-2 text-sm">
         <h2 className="text-lg font-semibold">Where this data comes from</h2>
-        <div className="rounded-md border border-neutral-200 p-4">
+        <div className="rounded-md border border-line p-4">
           <p>
             <a href={prov.datasetUrl} target="_blank" rel="noreferrer" className="underline">
               {prov.dataset}
             </a>{" "}
-            <span className="rounded bg-neutral-100 px-1 text-xs text-neutral-700">
+            <span className="rounded bg-canvas px-1 text-xs text-ink-soft">
               {source.status}
             </span>{" "}
-            <span className="text-xs text-neutral-500">
+            <span className="text-xs text-muted">
               checked {source.checked}; resource last modified {prov.resourceLastModified}; fetched{" "}
               {prov.fetched}
             </span>
           </p>
-          <p className="mt-1 text-neutral-700">License: {prov.license}.</p>
-          <p className="mt-1 text-neutral-700">
+          <p className="mt-1 text-ink-soft">License: {prov.license}.</p>
+          <p className="mt-1 text-ink-soft">
             {prov.rowsKept} of {prov.totalRowsStatewide} statewide rows kept. {prov.filter}
           </p>
-          <p className="mt-1 text-neutral-700">{prov.privacy}</p>
-          <p className="mt-2 text-xs font-medium uppercase tracking-wide text-neutral-500">
+          <p className="mt-1 text-ink-soft">{prov.privacy}</p>
+          <p className="mt-2 text-xs font-medium uppercase tracking-wide text-muted">
             Columns dropped
           </p>
-          <ul className="list-disc pl-5 text-neutral-700">
+          <ul className="list-disc pl-5 text-ink-soft">
             {prov.columnsDropped.map((c) => (
               <li key={c}>{c}</li>
             ))}
           </ul>
-          <p className="mt-2 text-xs font-medium uppercase tracking-wide text-neutral-500">
+          <p className="mt-2 text-xs font-medium uppercase tracking-wide text-muted">
             Derived fields
           </p>
-          <ul className="list-disc pl-5 text-neutral-700">
+          <ul className="list-disc pl-5 text-ink-soft">
             {prov.derivedFields.map((c) => (
               <li key={c}>{c}</li>
             ))}
           </ul>
-          <p className="mt-2 text-xs text-neutral-500">
+          <p className="mt-2 text-xs text-muted">
             Zoning categories on this page come from a keyword reading of the notice text
             (ASSUMPTION). The notice text is shown as written.
           </p>

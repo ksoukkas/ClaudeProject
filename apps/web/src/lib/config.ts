@@ -3,8 +3,8 @@
  * be shared with other clients later.
  */
 export const site = {
-  name: "Siteline",
-  tagline: "Find the land. See the possibility.",
+  name: "Cucumber",
+  tagline: "Land intelligence for affordable housing.",
   nav: [
     { href: "/", label: "Scout" },
     { href: "/matchmaking", label: "Matchmaking" },

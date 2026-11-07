@@ -38,7 +38,7 @@ const FIELDS = [
 const outDir = join(dirname(fileURLToPath(import.meta.url)), "..", "public", "data");
 
 async function getJson(url) {
-  const res = await fetch(url, { headers: { "User-Agent": "siteline-hackathon-prototype" } });
+  const res = await fetch(url, { headers: { "User-Agent": "cucumber-hackathon-prototype" } });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
   const body = await res.json();
   if (body.error) throw new Error(`ArcGIS error for ${url}: ${JSON.stringify(body.error)}`);
@@ -110,7 +110,7 @@ async function main() {
   for (let page = 0; page < pages; page++) {
     const params = { ...query, resultOffset: String(page * max), resultRecordCount: String(max) };
     const url = `${LAYER}/query?${new URLSearchParams(params)}`;
-    const res = await fetch(url, { headers: { "User-Agent": "siteline-hackathon-prototype" } });
+    const res = await fetch(url, { headers: { "User-Agent": "cucumber-hackathon-prototype" } });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText} for ${url}`);
     const fc = await res.json();
     if (fc.error) throw new Error(`ArcGIS error: ${JSON.stringify(fc.error)}`);

@@ -11,7 +11,7 @@ export function SiteFooter() {
           Sample screens use fictional addresses, owners, listings and
           findings. Results marked &quot;Live public data&quot; come from SCAG
           and Caltrans public layers and say what is unknown. Screening only,
-          not legal advice. Siteline is a prototype
+          not legal advice. Cucumber is a prototype
           built at the Claude Impact Lab: talk to a professional before making
           decisions.{" "}
           <Link href="/about" className="text-accent hover:underline">

@@ -63,9 +63,9 @@ const pinColor: Record<Feasibility, string> = {
 
 /* Public sites: planned homes vs the unit goal (see --color-plan-* tokens). */
 const planHex: Record<GoalLabel, string> = {
-  meets: "#2f7d5b",
-  below: "#8e8e93",
-  unknown: "#c7c7cc",
+  meets: "#5c8a4a",
+  below: "#84977f",
+  unknown: "#c9d3c4",
 };
 const planBg: Record<GoalLabel, string> = {
   meets: "bg-plan-meets",
@@ -304,7 +304,7 @@ export default function ParcelMap({
       source: HE_SOURCE,
       filter: ["has", "point_count"],
       paint: {
-        "circle-color": "#6e6e73",
+        "circle-color": "#455e4f",
         "circle-opacity": 0.82,
         "circle-stroke-color": "#ffffff",
         "circle-stroke-width": 2,
@@ -354,7 +354,7 @@ export default function ParcelMap({
       paint: {
         "circle-color": "rgba(0,0,0,0)",
         "circle-radius": 13,
-        "circle-stroke-color": "#1c1c1e",
+        "circle-stroke-color": "#174738",
         "circle-stroke-width": 3,
       },
     });

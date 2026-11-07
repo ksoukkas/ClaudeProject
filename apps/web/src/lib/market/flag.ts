@@ -25,7 +25,7 @@ export function computeOnMarketFlag(signals: MarketSignal[]): OnMarketFlag {
     return {
       state: "uploaded-listing",
       label: "Listed for sale, per your upload",
-      reason: `Matched a row you pasted (${listing.detail}${listing.date ? `, listed ${listing.date}` : ""}). Siteline did not verify it; the listing is your data.`,
+      reason: `Matched a row you pasted (${listing.detail}${listing.date ? `, listed ${listing.date}` : ""}). Cucumber did not verify it; the listing is your data.`,
       signals,
       sourceIds,
     };
