@@ -11,6 +11,7 @@ import { sanitizeClaudeCriteria } from "./parse-claude";
 import { findCity, parseQueryFallback } from "./parse-fallback";
 import { goalBasis, preselect, rankCandidates } from "./rank";
 import type { HousingElementSite } from "./retrieve";
+import { runScout } from "./scout";
 
 test("fallback parser reads the default search", () => {
   const c = parseQueryFallback("Anaheim, 40+ affordable units, near transit");
@@ -177,4 +178,88 @@ test("'why' lines with numbers not in the facts are rejected", () => {
   assert.equal(validateWhy("Land costs about $2 million.", facts), null);
   assert.equal(validateWhy("", facts), null);
   assert.ok(validateWhy("The 3.01-acre site's owner is unknown.", facts));
+});
+
+test("with a unit goal, goal-meeting sites rank above higher-scoring sites below it", () => {
+  const criteria = parseQueryFallback("Anaheim, 40+ affordable units, near transit");
+  const transit = new Map([
+    ["1", { inHqta: false, plannedOnly: false, types: [], agencies: [] }],
+    ["2", { inHqta: true, plannedOnly: false, types: ["hq_corridor_bus"], agencies: [] }],
+  ]);
+  const ranked = rankCandidates("Anaheim", [site("1", 45, 0, 0), site("2", 39, 0, 0)], criteria, {
+    transit,
+    transitNote: "n/a",
+    zoning: new Map(),
+  });
+  assert.deepEqual(
+    ranked.map((c) => [c.pid24, c.score, c.meetsGoal]),
+    [
+      ["1", 50, true],
+      ["2", 78.8, false],
+    ],
+  );
+});
+
+test("network down: runScout returns an honest source-error, never throws", async () => {
+  delete process.env.ANTHROPIC_API_KEY;
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = (async () => {
+    throw new TypeError("fetch failed");
+  }) as typeof fetch;
+  try {
+    const r = await runScout("Brea, 30 affordable units (offline test)");
+    assert.equal(r.status, "source-error");
+    assert.match(r.reason ?? "", /SCAG housing element sites: could not connect/);
+    assert.equal(r.parser.kind, "fallback");
+    assert.equal(r.candidates.length, 0);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});
+
+test("zoning service down: candidates still return, zoning unknown with a warning", async () => {
+  const realFetch = globalThis.fetch;
+  const ring = [
+    [-117.9, 33.9],
+    [-117.899, 33.9],
+    [-117.899, 33.901],
+    [-117.9, 33.901],
+    [-117.9, 33.9],
+  ];
+  globalThis.fetch = (async (input: string | URL | Request) => {
+    const url = String(input);
+    if (url.includes("Zoning_poly_OR")) return new Response("oops", { status: 503 });
+    return Response.json({
+      features: [
+        {
+          attributes: {
+            PID24: "0590000000001",
+            Assessor_Parcel_Number: "000-000-01",
+            Jurisdiction: "LA HABRA",
+            Low_Income_HE_Capacity: 12,
+            Moderate_Income_HE_Capacity: 0,
+            Above_Moderate_Income_HE_Capacity: 3,
+            Total_HE_Capacity: 15,
+            YEAR: 2025,
+            "Shape.STArea()": 8093.71,
+          },
+          geometry: { rings: [ring] },
+        },
+      ],
+    });
+  }) as typeof fetch;
+  try {
+    const r = await runScout("La Habra affordable homes (offline test)");
+    assert.equal(r.status, "ok");
+    assert.equal(r.candidates.length, 1);
+    const [c] = r.candidates;
+    assert.equal(c.zoning.value, "unknown");
+    assert.equal(c.acres.value, 2);
+    assert.equal(c.acres.sourceId, "scag-he");
+    assert.equal(c.transit.value, "unknown", "transit was not asked for");
+    assert.ok(r.warnings.some((w) => w.startsWith("Zoning could not be read: SCAG zoning: HTTP 503")));
+    assert.ok(!r.sources.includes("scag-zoning"));
+  } finally {
+    globalThis.fetch = realFetch;
+  }
 });

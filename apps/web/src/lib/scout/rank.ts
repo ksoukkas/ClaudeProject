@@ -7,7 +7,8 @@
  *   transit:  only when the search asks for transit. TRANSIT_POINTS inside a
  *             Caltrans HQTA with existing service, PLANNED_TRANSIT_POINTS when
  *             only an MPO-planned stop matches, 0 otherwise or when unknown.
- * Ties break on total capacity, then APN, so the order is reproducible.
+ * With a unit goal, sites that meet it come first (ASSUMPTION). Ties break on
+ * total capacity, then APN, so the order is reproducible.
  */
 import { laws, type LawId } from "../sample-data";
 import {
@@ -276,8 +277,12 @@ export function rankCandidates(
     return base;
   });
 
+  // ASSUMPTION (see config.ts scoreWeights): with a unit goal, sites that meet
+  // it are listed before sites that don't; score orders within each group.
+  const goalRank = (c: { meetsGoal: boolean | null }) => (c.meetsGoal === false ? 1 : 0);
   built.sort(
     (a, b) =>
+      goalRank(a) - goalRank(b) ||
       b.score - a.score ||
       b.capacity.total - a.capacity.total ||
       a.apn.localeCompare(b.apn),

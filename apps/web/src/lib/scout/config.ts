@@ -53,7 +53,7 @@ export const ASSUMPTIONS = {
     id: "score-weights",
     label: "Score = up to 50 points for capacity + up to 30 for transit (only when you ask for transit)",
     basis:
-      "Weights are a team choice to make the ranking explainable, not a measure of feasibility. A planned-only transit stop gets 10. Change them in src/lib/scout/config.ts.",
+      "Weights are a team choice to make the ranking explainable, not a measure of feasibility. A planned-only transit stop gets 10. With a unit goal, sites that meet it are listed first and the score orders sites within each group. Change them in src/lib/scout/config.ts and rank.ts.",
   },
   cacheTtl: {
     id: "cache-ttl",

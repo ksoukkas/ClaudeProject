@@ -12,7 +12,7 @@ import { CACHE_TTL_MS, ENRICH_COUNT, hasAnthropicKey, scoutModel } from "./confi
 import { explainWithClaude } from "./explain";
 import { describeClaudeError, parseQueryWithClaude } from "./parse-claude";
 import { parseQueryFallback } from "./parse-fallback";
-import { rankCandidates, preselect, type Enrichment } from "./rank";
+import { goalBasis, preselect, rankCandidates, type Enrichment } from "./rank";
 import { fetchHousingElementSites, fetchTransitForPoints, fetchZoning, SourceError } from "./retrieve";
 import type { SourceId } from "./sources";
 import type { Criteria, ParserInfo, ScoutResult } from "./types";
@@ -63,7 +63,7 @@ async function scout(query: string): Promise<ScoutResult> {
 
   if (criteria.ownerHints.length) {
     warnings.push(
-      `You asked for ${criteria.ownerHints.join(" / ")} land. Owner type is not in these public layers, so no result is confirmed as that owner type.`,
+      `You asked for owner type: ${criteria.ownerHints.join(", ")}. Owner type is not in these public layers, so no result is confirmed as that owner type.`,
     );
   }
   if (criteria.affordability.sharePercent != null) {
@@ -114,11 +114,14 @@ async function scout(query: string): Promise<ScoutResult> {
       warnings,
     };
   }
-  if (sites.length > shortlist.length) {
-    warnings.push(
-      `${sites.length} sites in ${criteria.city}; only the ${shortlist.length} with the most capacity were checked further (ASSUMPTION: top ${ENRICH_COUNT}).`,
-    );
-  }
+  const eligible = sites.filter((s) => goalBasis(criteria, s).units > 0).length;
+  const basisLabel = goalBasis(criteria, shortlist[0]).label;
+  warnings.push(
+    `${sites.length} housing element sites in ${criteria.city}; ${eligible} list any ${basisLabel}.` +
+      (eligible > shortlist.length
+        ? ` Only the ${shortlist.length} with the most were checked for transit and zoning (ASSUMPTION: at most ${ENRICH_COUNT}).`
+        : ""),
+  );
 
   const enrichment: Enrichment = { transit: null, transitNote: "Not checked: your search did not ask for transit", zoning: null };
   const [transitResult, zoningResult] = await Promise.allSettled([
