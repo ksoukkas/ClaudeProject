@@ -1,1 +1,54 @@
 @import "tailwindcss";
+
+/*
+ * Design tokens from the Siteline Figma file (desktop screens, Nov 2026).
+ * Use these names in class lists (bg-canvas, text-ink, border-line, ...)
+ * instead of raw hex values.
+ */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-lora), ui-serif, Georgia, serif;
+
+  --color-canvas: #f2f2f7; /* page background, quiet panels */
+  --color-surface: #ffffff; /* cards */
+  --color-line: #e5e5ea; /* borders, dividers, neutral tags */
+  --color-ink: #1c1c1e; /* primary text */
+  --color-ink-soft: #6e6e73; /* secondary text */
+  --color-muted: #8e8e93; /* tertiary text, captions */
+
+  --color-accent: #007aff;
+  --color-accent-soft: #e6f2ff;
+
+  /* Feasibility states */
+  --color-feasible: #007aff;
+  --color-feasible-soft: #e6f2ff;
+  --color-review: #ff9500;
+  --color-review-soft: #fff1e6;
+  --color-blocked: #ff3b30;
+  --color-blocked-soft: #ffebee;
+
+  /* Scout progress steps */
+  --color-step-ink: #293c37;
+  --color-step-muted: #6d756d;
+  --color-step-done: #e6eee4;
+  --color-step-active: #f3e6de;
+  --color-step-active-ink: #a64f36;
+  --color-step-todo: #f7f5ef;
+}
+
+@media print {
+  /* The site memo page prints only the memo sheet. */
+  body:has([data-print-root]) * {
+    visibility: hidden;
+  }
+  [data-print-root],
+  [data-print-root] * {
+    visibility: visible;
+  }
+  [data-print-root] {
+    position: absolute;
+    inset: 0 auto auto 0;
+    box-shadow: none !important;
+    border: 0 !important;
+  }
+}
