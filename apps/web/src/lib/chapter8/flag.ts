@@ -10,6 +10,13 @@ export const CHAPTER8_LIST_MAX_AGE_DAYS = 30;
 
 const STATUTE_SOURCES = ["rtc-3692-4", "rtc-3791-4", "rtc-chapter-8"];
 
+/** ISO date one calendar day before the given ISO date, in local time. */
+function dayBefore(iso: string): string {
+  const d = new Date(`${iso}T12:00:00`);
+  d.setDate(d.getDate() - 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 /**
  * Where this parcel sits in the Chapter 8 process. The window language is
  * deliberately careful: the statute sets who may ask and for what, and the
@@ -27,21 +34,25 @@ export function computeChapter8Flag(p: TaxDefaultedParcel, today: Date): Chapter
     };
   }
   if (p.status === "scheduled-auction") {
-    const future = p.auctionDate ? new Date(`${p.auctionDate}T23:59:59`) > today : null;
-    if (future === false) {
+    // The county states that owners may redeem until 5 PM the day before the
+    // auction (OC Treasurer-Tax Collector, read 2026-11-07). That is the only
+    // cutoff we hold a source for, so it is the one shown.
+    const cutoff = p.auctionDate ? dayBefore(p.auctionDate) : null;
+    const cutoffPassed = cutoff ? new Date(`${cutoff}T17:00:00`) <= today : null;
+    if (cutoffPassed === true) {
       return {
         state: "auction-passed",
-        label: "Auction date passed",
-        reason: `The listed auction date (${p.auctionDate}) has passed. Check the county's results: the parcel may have sold, been re-offered or been redeemed.`,
-        deadline: p.auctionDate,
+        label: "Redemption cutoff passed",
+        reason: `The owner's redemption cutoff (5 PM on ${cutoff}, the day before the ${p.auctionDate} auction, per the OC Treasurer-Tax Collector) has passed. Check the county's results: the parcel may have sold, been re-offered or been redeemed.`,
+        deadline: cutoff,
         sourceIds: [p.sourceId, "octtc-tax-auction"],
       };
     }
     return {
       state: "request-window-open",
-      label: "Chapter 8 request window",
-      reason: `Listed for tax auction${p.auctionDate ? ` on ${p.auctionDate}` : ""}. Under the Revenue and Taxation Code a nonprofit may ask the tax collector to withhold a tax-defaulted parcel from auction and sell it by agreement for low-income housing (sections 3692.4 and 3791.4, read in secondary copies only; verify the full text and the county's own cutoff). The owner can still redeem until 5 PM the day before the auction (OC Treasurer-Tax Collector).`,
-      deadline: p.auctionDate,
+      label: "Listed for auction; ask before the cutoff",
+      reason: `Listed for tax auction${p.auctionDate ? ` on ${p.auctionDate}` : ""}. UNVERIFIED legal basis: as this tool understands the Revenue and Taxation Code, a nonprofit may ask the tax collector to withhold a tax-defaulted parcel from auction and buy it by agreement for low-income housing (section 3692.4 was seen only in a search snippet; section 3791.4 was not read). Read both in a browser and ask the tax collector for the county's own request cutoff. The one dated fact held here: the owner may redeem until 5 PM the day before the auction${cutoff ? ` (${cutoff})` : ""}, per the OC Treasurer-Tax Collector.`,
+      deadline: cutoff,
       sourceIds: base,
     };
   }
@@ -50,7 +61,7 @@ export function computeChapter8Flag(p: TaxDefaultedParcel, today: Date): Chapter
       state: "power-to-sell",
       label: "Power to sell, no auction yet",
       reason:
-        "The county has recorded its power to sell but has not scheduled this parcel. A Chapter 8 agreement can be raised with the tax collector before it reaches an auction list; the timing is set by the statute and county practice, not restated here.",
+        "The county list shows its power to sell but no scheduled auction for this parcel. Whether and when a Chapter 8 agreement can be raised before a parcel reaches an auction list is not verified here: ask the tax collector and read the statute (cited UNVERIFIED).",
       deadline: null,
       sourceIds: base,
     };

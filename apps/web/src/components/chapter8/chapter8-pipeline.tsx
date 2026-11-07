@@ -204,6 +204,7 @@ export function Chapter8Pipeline() {
             </label>
             <span className="text-neutral-600">
               {rows.length} of {parcels.length} rows
+              {focusOnly ? " (rows outside the focus cities or without a city are hidden)" : ""}
             </span>
           </div>
 
@@ -255,7 +256,8 @@ export function Chapter8Pipeline() {
                       {p.defaultYear ?? "—"}
                       {p.yearsDelinquent !== null ? (
                         <span className="block text-xs text-neutral-500">
-                          {p.yearsDelinquent} yr{p.yearsDelinquent === 1 ? "" : "s"} at list date
+                          about {p.yearsDelinquent} yr{p.yearsDelinquent === 1 ? "" : "s"} by
+                          calendar year
                         </span>
                       ) : null}
                     </td>

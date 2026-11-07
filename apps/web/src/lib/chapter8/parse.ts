@@ -1,22 +1,28 @@
-import { FOCUS_CITIES } from "@/lib/focus";
+import { isFocusCity } from "@/lib/focus";
 import { csvToObjects, normalizeApn } from "@/lib/market/csv";
 import type { Chapter8Status, TaxDefaultedParcel } from "./types";
 
-const APN_KEYS = ["apn", "parcel", "parcel number", "assessor parcel number", "assessment no", "assessment number", "ain"];
-const CITY_KEYS = ["city", "situs city", "tax rate area city", "community"];
-const SITUS_KEYS = ["situs", "situs address", "address", "site address", "property address", "location"];
-const USE_KEYS = ["use", "land use", "use code", "property type", "description", "improvement"];
-const DEFAULT_YEAR_KEYS = ["default year", "year defaulted", "default date", "year of default", "tax default year"];
-const MIN_BID_KEYS = ["min bid", "minimum bid", "opening bid", "starting bid"];
-const AUCTION_KEYS = ["auction date", "sale date", "auction", "sale"];
-const STATUS_KEYS = ["status", "auction status", "sale status"];
+// Keys are in priority order: the first key that matches a column wins.
+const APN_KEYS = ["apn", "assessor parcel number", "assessment no", "assessment number", "parcel number", "parcel", "ain"];
+const CITY_KEYS = ["situs city", "city", "tax rate area city", "community"];
+const SITUS_KEYS = ["situs address", "situs", "site address", "property address", "address"];
+const USE_KEYS = ["land use", "use code", "use", "property type", "improvement", "description"];
+const DEFAULT_YEAR_KEYS = ["default year", "year defaulted", "year of default", "tax default year", "default date"];
+const MIN_BID_KEYS = ["minimum bid", "min bid", "opening bid", "starting bid"];
+const AUCTION_KEYS = ["auction date", "sale date", "auction"];
+const STATUS_KEYS = ["auction status", "sale status", "status"];
 const LIST_DATE_KEYS = ["list date", "as of", "published", "notice date"];
 
+/** Columns that could carry a person's details are never read, whatever they are called. */
+const NEVER_READ = /owner|assessee|taxpayer|mail|name|phone|email/i;
+
 function pick(row: Record<string, string>, keys: string[], used: Set<string>): string | null {
-  for (const k of Object.keys(row)) {
-    if (keys.includes(k.toLowerCase().trim())) {
-      used.add(k);
-      return row[k] || null;
+  const cols = Object.keys(row).filter((k) => !NEVER_READ.test(k));
+  for (const key of keys) {
+    const col = cols.find((k) => k.toLowerCase().trim() === key);
+    if (col) {
+      used.add(col);
+      return row[col] || null;
     }
   }
   return null;
@@ -42,24 +48,34 @@ function toIsoDate(s: string | null): string | null {
   m = t.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (m) return `${m[1]}-${m[2]}-${m[3]}`;
   const d = new Date(t);
-  return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
+  if (Number.isNaN(d.getTime())) return null;
+  // Local date parts, so a parsed date never shifts a day across time zones.
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
-/** Same privacy rule as the notices: a use that reads as a home gets its address withheld. */
+/**
+ * Privacy default: withhold the address unless the use clearly reads as
+ * land or a non-residential property. A missing use withholds. Stricter than
+ * the notices rule because tax-defaulted lists include lived-in homes.
+ */
 export function readsAsHome(use: string | null): boolean {
-  if (!use) return false;
+  if (!use) return true;
   const own = use.replace(/(bordered by|between|adjacent to|next to|near|surrounded by|across)[^.;|]*/gi, "");
-  if (/occupied/i.test(own) && !/unoccupied/i.test(own)) return true;
-  return (
-    /resid|dwelling|house|home|apartment|mobile\s*home|sfr|condo/i.test(own) &&
-    !/vacant|unoccupied|undeveloped|unimproved|former|land only/i.test(own)
-  );
+  const residential =
+    /occupied|resid|dwelling|house|home|apartment|duplex|triplex|fourplex|condo|townh|mobile\s*home|sfr|\bunits?\b/i.test(own) &&
+    !/unoccupied/i.test(own);
+  if (residential) return true;
+  const clearlyNotAHome =
+    /vacant|undeveloped|unimproved|land only|lot only|parking|commercial|retail|office|industrial|warehouse|church|school|agricultur|open space|right[- ]of[- ]way|sliver|easement|strip/i.test(own);
+  return !clearlyNotAHome;
 }
 
 function toStatus(s: string | null, auctionDate: string | null): Chapter8Status {
   const t = (s ?? "").toLowerCase();
-  if (/redeem|sold|withdrawn|removed|cancel/.test(t)) return "redeemed-or-sold";
-  if (/power to sell|power-to-sell|pts/.test(t)) return "power-to-sell";
+  // "Unsold" and "not sold" must not read as sold.
+  if (/unsold|not sold|re-?offer/.test(t)) return auctionDate ? "scheduled-auction" : "power-to-sell";
+  if (/redeem|\bsold\b|withdrawn|removed|cancel/.test(t)) return "redeemed-or-sold";
+  if (/power to sell|power-to-sell|\bpts\b/.test(t)) return "power-to-sell";
   if (/auction|scheduled|offered|listed/.test(t) || auctionDate) return "scheduled-auction";
   return "unknown";
 }
@@ -117,10 +133,9 @@ export function parseTaxDefaultedList(
   });
 }
 
-/** True when the row's city is one of the focus cities (case-insensitive). */
+/** True when the row's city is one of the focus cities, including "City of X" spellings. */
 export function inFocusCity(p: TaxDefaultedParcel): boolean {
-  const c = (p.city ?? "").trim().toLowerCase();
-  return FOCUS_CITIES.some((f) => f.toLowerCase() === c);
+  return isFocusCity(p.city);
 }
 
 /**

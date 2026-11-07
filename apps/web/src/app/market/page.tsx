@@ -44,6 +44,7 @@ function SourceRow({ id }: { id: string }) {
 export default function MarketPage() {
   const prov = noticeProvenance();
   const notices = listNotices();
+  const activeNotices = listNotices({ activeOnly: true }).length;
   const noticeRows = notices.map((n) => {
     const report = assessParcel(noticeToParcelFacts(n));
     const open = report.pathways.filter((p) => p.status === "open");
@@ -103,8 +104,11 @@ export default function MarketPage() {
           Other public land: Surplus Land Act notices in {FOCUS_LABEL} ({notices.length})
         </summary>
         <p className="mt-2 text-sm text-neutral-600">
-          Real HCD data kept as a second public-land channel. No active notice in these cities in
-          HCD&apos;s list (last modified {prov.resourceLastModified.slice(0, 10)}, fetched{" "}
+          Real HCD data kept as a second public-land channel.{" "}
+          {activeNotices === 0
+            ? "No active notice in these cities"
+            : `${activeNotices} active notice${activeNotices === 1 ? "" : "s"} in these cities`}{" "}
+          in HCD&apos;s list (last modified {prov.resourceLastModified.slice(0, 10)}, fetched{" "}
           {prov.fetched}); {notices.length} of {totalCachedNotices()} cached Orange County rows are
           shown. {prov.privacy}
         </p>

@@ -50,8 +50,8 @@ A web workspace with five parts. Every screen says it is a prototype and not leg
 4. **Honest confidence.** Confidence is how much the evidence can be trusted, not how good the
    site is. For a Chapter 8 parcel: how many facts the county list answers and how fresh the
    list is, since owners can redeem until the day before an auction. The staleness limit is
-   labelled ASSUMPTION. For the law tests, coverage and source freshness as before, with every
-   threshold labelled on `/about`.
+   labelled ASSUMPTION on the page and in code. For the law tests, coverage and source freshness
+   as before, with those thresholds labelled on `/about`.
 5. **Filters and map.** City and status filters over the Chapter 8 list for the three focus
    cities; the Results page keeps its city, law, owner, acreage and status filters over an
    interactive map of the real housing-element points. Putting the tax-defaulted parcels on the
@@ -117,7 +117,7 @@ in the repo so the report and market pages work offline.
 | Housing-element sites | [SCAG HousingElementSite_poly_scag](https://maps.scag.ca.gov/scaggis/rest/services/LDX/HousingElementSite_poly_scag/MapServer/0), 2,126 Orange County sites, cached in `apps/web/public/data/` | 2026-11-07 |
 | Transit | [Caltrans CA High Quality Transit Areas](https://caltrans-gis.dot.ca.gov/arcgis/rest/services/CHrailroad/CA_HQ_Transit_Areas/FeatureServer/0) | 2026-11-06 |
 | Zoning | [SCAG Zoning_poly_OR](https://maps.scag.ca.gov/scaggis/rest/services/LDX/Zoning_poly_OR/MapServer) and city text where given | 2026-11-06 |
-| Tax-defaulted parcels (Chapter 8) | [OC Treasurer-Tax Collector: Property Auctions](https://www.octreasurer.gov/taxauction) and [Published Notices](https://www.octreasurer.gov/PublishedNotices). Read in a browser: last auction June 25, 2025, Board approval March 11, 2025, redemption until 5 PM the day before, list viewable by all and downloadable by registered users. The list is pasted by the user, not cached | 2026-11-07 |
+| Tax-defaulted parcels (Chapter 8) | [OC Treasurer-Tax Collector: Property Auctions](https://www.octreasurer.gov/taxauction), read in a browser: last auction June 25, 2025, Board approval March 11, 2025, redemption until 5 PM the day before, list viewable by all and downloadable by registered users. [Published Notices](https://www.octreasurer.gov/PublishedNotices) found via search, not read (UNVERIFIED). The list is pasted by the user, not cached | 2026-11-07 |
 | Chapter 8 statute (Rev. & Tax. Code 3692.4, 3791.4, Part 6 Chapter 8) | UNVERIFIED: leginfo did not render in automated reads; a FindLaw snippet of 3692.4 quotes "housing directly related to low-income persons". Read in full before relying on it | not fetched |
 | Chapter 8 list staleness | ASSUMPTION: a county list older than 30 days counts as stale, in `apps/web/src/lib/chapter8/flag.ts` | n/a |
 | Public land offered | [HCD Surplus Land Act Notices of Availability](https://data.ca.gov/dataset/surplus-land-act-notices-of-availability-received), public domain, 231 Orange County rows cached in `apps/web/src/lib/market/data/` with provenance; 138 shown for the focus cities | file 2026-11-06, fetched 2026-11-07 |

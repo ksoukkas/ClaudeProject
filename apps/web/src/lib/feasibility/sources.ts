@@ -173,9 +173,9 @@ const LIST: Source[] = [
     "Orange County Treasurer-Tax Collector: Published Notices",
     "https://www.octreasurer.gov/PublishedNotices",
     "data-layer",
-    "VERIFIED",
+    "UNVERIFIED",
     "2026-11-07",
-    "Page found via search on 2026-11-07 (snippet dated 2026-06-30 describes a list published to give notice of intent to auction tax-defaulted properties). Contents not read in full.",
+    "Page found via search on 2026-11-07 (snippet dated 2026-06-30 describes a list published to give notice of intent to auction tax-defaulted properties). Contents not read; treat as a lead.",
   ),
   src(
     "rtc-3692-4",
