@@ -47,7 +47,6 @@ the scout still works with a keyword parser. Never commit `.env.local`.
 | `/results/[id]` | Parcel feasibility report (full report for `olive-commons` only) | UI from Figma, sample data |
 | `/results/[id]/memo` | One-page site memo; "Download PDF" opens the print dialog | UI from Figma, sample data |
 | `/saved` | Saved-sites pipeline board/list and alert rules | UI from Figma, sample data |
-| `/matchmaking` | Landowner and nonprofit developer directory | UI from Figma, sample data |
 | `/about` | Sources, assumptions, what is real vs mocked | placeholder |
 | `/api/health` | Liveness check, returns JSON | working |
 | `/api/scout?q=...` | The scout as JSON: criteria, parser, candidates, sources, warnings, assumptions | **live public data** |
@@ -246,8 +245,7 @@ Each site links to its exact public record ("View source ↗"). The registry is
   the site is still listed or for sale. A search for "faith-owned land"
   returns sites but warns that none is confirmed as faith-owned.
 - **Still sample data:** the home-page step list (labelled), the five sample
-  sites on `/results`, `/results/[id]` reports, memos, saved sites,
-  matchmaking.
+  sites on `/results`, `/results/[id]` reports, memos and saved sites.
 
 ### Known failure modes
 
