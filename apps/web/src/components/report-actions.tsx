@@ -35,7 +35,7 @@ export function ReportActions({ memoHref }: { memoHref: string }) {
         size="md"
         icon="/figma/parcel/mail.svg"
         disabled
-        title="Prototype: Siteline never contacts owners. Draft outreach yourself."
+        title="Prototype: Cucumber never contacts owners. Draft outreach yourself."
       >
         Contact owner
       </Button>

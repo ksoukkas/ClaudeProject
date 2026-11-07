@@ -21,7 +21,7 @@ export default async function ReportPage({ params }: Props) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Link href="/report" className="text-sm text-neutral-700 hover:underline">
+      <Link href="/report" className="text-sm text-ink-soft hover:underline">
         ← All reports
       </Link>
       <FeasibilityReportView report={report} />

@@ -68,7 +68,7 @@ mostly unknowns with a clear next-steps list. Every notice has a report at
 
 ## Rules of evidence
 
-- A pasted listing is the user's claim, labelled as such; Siteline does not verify it.
+- A pasted listing is the user's claim, labelled as such; Cucumber does not verify it.
 - APN matching drops parenthetical notes, splits on `& , ; / +` and the word "and", keeps digit groups of six or more, and matches only when exactly one group remains. Free text with several APNs never matches, so it under-matches rather than over-matches.
 - The response window is the notice's own due date, not a number encoded here.
 - Nothing is sent to anyone. The page links to the public notice.

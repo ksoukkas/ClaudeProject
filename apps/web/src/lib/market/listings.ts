@@ -61,7 +61,7 @@ export function listingToSignal(l: UploadedListing): MarketSignal {
  * SYNTHETIC sample for the demo. No real property. APNs are made up and
  * deliberately match the synthetic fixture parcels and nothing else.
  */
-export const SYNTHETIC_LISTINGS_CSV = `siteline_id,apn,address,city,listed,source
+export const SYNTHETIC_LISTINGS_CSV = `cucumber_id,apn,address,city,listed,source
 synthetic-002,000-000-002,Synthetic parcel 2 (no real address),Anaheim,2026-10-15,SYNTHETIC sample
 ,000-000-099,Synthetic unmatched listing (no real address),Anaheim,2026-11-01,SYNTHETIC sample
 `;

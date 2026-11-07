@@ -1,8 +1,8 @@
 <svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="612" height="740" viewBox="0 0 612 740" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="Map base" clip-path="url(#clip0_0_26)">
 <path id="Freeway lanes" d="M0 170H158.264M158.264 170H444.069M158.264 170C128.829 114.12 103.008 57.8757 80 0M158.264 170C252.924 349.707 384.959 525.652 581 740M444.069 170H612M444.069 170L447 0M444.069 170L441 348" stroke-width="6" stroke="white"/>
-<path id="Freeway network" d="M0 170H158.264M158.264 170H444.069M158.264 170C128.829 114.12 103.008 57.8757 80 0M158.264 170C252.924 349.707 384.959 525.652 581 740M444.069 170H612M444.069 170L447 0M444.069 170L441 348" stroke-width="11" stroke="#D1D1D6"/>
-<path id="Santa Ana River" d="M979 0C799.98 170 212.959 274 546.02 422C879.082 570 775 614 367 740" stroke-width="12" stroke="#E0E0E6"/>
+<path id="Freeway network" d="M0 170H158.264M158.264 170H444.069M158.264 170C128.829 114.12 103.008 57.8757 80 0M158.264 170C252.924 349.707 384.959 525.652 581 740M444.069 170H612M444.069 170L447 0M444.069 170L441 348" stroke-width="11" stroke="#D7DFD3"/>
+<path id="Santa Ana River" d="M979 0C799.98 170 212.959 274 546.02 422C879.082 570 775 614 367 740" stroke-width="12" stroke="#D7DFD3"/>
 <rect id="Local road" y="678.333" width="612" height="2" fill="white"/>
 <rect id="Local road_2" y="616.667" width="612" height="5" fill="white"/>
 <rect id="Local road_3" y="555" width="612" height="2" fill="white"/>
@@ -23,11 +23,11 @@
 <rect id="Local road_18" x="183.6" width="2" height="740" fill="white"/>
 <rect id="Local road_19" x="122.4" width="2" height="740" fill="white"/>
 <rect id="Local road_20" x="61.2" width="5" height="740" fill="white"/>
-<rect id="Open space" x="489.6" y="37" width="91.8" height="96.2" rx="8" fill="#E5E5EA"/>
-<rect id="Open space_2" x="287.64" y="481" width="85.68" height="88.8" rx="8" fill="#E5E5EA"/>
-<rect id="Open space_3" x="48.96" y="592" width="116.28" height="111" rx="8" fill="#E5E5EA"/>
-<rect id="Open space_4" x="452.88" y="222" width="73.44" height="111" rx="8" fill="#E5E5EA"/>
-<rect id="Open space_5" x="24.48" y="51.8" width="110.16" height="88.8" rx="8" fill="#E5E5EA"/>
+<rect id="Open space" x="489.6" y="37" width="91.8" height="96.2" rx="8" fill="#D7DFD3"/>
+<rect id="Open space_2" x="287.64" y="481" width="85.68" height="88.8" rx="8" fill="#D7DFD3"/>
+<rect id="Open space_3" x="48.96" y="592" width="116.28" height="111" rx="8" fill="#D7DFD3"/>
+<rect id="Open space_4" x="452.88" y="222" width="73.44" height="111" rx="8" fill="#D7DFD3"/>
+<rect id="Open space_5" x="24.48" y="51.8" width="110.16" height="88.8" rx="8" fill="#D7DFD3"/>
 </g>
 <defs>
 <clipPath id="clip0_0_26">

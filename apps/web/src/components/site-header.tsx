@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site } from "@/lib/config";
 import { workspace } from "@/lib/sample-data";
-import { FigmaIcon } from "@/components/ui";
+import { CucumberLogo } from "@/components/cucumber-logo";
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/" || pathname.startsWith("/results");
@@ -17,13 +17,8 @@ export function SiteHeader() {
   return (
     <header className="border-b border-line bg-surface">
       <div className="mx-auto flex h-20 w-full max-w-[1440px] items-center justify-between gap-6 px-6 lg:px-12">
-        <Link href="/" className="flex shrink-0 items-center gap-[10px]">
-          <span className="flex h-8 w-[30px] items-center justify-center rounded-[10px] bg-accent">
-            <FigmaIcon src="/figma/scout/sprout.svg" size={20} />
-          </span>
-          <span className="font-display text-[27px] leading-none font-semibold tracking-[-1px] text-ink">
-            {site.name.toLowerCase()}
-          </span>
+        <Link href="/" aria-label={`${site.name} home`} className="flex shrink-0 items-center gap-[10px]">
+          <CucumberLogo wordmarkSize={26} />
           <span className="hidden text-[10px] tracking-[1.1px] text-muted sm:inline">
             ORANGE COUNTY, CA
           </span>

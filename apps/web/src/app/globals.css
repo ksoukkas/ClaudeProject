@@ -1,45 +1,55 @@
 @import "tailwindcss";
 
 /*
- * Design tokens from the Siteline Figma file (desktop screens, Nov 2026).
+ * Design tokens from the Cucumber Figma file (desktop screens, Nov 2026).
  * Use these names in class lists (bg-canvas, text-ink, border-line, ...)
  * instead of raw hex values.
  */
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-lora), ui-serif, Georgia, serif;
+  --font-brand: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 
-  --color-canvas: #f2f2f7; /* page background, quiet panels */
-  --color-surface: #ffffff; /* cards */
-  --color-line: #e5e5ea; /* borders, dividers, neutral tags */
-  --color-ink: #1c1c1e; /* primary text */
-  --color-ink-soft: #6e6e73; /* secondary text */
-  --color-muted: #8e8e93; /* tertiary text, captions */
+  /* Brand (Cucumber primary logo, Figma node 13:88) */
+  --color-brand-ink: #174738; /* wordmark */
+  --color-brand-ink-soft: #455e4f; /* tagline */
 
-  --color-accent: #007aff;
-  --color-accent-soft: #e6f2ff;
+  /* Palette from the Cucumber website style kit (v0.1). Page is white;
+     ivory is for quiet panels inside it. */
+  --color-canvas: #f7f7f0; /* ivory: quiet panels, chips, hover */
+  --color-surface: #ffffff; /* page background, cards */
+  --color-line: #d7dfd3; /* quiet borders, dividers, neutral tags */
+  --color-line-field: #84977f; /* form field borders */
+  --color-ink: #174738; /* primary text */
+  --color-ink-soft: #455e4f; /* secondary text */
+  --color-muted: #697565; /* tertiary text, captions */
+
+  --color-accent: #174d38; /* forest: actions, links, active nav */
+  --color-accent-hover: #103d2c;
+  --color-accent-soft: #eaf2e5;
+  --color-fresh: #80ba62; /* highlight only, never small text on white */
 
   /* Feasibility states */
-  --color-feasible: #007aff;
-  --color-feasible-soft: #e6f2ff;
-  --color-review: #ff9500;
-  --color-review-soft: #fff1e6;
-  --color-blocked: #ff3b30;
-  --color-blocked-soft: #ffebee;
+  --color-feasible: #2f6b45;
+  --color-feasible-soft: #eaf2e5;
+  --color-review: #805b17;
+  --color-review-soft: #fbf2dc;
+  --color-blocked: #a33f36;
+  --color-blocked-soft: #fbede9;
 
   /* Public Housing Element sites: planned homes vs the unit goal. Deliberately
      not the feasibility colors above, because these sites have no screen. */
-  --color-plan-meets: #2f7d5b;
-  --color-plan-below: #8e8e93;
-  --color-plan-unknown: #c7c7cc;
+  --color-plan-meets: #5c8a4a;
+  --color-plan-below: #84977f;
+  --color-plan-unknown: #c9d3c4;
 
   /* Scout progress steps */
-  --color-step-ink: #293c37;
-  --color-step-muted: #6d756d;
-  --color-step-done: #e6eee4;
-  --color-step-active: #f3e6de;
-  --color-step-active-ink: #a64f36;
-  --color-step-todo: #f7f5ef;
+  --color-step-ink: #174738;
+  --color-step-muted: #697565;
+  --color-step-done: #eaf2e5;
+  --color-step-active: #e3eeda;
+  --color-step-active-ink: #174d38;
+  --color-step-todo: #f7f7f0;
 }
 
 @media print {

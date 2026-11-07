@@ -118,7 +118,7 @@ function buttonClasses(variant: ButtonVariant, size: ButtonSize, extra = "") {
       ? "h-11 rounded-[12px] px-[18px] text-[13px]"
       : "h-9 rounded-[10px] px-3 text-[12px]";
   const look = {
-    primary: "border-accent bg-accent text-white hover:bg-[#0066d6]",
+    primary: "border-accent bg-accent text-white hover:bg-accent-hover",
     secondary: "border-line bg-surface text-ink hover:bg-canvas",
     "secondary-accent": "border-line bg-surface text-accent hover:bg-canvas",
   }[variant];

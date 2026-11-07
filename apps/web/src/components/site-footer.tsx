@@ -8,7 +8,7 @@ export function SiteFooter() {
         <FigmaIcon src="/figma/scout/info.svg" size={13} className="mt-px" />
         <p className="flex-1">
           Sample workspace · All addresses, owners, listings and findings are
-          fictional. Screening only, not legal advice. Siteline is a prototype
+          fictional. Screening only, not legal advice. Cucumber is a prototype
           built at the Claude Impact Lab: talk to a professional before making
           decisions.
         </p>

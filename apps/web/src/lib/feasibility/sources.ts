@@ -166,7 +166,7 @@ const LIST: Source[] = [
     "user-data",
     "UNVERIFIED",
     null,
-    "Siteline never fetches listings. Rows come from the user and are not verified.",
+    "Cucumber never fetches listings. Rows come from the user and are not verified.",
   ),
 
   // Repo documents

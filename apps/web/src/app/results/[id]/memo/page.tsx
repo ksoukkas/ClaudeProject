@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { PrintButton } from "@/components/print-button";
 import { Eyebrow, FigmaIcon, StatusTag } from "@/components/ui";
 import { SNAPSHOT_DATE, parcels, reports, workspace } from "@/lib/sample-data";
+import { CucumberLogo } from "@/components/cucumber-logo";
 
 export const metadata: Metadata = { title: "Site memo" };
 
@@ -62,7 +63,7 @@ export default async function SiteMemoPage({
           className="flex w-full max-w-[794px] flex-col gap-5 rounded-[20px] border border-line bg-surface px-6 pt-[42px] pb-[34px] shadow-[0_12px_32px_rgba(0,0,0,0.07)] sm:px-[54px] xl:min-h-[1123px] xl:shrink-0"
         >
           <header className="flex items-center justify-between whitespace-nowrap">
-            <p className="font-display text-[27px] font-semibold text-ink">siteline</p>
+            <CucumberLogo wordmarkSize={24} />
             <p className="text-[9px] tracking-[1.2px] text-accent">SAMPLE ACQUISITION MEMO</p>
           </header>
           <hr className="border-line" />

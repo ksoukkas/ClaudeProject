@@ -43,7 +43,7 @@ export function ScoutPrompt() {
           </div>
           <button
             type="submit"
-            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-[12px] border border-accent bg-accent px-[18px] text-[13px] font-semibold text-white hover:bg-[#0066d6]"
+            className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-[12px] border border-accent bg-accent px-[18px] text-[13px] font-semibold text-white hover:bg-accent-hover"
           >
             <FigmaIcon src="/figma/scout/arrowRight.svg" size={16} />
             Scout sites
