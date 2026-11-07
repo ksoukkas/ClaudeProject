@@ -27,6 +27,7 @@ const KIND_ORDER: Source["kind"][] = [
 ];
 
 const ASSUMPTIONS = [
+  "The 100-point score is the team's ranking convention: five metrics of 20 (acquisition certainty, buildability, housing yield, funding competitiveness, cost and complexity), fixed point values per line, unknown data at half points marked to verify, tiers at 75 and 55. No statute or program gives these numbers.",
   `A county tax-defaulted list older than ${CHAPTER8_LIST_MAX_AGE_DAYS} days counts as stale, because owners can redeem until 5 PM the day before an auction (OC Treasurer-Tax Collector). No statute gives this number.`,
   "Zoning categories are a keyword reading of each source's zoning text. The source text is always shown beside the category.",
   "Next steps in a feasibility report are ranked by how many unknowns they clear, not by cost or time.",
@@ -36,16 +37,15 @@ const ASSUMPTIONS = [
 ];
 
 const PARTS: [string, string][] = [
-  ["Chapter 8 parcels (/chapter8)", "Real: 108 parcels (44 vacant, 64 with a building) from the county's June 25, 2025 Exhibit I, with six tests each. About 16 months old as of 2026-11-07; parcels may have sold or been redeemed."],
-  ["Chapter 8 pipeline (/market)", "Working on whatever list you paste; synthetic sample for the demo."],
-  ["Surplus Land Act notices", "Real HCD data, 138 rows for the focus cities, none active in the 2026-11-06 file."],
+  ["Chapter 8 scout (/chapter8)", "Real: the 19 parcels in Santa Ana, Stanton and Anaheim from the county's June 25, 2025 Exhibit I (108 countywide: 44 vacant, 64 with a building). About 16 months old as of 2026-11-07; parcels may have sold or been redeemed."],
+  ["Score out of 100", "Working. Known inputs today: vacant vs built (county list) and housing-element membership (SCAG layer by APN). Every other line scores half points and is marked to verify until its layer is joined."],
+  ["Deadline badge", "Working. The loaded list's auction has passed, so it reads as passed; a newer pasted list with a future auction date shows red, orange or green."],
+  ["Update list (/market)", "Working on whatever county list you paste; synthetic sample for the demo."],
   ["Feasibility report law tests", "Working; most hazard and local-code tests return unknown because those layers are not queried per parcel yet."],
   ["Local zoning plain-English translation", "Mocked: the slot exists, no city code text is wired."],
   ["Title and CC&R check", "Checklist and draft request only; no public title data exists, so it never returns pass."],
-  ["Scout search", "Live SCAG, Caltrans and zoning layers with a labelled sample fallback. SCAG has no housing-element sites for Santa Ana, so the scout says so there."],
-  ["Claude in the scout", "Parses the goal and drafts \"why call\" lines with an API key; keyword parser without."],
-  ["Saved sites and site memo", "Figma sample screens over fictional data."],
-  ["Owner identity, listing prices, Assessor roll", "Not in any free public source; shown as unknown."],
+  ["Housing-element scout (/api/scout)", "Kept as a JSON API over live SCAG, Caltrans and zoning layers; no longer a screen. SCAG has no housing-element sites for Santa Ana."],
+  ["Owner identity, assessed values, hazards, transit, prices", "Not yet joined; each scores half points marked to verify."],
 ];
 
 function StatusBadge({ status }: { status: Source["status"] }) {

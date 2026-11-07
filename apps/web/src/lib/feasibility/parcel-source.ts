@@ -1,3 +1,9 @@
+import {
+  COUNTY_REPORT_PREFIX,
+  countyParcelToFacts,
+  findCountyParcel,
+  listCandidates,
+} from "@/lib/chapter8/candidates";
 import { getNotice, listNotices, noticeToParcelFacts } from "@/lib/market/notices";
 import { SYNTHETIC_PARCELS } from "./fixtures";
 import type { ParcelFacts } from "./types";
@@ -42,13 +48,29 @@ export const surplusNoticeParcelSource: ParcelSource = {
   },
 };
 
-/** Fixtures first, then notices. Swap or extend this to add a real parcel feed. */
-export const compositeParcelSource: ParcelSource = {
+/** Tax-defaulted parcels from the county's Chapter 8 list (ids `tax-<APN>`), focus cities only. */
+export const countyListParcelSource: ParcelSource = {
   async get(id) {
-    return (await fixtureParcelSource.get(id)) ?? (await surplusNoticeParcelSource.get(id));
+    if (!id.startsWith(COUNTY_REPORT_PREFIX)) return null;
+    const p = findCountyParcel(id.slice(COUNTY_REPORT_PREFIX.length));
+    return p ? countyParcelToFacts(p) : null;
   },
   async list() {
-    return [...(await fixtureParcelSource.list()), ...(await surplusNoticeParcelSource.list())];
+    return listCandidates(new Date()).map((c) => summary(countyParcelToFacts(c.parcel)));
+  },
+};
+
+/** County list first, then fixtures, then notices. Swap or extend this to add a real parcel feed. */
+export const compositeParcelSource: ParcelSource = {
+  async get(id) {
+    return (
+      (await countyListParcelSource.get(id)) ??
+      (await fixtureParcelSource.get(id)) ??
+      (await surplusNoticeParcelSource.get(id))
+    );
+  },
+  async list() {
+    return [...(await countyListParcelSource.list()), ...(await fixtureParcelSource.list())];
   },
 };
 
