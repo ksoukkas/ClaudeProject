@@ -32,12 +32,26 @@ yet. Never commit `.env.local`.
 
 | Route | Purpose | Status |
 |---|---|---|
-| `/` | Landing page | placeholder |
-| `/search` | Search form (plain GET form to `/results`) | placeholder |
-| `/results` | Ranked list | placeholder |
-| `/results/[id]` | Detail view for one result | placeholder |
+| `/` | Scout: goal prompt (GET to `/results`) and a sample scout run | UI from Figma, sample data |
+| `/search` | Redirects to `/` | working |
+| `/results` | Map + ranked list with working filters | UI from Figma, sample data |
+| `/results/[id]` | Parcel feasibility report (full report for `olive-commons` only) | UI from Figma, sample data |
+| `/results/[id]/memo` | One-page site memo; "Download PDF" opens the print dialog | UI from Figma, sample data |
+| `/saved` | Saved-sites pipeline board/list and alert rules | UI from Figma, sample data |
+| `/matchmaking` | Landowner and nonprofit developer directory | UI from Figma, sample data |
 | `/about` | Sources, assumptions, what is real vs mocked | placeholder |
 | `/api/health` | Liveness check, returns JSON | working |
+
+### About the sample data
+
+Every address, owner, organization, listing, document ID and finding in
+`src/lib/sample-data.ts` is **fictional** and comes from the Figma designs.
+The only real values there are the law source links, copied from
+`lanes/1-find-it/data/pathways.json` (checked 2026-11-06). Nothing in the UI
+sends anything: "Contact owner", alerts and "Request intro" are mock-ups.
+
+Icons and map art are SVGs exported from Figma into `public/figma/<screen>/`.
+Design tokens (colors, fonts) are in `src/app/globals.css`.
 
 ## Layout
 

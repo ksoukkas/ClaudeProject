@@ -1,0 +1,37 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="440" height="286" viewBox="0 0 440 286" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Map base" clip-path="url(#clip0_0_6)">
+<path id="Freeway lanes" d="M0 66H114.343M114.343 66H319.03M114.343 66C92.8696 44.2915 73.9643 22.4597 57 0M114.343 66C182.743 135.147 277.203 203.044 418 286M319.03 66H440M319.03 66L321 0M319.03 66L317 134" stroke-width="6" stroke="#FFF9E9"/>
+<path id="Freeway network" d="M0 66H114.343M114.343 66H319.03M114.343 66C92.8696 44.2915 73.9643 22.4597 57 0M114.343 66C182.743 135.147 277.203 203.044 418 286M319.03 66H440M319.03 66L321 0M319.03 66L317 134" stroke-width="11" stroke="#D8CEAD"/>
+<path id="Santa Ana River" d="M704 0C575.321 66 156.075 106 392.679 163C629.283 220 554.566 237 264 286" stroke-width="12" stroke="#C7DCD8"/>
+<rect id="Local road" y="262.167" width="440" height="2" fill="#FFFEF7"/>
+<rect id="Local road_2" y="238.333" width="440" height="5" fill="#FFFEF7"/>
+<rect id="Local road_3" y="214.5" width="440" height="2" fill="#FFFEF7"/>
+<rect id="Local road_4" y="190.667" width="440" height="2" fill="#FFFEF7"/>
+<rect id="Local road_5" y="166.833" width="440" height="5" fill="#FFFEF7"/>
+<rect id="Local road_6" y="143" width="440" height="2" fill="#FFFEF7"/>
+<rect id="Local road_7" y="119.167" width="440" height="2" fill="#FFFEF7"/>
+<rect id="Local road_8" y="95.3333" width="440" height="5" fill="#FFFEF7"/>
+<rect id="Local road_9" y="71.5" width="440" height="2" fill="#FFFEF7"/>
+<rect id="Local road_10" y="47.6667" width="440" height="2" fill="#FFFEF7"/>
+<rect id="Local road_11" y="23.8333" width="440" height="5" fill="#FFFEF7"/>
+<rect id="Local road_12" x="396" width="2" height="286" fill="#FFFEF7"/>
+<rect id="Local road_13" x="352" width="2" height="286" fill="#FFFEF7"/>
+<rect id="Local road_14" x="308" width="5" height="286" fill="#FFFEF7"/>
+<rect id="Local road_15" x="264" width="2" height="286" fill="#FFFEF7"/>
+<rect id="Local road_16" x="220" width="2" height="286" fill="#FFFEF7"/>
+<rect id="Local road_17" x="176" width="5" height="286" fill="#FFFEF7"/>
+<rect id="Local road_18" x="132" width="2" height="286" fill="#FFFEF7"/>
+<rect id="Local road_19" x="88" width="2" height="286" fill="#FFFEF7"/>
+<rect id="Local road_20" x="44" width="5" height="286" fill="#FFFEF7"/>
+<rect id="Open space" x="352" y="14.3" width="66" height="37.18" rx="8" fill="#D6DFC9"/>
+<rect id="Open space_2" x="206.8" y="185.9" width="61.6" height="34.32" rx="8" fill="#D6DFC9"/>
+<rect id="Open space_3" x="35.2" y="228.8" width="83.6" height="42.9" rx="8" fill="#D6DFC9"/>
+<rect id="Open space_4" x="325.6" y="85.8" width="52.8" height="42.9" rx="8" fill="#D6DFC9"/>
+<rect id="Open space_5" x="17.6" y="20.02" width="79.2" height="34.32" rx="8" fill="#D6DFC9"/>
+</g>
+<defs>
+<clipPath id="clip0_0_6">
+<rect width="440" height="286" fill="white"/>
+</clipPath>
+</defs>
+</svg>
