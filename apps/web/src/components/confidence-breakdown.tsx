@@ -1,7 +1,6 @@
-import Link from "next/link";
+import type { ReactNode } from "react";
 import { ConfidenceBadge } from "@/components/confidence-badge";
 import { CONFIDENCE_COPY, levelBody } from "@/lib/confidence";
-import { RULES_CHECKED } from "@/lib/law-tests";
 import type { ConfidenceResult, Outcome, TestGroup, TestRow } from "@/lib/types";
 
 const outcomeStyle: Record<Outcome, { glyph: string; className: string }> = {
@@ -74,12 +73,11 @@ export function ConfidenceSummary({ result }: { result: ConfidenceResult }) {
 /** Why a site has its confidence, test by test. */
 export function ConfidenceBreakdown({
   result,
-  conditions,
-  lawSources,
+  sourceNote,
 }: {
   result: ConfidenceResult;
-  conditions: { label: string; value: string }[];
-  lawSources: string[];
+  /** Where the evidence comes from, shown at the foot of the panel. */
+  sourceNote?: ReactNode;
 }) {
   const groups = [...new Set(result.rows.map((row) => row.test.group))] as TestGroup[];
   const capped = result.level !== result.uncappedLevel;
@@ -89,7 +87,7 @@ export function ConfidenceBreakdown({
       aria-label="Confidence breakdown"
       className="flex flex-col gap-4 rounded-[16px] border border-line bg-surface p-7"
     >
-      {sampleStrip}
+      {result.rows.some((row) => row.sample) ? sampleStrip : null}
 
       <div className="flex flex-col gap-[6px]">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
@@ -143,43 +141,14 @@ export function ConfidenceBreakdown({
         ))}
       </div>
 
-      {conditions.length > 0 ? (
-        <div className="flex flex-col gap-1">
-          <h3 className="text-[11px] leading-[1.5] font-semibold text-ink-soft">
-            Project conditions: shown, not scored
-          </h3>
-          <dl className="flex flex-col gap-1 text-[11px] leading-[1.5] text-ink-soft">
-            {conditions.map((item) => (
-              <div key={item.label}>
-                <dt className="inline font-semibold">{item.label}: </dt>
-                <dd className="inline">{item.value}</dd>
-              </div>
-            ))}
-          </dl>
-          <p className="text-[11px] leading-[1.5] text-ink-soft">
-            From our working rule summary, checked {RULES_CHECKED}. A summary is not the rule, and
-            it may be out of date.{" "}
-            {lawSources.map((href, index) => (
-              <a
-                key={href}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                className="mr-2 text-accent hover:underline"
-              >
-                Read source {lawSources.length > 1 ? index + 1 : ""} ↗
-              </a>
-            ))}
-          </p>
-        </div>
+      {sourceNote ? (
+        <div className="text-[11px] leading-[1.5] text-ink-soft">{sourceNote}</div>
       ) : null}
 
       <p className="text-[11px] leading-[1.5] text-ink-soft">
         Confidence counts how many tests have evidence. It is not an approval or legal advice.
-        The cut-offs are an ASSUMPTION.{" "}
-        <Link href="/about#confidence" className="text-accent hover:underline">
-          See how it works
-        </Link>
+        ASSUMPTION: no unknowns is High; at least 75% of public tests answered is Medium; at least
+        a third is Low; a source past its age limit (90 days for a tax-sale list) drops one step.
       </p>
     </section>
   );

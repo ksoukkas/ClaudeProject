@@ -26,7 +26,8 @@ export type SourceKind =
   | "hazard_map"
   | "human_confirmation"
   | "law_rules"
-  | "title_document";
+  | "title_document"
+  | "tax_sale_list";
 
 export type Source = {
   name: string;
@@ -68,7 +69,10 @@ export type TestGroup =
   | "Ownership and title"
   | "Hazards"
   | "Surroundings"
-  | "Land and habitat";
+  | "Land and habitat"
+  | "The parcel"
+  | "Your organization"
+  | "Approvals";
 
 export type TestDef = {
   id: string;

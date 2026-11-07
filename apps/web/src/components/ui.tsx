@@ -65,9 +65,9 @@ const tagShape = {
 } as const;
 
 export const feasibilityLabel: Record<Feasibility, string> = {
-  feasible: "Looks good",
-  review: "Needs checking",
-  blocked: "Red flag",
+  feasible: "Likely feasible",
+  review: "Needs review",
+  blocked: "Blocked",
 };
 
 /** Small rounded label used for statuses, pathways and counts. */
