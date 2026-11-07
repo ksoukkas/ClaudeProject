@@ -5,7 +5,8 @@ components, with placeholders where features will go.
 
 ## Try it
 
-You need [Node.js](https://nodejs.org/) 20 or newer (built with 22).
+You need [Node.js](https://nodejs.org/) 20 or newer. This skeleton was built
+and tested with Node 22.15.0.
 
 ```bash
 cd apps/web
@@ -52,8 +53,8 @@ src/
 
 ## Stack
 
-Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4. Versions are
-pinned in `package.json` and `package-lock.json`.
+Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4. Next and React
+versions are exact in `package.json`; `package-lock.json` pins everything else.
 
 ## Rules for this repo
 

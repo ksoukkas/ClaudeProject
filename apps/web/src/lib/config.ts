@@ -4,7 +4,7 @@
  */
 export const site = {
   name: "Siteline",
-  tagline: "Find land where affordable housing can legally go.",
+  tagline: "Find land where affordable housing could legally go.",
   nav: [
     { href: "/", label: "Home" },
     { href: "/search", label: "Search" },
