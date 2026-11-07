@@ -191,7 +191,7 @@ export function conditionalHazardTest(opts: {
   let resolver: Resolver;
   if (hits.length) {
     verdict = "unknown";
-    reason = `Mapped in a ${hits.join(" and a ")}. ${opts.lawName} excludes such sites unless the statute's mitigation conditions are met. Confirm against the statute and the current zone map.`;
+    reason = `Mapped in a ${hits.join(" and a ")}. As this tool understands it, ${opts.lawName} excludes such sites unless the statute's mitigation conditions are met (wording unverified; see the requirement). Confirm against the statute and the current zone map.`;
     resolver = "statute";
   } else if (gaps.length) {
     verdict = "unknown";

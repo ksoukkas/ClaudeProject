@@ -28,11 +28,11 @@ export function assessSb684Sb1123(facts: ParcelFacts): PathwayResult {
     if (vacant.value === "yes") {
       zoningVerdict = "pass";
       zoningReason =
-        "Single-family zoning and the lot reads as vacant, which SB 1123 added to the law per the HCD summary. Confirm the statute text and effective date.";
+        "Single-family zoning and the lot reads as vacant, which SB 1123 is understood to have added to the law (wording unverified; confirm the bill text and effective date).";
     } else if (vacant.value === "no") {
       zoningVerdict = "fail";
       zoningReason =
-        "Single-family zoning with an existing use. The SB 1123 extension covers vacant single-family lots per the HCD summary.";
+        "Single-family zoning with an existing use. As this tool understands it, the SB 1123 extension covers only vacant single-family lots (wording unverified; confirm the bill text).";
     } else {
       zoningVerdict = "unknown";
       zoningReason =
