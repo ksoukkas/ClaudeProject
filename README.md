@@ -112,7 +112,7 @@ in the repo so the report and market pages work offline.
 | Confidence thresholds | ASSUMPTION: coverage shares, borderline percent, sliver percent and source age limits in `apps/web/src/lib/thresholds.ts`, explained on `/about` | n/a |
 | Zoning category from text | ASSUMPTION: a keyword mapping of each source's zoning text; the original text is always shown beside it | n/a |
 | Next-step ranking | ASSUMPTION: ranked by how many unknowns a step clears, not by cost | n/a |
-| Unit goal default of 40, "small site" of half an acre, scout throttle | ASSUMPTION: demo defaults, labelled in code and UI | n/a |
+| Unit goal default of 40, "small site" of half an acre, scout throttle (the throttle is in pull request 7, not yet on `main`) | ASSUMPTION: demo defaults, labelled in code and UI | n/a |
 | Synthetic parcels and the sample workspace | ASSUMPTION: three synthetic parcels in `apps/web/src/lib/feasibility/fixtures.ts` and the Figma sample workspace (organization, owners, saved sites, directory) are fictional; every value is made up | n/a |
 
 Every number we made up is labelled ASSUMPTION here and in the tool.
