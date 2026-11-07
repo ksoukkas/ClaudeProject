@@ -1,6 +1,6 @@
 # Cucumber
 
-> For housing nonprofits in Santa Ana, Stanton and Anaheim: every tax-defaulted parcel on the
+> For housing nonprofits across Orange County: every tax-defaulted parcel on the
 > county's list, scored out of 100 for a Chapter 8 agreement sale, with the deadline beside the
 > score and the public record behind every point.
 
@@ -14,7 +14,7 @@ The event's own README, with the schedule, lanes and submission rules, is at
 
 ## The real user
 
-A one-person acquisitions team at a small housing nonprofit in north-central Orange County. They
+A one-person acquisitions team at a small housing nonprofit in Orange County. They
 have no GIS staff and lose every bidding war to cash buyers. Tax-defaulted land may be the one
 place the law puts them first: as this team understands California's tax-sale law (UNVERIFIED,
 Revenue and Taxation Code, Part 6, Chapter 8, cited on the page until read in full), a county may
@@ -23,7 +23,7 @@ Nobody has turned the county's list into something they can act on.
 
 **Before:** they hear about the county auction after it happens, or scan a PDF of parcel numbers
 with no idea which lots could hold homes or which deals could close.
-**After:** they open one ranked list of the parcels in their three cities, see a score out of 100
+**After:** they open one ranked list of the county's parcels, pick a city, see a score out of 100
 with the reason next to every point and "to verify" on every gap, see the deadline beside it, and
 open the law tests and the application checklist for the ones worth a call.
 
@@ -32,14 +32,14 @@ open the law tests and the application checklist for the ones worth a call.
 One list. Every screen says it is a prototype and not legal advice.
 
 1. **Chapter 8 scout** (`/chapter8`, also the home page). Every parcel from the Orange County
-   Treasurer-Tax Collector's published tax-defaulted list that sits in Santa Ana, Stanton or
-   Anaheim: 19 of the 108 countywide, from Exhibit I for the June 25, 2025 auction. Each is scored
+   Treasurer-Tax Collector's published tax-defaulted list across all of Orange County:
+   108 land parcels from Exhibit I for the June 25, 2025 auction, with a city dropdown. Each is scored
    out of 100 on five metrics of 20 points: acquisition certainty, buildability, housing yield,
    funding competitiveness, and cost and complexity. Every point shows its reason. Unknown data
    scores half points and is marked "to verify"; water and sewer is always "verify with the
    utility". Tiers: 75 and up call this week, 55 to 74 worth a look, under 55 watch only. The
    Chapter 8 deadline sits beside the score, never inside it: red under 30 days, orange 30 to 90,
-   green 90 and up, and "passed" for this list, whose auction is over. City and tier filters.
+   green 90 and up, and "no deadline on record" for this list, whose auction is over. City dropdown and tier filters.
    Each row links to the parcel detail with the State Controller's ten-step application checklist
    and to the law tests. Street addresses are left out.
 2. **Law tests per parcel** (`/report/[id]`). What a tax-defaulted lot could become under SB 9,
@@ -49,7 +49,7 @@ One list. Every screen says it is a prototype and not legal advice.
    checklist that never returns pass and drafts the title request the user sends themselves.
 3. **Update list** (`/market`). When the county publishes a newer list, paste it. Owner and
    assessee columns are dropped on sight, homes get their address withheld, and each parcel in the
-   three cities is flagged for where it sits in the process, with the redemption cutoff computed
+   county is flagged for where it sits in the process, with the redemption cutoff computed
    as 5 PM the day before the auction (the county's stated rule, read 2026-11-07).
 4. **About** (`/about`). What it does, how the score and confidence work, every assumption, what is
    real versus mocked, and all registered sources with VERIFIED / UNVERIFIED status and the date
@@ -122,10 +122,10 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
 
 | Part | Status |
 |---|---|
-| Chapter 8 scout list | real: 19 parcels in the three cities from the county's June 25, 2025 Exhibit I (108 countywide, 44 vacant, 64 with a building); about 16 months old as of 2026-11-07, and the page says parcels may have sold or been redeemed |
+| Chapter 8 scout list | real: all 108 land parcels across Orange County from the county's June 25, 2025 Exhibit I (44 vacant, 64 with a building), filterable by city; about 16 months old as of 2026-11-07, and the page says parcels may have sold or been redeemed |
 | Score out of 100 | working on real inputs where they exist (vacant vs built, housing-element membership); every other line scores half points marked to verify |
 | Deadline badge | working; reads "passed" for the loaded list, and red / orange / green for a pasted list with a future auction date |
-| City and tier filters | working, in the URL |
+| City dropdown and tier filters | working, in the URL |
 | Parcel detail and application checklist | working; six Chapter 8 tests per parcel through the confidence engine, ten checklist steps from the State Controller's guide |
 | Law tests per parcel | working; most hazard and local-code tests return unknown because those layers are not queried per parcel yet |
 | Title and CC&R check | partly working: checklist, flags from parcel signals, and a draft request; no public title data exists, so it never returns pass |

@@ -37,7 +37,7 @@ const ASSUMPTIONS = [
 ];
 
 const PARTS: [string, string][] = [
-  ["Chapter 8 scout (/chapter8)", "Real: the 19 parcels in Santa Ana, Stanton and Anaheim from the county's June 25, 2025 Exhibit I (108 countywide: 44 vacant, 64 with a building). About 16 months old as of 2026-11-07; parcels may have sold or been redeemed."],
+  ["Chapter 8 scout (/chapter8)", "Real: all 108 land parcels across Orange County from the county's June 25, 2025 Exhibit I (44 vacant, 64 with a building), filterable by city. About 16 months old as of 2026-11-07; parcels may have sold or been redeemed."],
   ["Score out of 100", "Working. Known inputs today: vacant vs built (county list) and housing-element membership (SCAG layer by APN). Every other line scores half points and is marked to verify until its layer is joined."],
   ["Deadline badge", "Working. The loaded list's auction has passed, so it reads as passed; a newer pasted list with a future auction date shows red, orange or green."],
   ["Update list (/market)", "Working on whatever county list you paste; synthetic sample for the demo."],

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Chapter8Checklist } from "@/components/chapter8-checklist";
+import { CitySelect } from "@/components/chapter8/city-select";
 import { Eyebrow } from "@/components/ui";
 import { listCandidates, type Candidate } from "@/lib/chapter8/candidates";
 import { listSource, money, parcels, typeLabel } from "@/lib/chapter8/county-list";
 import { housingElementLayerInfo } from "@/lib/chapter8/he-join";
 import { TIER_LABELS, type DeadlineTone, type Tier } from "@/lib/chapter8/score";
-import { canonicalFocusCity, FOCUS_CITIES, FOCUS_LABEL } from "@/lib/focus";
+import { canonicalFocusCity, FOCUS_LABEL } from "@/lib/focus";
 
 export const metadata: Metadata = { title: "Chapter 8 scout" };
 export const dynamic = "force-dynamic";
@@ -136,7 +137,11 @@ export default async function Chapter8ScoutPage({ searchParams }: { searchParams
   const rows = tier ? byCity.filter((c) => c.score.tier === tier) : byCity;
   const he = housingElementLayerInfo();
   const tierCount = (t: Tier) => byCity.filter((c) => c.score.tier === t).length;
-  const cityCount = (name: string) => everything.filter((c) => c.parcel.city.toLowerCase() === name.toLowerCase()).length;
+  const cityCounts = new Map<string, number>();
+  for (const c of everything) cityCounts.set(c.parcel.city, (cityCounts.get(c.parcel.city) ?? 0) + 1);
+  const cityOptions = [...cityCounts.entries()]
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
     <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-7 px-6 pt-8 pb-12 lg:px-14">
@@ -149,42 +154,44 @@ export default async function Chapter8ScoutPage({ searchParams }: { searchParams
           When property taxes go unpaid long enough, the county can sell the parcel. Under Chapter 8
           of the Revenue and Taxation Code, as this team understands it (statute text UNVERIFIED,
           see About), an eligible nonprofit can apply to buy it by agreement with the county instead
-          of bidding at auction. This list is every parcel from the county&apos;s published list in{" "}
-          {FOCUS_LABEL}, scored out of 100 on five metrics of 20: acquisition certainty,
+          of bidding at auction. This list is every land parcel from the county&apos;s published
+          list across {FOCUS_LABEL}, scored out of 100 on five metrics of 20: acquisition certainty,
           buildability, housing yield, funding competitiveness, and cost and complexity. Unknown
           facts score half points and are marked to verify. The Chapter 8 deadline is shown beside
           the score, never inside it.
         </p>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[11px] uppercase tracking-wide text-muted">City</span>
-          <Chip active={!city} to={href(null, tier)}>
-            All three ({everything.length})
-          </Chip>
-          {FOCUS_CITIES.map((name) => (
-            <Chip key={name} active={city?.toLowerCase() === name.toLowerCase()} to={href(name, tier)}>
-              {name} ({cityCount(name)})
-            </Chip>
-          ))}
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-col gap-4 rounded-[16px] border border-line bg-surface p-4 md:flex-row md:items-end md:justify-between">
+        <CitySelect cities={cityOptions} value={city} tier={tier} total={everything.length} />
+        <div className="flex flex-col gap-1">
           <span className="text-[11px] uppercase tracking-wide text-muted">Tier</span>
-          <Chip active={!tier} to={href(city, null)}>
-            Any ({byCity.length})
-          </Chip>
-          {TIERS.map((t) => (
-            <Chip key={t} active={tier === t} to={href(city, t)}>
-              {TIER_LABELS[t]} ({tierCount(t)})
+          <div className="flex flex-wrap items-center gap-2">
+            <Chip active={!tier} to={href(city, null)}>
+              Any ({byCity.length})
             </Chip>
-          ))}
+            {TIERS.map((t) => (
+              <Chip key={t} active={tier === t} to={href(city, t)}>
+                {TIER_LABELS[t]} ({tierCount(t)})
+              </Chip>
+            ))}
+          </div>
         </div>
       </div>
 
+      {city ? (
+        <p className="text-[13px] text-ink-soft">
+          Showing <span className="font-semibold text-ink">{city}</span>: {byCity.length} parcel
+          {byCity.length === 1 ? "" : "s"} on the county list.{" "}
+          <Link href={href(null, tier)} className="text-accent underline">
+            All of Orange County
+          </Link>
+        </p>
+      ) : null}
+
       <p className="rounded-[12px] bg-canvas px-4 py-3 text-[12px] leading-[1.5] text-ink-soft">
-        {rows.length} of {everything.length} parcels in the three cities; {parcels.length} on the
-        county list countywide. Real data from the{" "}
+        {rows.length} of {parcels.length} land parcels on the county list across {cityOptions.length}{" "}
+        jurisdictions. Real data from the{" "}
         <a href={listSource.url} target="_blank" rel="noreferrer" className="text-accent hover:underline">
           County of Orange Treasurer-Tax Collector, Exhibit I for Sale #1398
         </a>
