@@ -27,6 +27,12 @@
   --color-blocked: #ff3b30;
   --color-blocked-soft: #ffebee;
 
+  /* Public Housing Element sites: planned homes vs the unit goal. Deliberately
+     not the feasibility colors above, because these sites have no screen. */
+  --color-plan-meets: #2f7d5b;
+  --color-plan-below: #8e8e93;
+  --color-plan-unknown: #c7c7cc;
+
   /* Scout progress steps */
   --color-step-ink: #293c37;
   --color-step-muted: #6d756d;

@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import {
   CONFIDENCE_COPY,
   computeConfidence,
@@ -10,6 +11,18 @@ import { TEST_CATALOG, lawNeedsVerify, testsForLaw } from "./law-tests";
 import { sampleConfidence } from "./sample-checks";
 import { parcels } from "./sample-data";
 import type { RawCheck, Reading, Source, SourceKind } from "./types";
+
+const expect = (actual: unknown) => ({
+  toBe: (expected: unknown) => assert.strictEqual(actual, expected),
+  toEqual: (expected: unknown) => assert.deepStrictEqual(actual, expected),
+  toHaveLength: (length: number) => assert.strictEqual((actual as unknown[]).length, length),
+  toContain: (item: unknown) => assert.ok((actual as unknown[] & string).includes(item as string)),
+  toBeUndefined: () => assert.strictEqual(actual, undefined),
+  not: {
+    toContain: (item: unknown) =>
+      assert.ok(!(actual as unknown[] & string).includes(item as string)),
+  },
+});
 
 const today = "2026-11-07";
 const source = (kind: SourceKind, extra: Partial<Source> = {}): Source => ({

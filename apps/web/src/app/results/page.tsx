@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ResultsWorkspace } from "@/components/results-workspace";
 import { Button, Eyebrow, FigmaIcon } from "@/components/ui";
+import { EXAMPLE_QUERY, describeQuery, resolveFilters } from "@/lib/filters";
+import { allCities } from "@/lib/public-sites";
 
 export const metadata: Metadata = { title: "Results" };
 
 type SearchParams = Record<string, string | string[] | undefined>;
-
-function first(value: string | string[] | undefined): string {
-  return Array.isArray(value) ? (value[0] ?? "") : (value ?? "");
-}
 
 export default async function ResultsPage({
   searchParams,
@@ -17,8 +15,10 @@ export default async function ResultsPage({
   searchParams: Promise<SearchParams>;
 }) {
   const params = await searchParams;
-  const query =
-    first(params.q).trim() || "Anaheim, 40+ affordable units, near transit";
+  // A bare /results shows the Scout example search, as before.
+  const source = Object.keys(params).length === 0 ? { q: EXAMPLE_QUERY } : params;
+  const initial = resolveFilters(source, allCities);
+  const { understood, ignored } = describeQuery(initial, allCities);
 
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-6 px-6 py-8 lg:px-12">
@@ -39,21 +39,16 @@ export default async function ResultsPage({
         </Button>
       </div>
 
-      <div className="flex flex-col gap-[10px]">
+      <ResultsWorkspace initial={initial} understood={understood} ignored={ignored}>
         <Eyebrow>Your search, made explainable</Eyebrow>
         <h1 className="font-display text-[40px] leading-[1.2] font-bold text-ink">
           A shortlist, with the why.
         </h1>
-        <p className="text-[14px] leading-[1.5] text-ink-soft">{query}</p>
         <p className="text-[11px] leading-[1.5] text-muted">
-          Sample results: the same five fictional sites show for every search.
-          Expanded to 5 nearby cities. Smaller sites are shown as alternatives,
-          not goal matches. Confidence is worked out from the tests on each site,
-          not typed in.
+          Sample sites are fictional. Confidence is worked out from the tests on each site, not
+          typed in.
         </p>
-      </div>
-
-      <ResultsWorkspace />
+      </ResultsWorkspace>
     </div>
   );
 }
