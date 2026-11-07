@@ -6,7 +6,7 @@ import {
   levelBody,
   normalizeTest,
 } from "./confidence";
-import { TEST_CATALOG, testsForLaw } from "./law-tests";
+import { TEST_CATALOG, lawNeedsVerify, testsForLaw } from "./law-tests";
 import { sampleConfidence } from "./sample-checks";
 import { parcels } from "./sample-data";
 import type { RawCheck, Reading, Source, SourceKind } from "./types";
@@ -190,10 +190,87 @@ describe("caps", () => {
   });
 });
 
+describe("the Fail path", () => {
+  const fail = (extra: Partial<Source> = {}) =>
+    check("not_very_high_fire_zone", reading("Fail", "hazard_map", extra));
+
+  it("keeps the best-supported Fail", () => {
+    const weak = check("zoned_single_family", reading("Fail", "zoning", { dataAsOf: "2011-01-01" }));
+    expect(sb9([weak, fail()]).level).toBe("High");
+  });
+  it("applies the secondary cap, the verify cap and stale rules", () => {
+    expect(sb9([fail({ tier: "secondary" })]).level).toBe("Medium");
+    expect(sb9([fail()], { lawVerify: true }).level).toBe("Medium");
+    expect(sb9([fail()], { rulesCheckedOn: "2026-01-01" }).level).toBe("Medium");
+  });
+  it("says nothing about a sample cap when a real Fail sets the level", () => {
+    const sampleFail = check("zoned_single_family", reading("Fail", "zoning", { sample: true }));
+    const r = sb9([sampleFail, fail()]);
+    expect(r.level).toBe("High");
+    expect(r.why.join(" ")).not.toContain("caps confidence");
+  });
+});
+
+describe("edges", () => {
+  const fireTest = TEST_CATALOG.not_very_high_fire_zone;
+
+  it("uses the cut-offs inclusively", () => {
+    const tests = ["a", "b", "c", "d"].map((id) => ({ ...fireTest, id }));
+    const answered = (n: number) => ["a", "b", "c", "d"].slice(0, n).map((id) => check(id, reading("Pass", "hazard_map")));
+    const run = (n: number) =>
+      computeConfidence({ tests, checks: answered(n), today, rulesCheckedOn: today }).level;
+    expect([run(4), run(3), run(2), run(1)]).toEqual(["High", "Medium", "Low", "Not enough data"]);
+  });
+  it("applies the caps before the stale drop", () => {
+    const old = { tier: "secondary" as const, dataAsOf: "2011-01-01" };
+    const r = sb9([check("not_very_high_fire_zone", reading("Fail", "hazard_map", old))]);
+    expect(r.level).toBe("Low");
+  });
+  it("shows a replaced layer's Fail as a conflict, not a silent Pass", () => {
+    const row = normalizeTest(
+      fireTest,
+      check(fireTest.id, reading("Pass", "hazard_map"), reading("Fail", "hazard_map", { superseded: true })),
+      today,
+    );
+    expect([row.outcome, row.flag, row.sources.length]).toEqual(["Unknown", "conflict", 2]);
+  });
+  it("lets a current Fail outrank a replaced Pass", () => {
+    const row = normalizeTest(
+      fireTest,
+      check(fireTest.id, reading("Fail", "hazard_map"), reading("Pass", "hazard_map", { superseded: true })),
+      today,
+    );
+    expect(row.outcome).toBe("Fail");
+  });
+  it("treats one stale source among fresh ones as stale", () => {
+    const row = normalizeTest(
+      fireTest,
+      check(fireTest.id, reading("Pass", "hazard_map"), reading("Pass", "hazard_map", { dataAsOf: null })),
+      today,
+    );
+    expect(row.stale).toBe(true);
+  });
+  it("treats an impossible date as undated", () => {
+    expect(isStale("zoning", "2025-13-05", today)).toBe(true);
+  });
+  it("keeps a secondary source from passing a human-only test", () => {
+    const test = TEST_CATALOG.no_renter_last_3_years;
+    const row = normalizeTest(test, check(test.id, reading("Pass", "parcels", { tier: "secondary" })), today);
+    expect(row.rule).toBe("R3");
+  });
+});
+
 describe("tests per law", () => {
   it("lists 6 for SB 9 and 14 for SB 4", () => {
     expect(testsForLaw("SB9")).toHaveLength(6);
     expect(testsForLaw("SB4")).toHaveLength(14);
+  });
+  it("flags AB 2011 for verification and no other law", () => {
+    expect(lawNeedsVerify("AB2011")).toBe(true);
+    expect(lawNeedsVerify("SB9")).toBe(false);
+  });
+  it("does not score vacancy on the shared SB 684 / SB 1123 pathway", () => {
+    expect(testsForLaw("SB684_SB1123").map((t) => t.id)).not.toContain("vacant");
   });
   it("drops the lot split test only when 2 homes or fewer are planned", () => {
     expect(testsForLaw("SB9", { homesPlanned: 2 })).toHaveLength(5);
@@ -216,6 +293,18 @@ describe("the five sample sites", () => {
   it("shows Juniper Mews as a Red flag at Low, Medium on real records", () => {
     const r = sampleConfidence("juniper-mews");
     expect([r?.status, r?.level, r?.uncappedLevel]).toEqual(["Red flag", "Low", "Medium"]);
+  });
+  it("never shows a typed status that differs from the computed one", () => {
+    const typed = { "Red flag": "blocked", Check: "review", "Looks good": "feasible" };
+    for (const parcel of parcels) {
+      const r = sampleConfidence(parcel.id);
+      expect(r && typed[r.status]).toBe(parcel.feasibility);
+    }
+  });
+  it("only names caps that changed the level", () => {
+    expect(sampleConfidence("civic-orchard")?.why.join(" ")).not.toContain("caps confidence");
+    expect(sampleConfidence("laurel-court")?.why.join(" ")).not.toContain("lowers confidence");
+    expect(sampleConfidence("juniper-mews")?.why.join(" ")).toContain("caps confidence at Low");
   });
   it("points Olive Commons at its ownership question first", () => {
     expect(sampleConfidence("olive-commons")?.next).toBe(

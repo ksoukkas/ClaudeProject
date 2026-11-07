@@ -86,7 +86,7 @@ const filterDefs: {
   },
   {
     key: "feasibility",
-    label: "Feasibility",
+    label: "Status",
     options: [
       { value: "all", label: "All statuses" },
       ...(Object.keys(feasibilityLabel) as Feasibility[]).map((f) => ({
@@ -160,8 +160,8 @@ export function ResultsWorkspace() {
         </div>
         <div className="flex items-center justify-between text-[11px] leading-[1.5]">
           <p className="text-ink-soft">
-            {visible.length} sample sites · {count("feasible")} with no red flags so far ·{" "}
-            {count("review")} need review · {count("blocked")} blocked
+            {visible.length} sample sites · {count("feasible")} look good ·{" "}
+            {count("review")} need checking · {count("blocked")} with a red flag
           </p>
           <button
             type="button"
@@ -221,8 +221,8 @@ export function ResultsWorkspace() {
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">
           <div className="flex items-center justify-between leading-[1.5] whitespace-nowrap">
-            <p className="text-[12px] font-semibold text-ink">Ranked for your search</p>
-            <p className="text-[11px] text-muted">Sort: Best fit ↓</p>
+            <p className="text-[12px] font-semibold text-ink">Sites in sample order</p>
+            <p className="text-[11px] text-muted">Not ranked by the tests yet</p>
           </div>
 
           {visible.length === 0 ? (
@@ -247,7 +247,7 @@ export function ResultsWorkspace() {
                       {String(p.rank).padStart(2, "0")}
                     </span>
                     <StatusTag tone={p.feasibility}>
-                      {feasibilityLabel[p.feasibility]}
+                      {result?.statusLabel ?? feasibilityLabel[p.feasibility]}
                     </StatusTag>
                   </div>
                   <button
@@ -324,7 +324,7 @@ export function ResultsWorkspace() {
           })}
 
           <p className="text-[10px] leading-[1.5] text-muted">
-            Unit ranges are early capacity estimates, not entitlements. *Blocked
+            Unit ranges are early capacity estimates, not entitlements. *Red flag
             site shows pre-title screening capacity.
           </p>
         </div>

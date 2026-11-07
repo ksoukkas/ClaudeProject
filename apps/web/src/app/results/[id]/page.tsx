@@ -15,6 +15,7 @@ import {
 import {
   type Finding,
   SNAPSHOT_DATE,
+  laws,
   parcels,
   reports,
   workspace,
@@ -95,7 +96,11 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
   const report = reports[id];
   const result = sampleConfidence(id);
   const breakdown = result ? (
-    <ConfidenceBreakdown result={result} conditions={projectConditions(parcel.law)} />
+    <ConfidenceBreakdown
+      result={result}
+      conditions={projectConditions(parcel.law)}
+      lawSources={laws[parcel.law].sources}
+    />
   ) : null;
 
   const crumbs = (
@@ -122,7 +127,9 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
         </h1>
         <div className="flex flex-col gap-3 rounded-[16px] border border-dashed border-line bg-surface p-7">
           <div className="flex flex-wrap items-center gap-3">
-            <StatusTag tone={parcel.feasibility}>{feasibilityLabel[parcel.feasibility]}</StatusTag>
+            <StatusTag tone={parcel.feasibility}>
+              {result?.statusLabel ?? feasibilityLabel[parcel.feasibility]}
+            </StatusTag>
             <ConfidenceBadge level={result?.level} />
           </div>
           <p className="text-[13px] leading-[1.5] text-ink">{parcel.reasoning}</p>
@@ -146,7 +153,7 @@ export default async function ParcelReportPage({ params }: { params: Params }) {
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap gap-2">
           <StatusTag size="md" shape="soft" tone="line">
-            {feasibilityLabel[parcel.feasibility]}
+            {result?.statusLabel ?? feasibilityLabel[parcel.feasibility]}
           </StatusTag>
           {parcel.onMarket ? (
             <StatusTag size="md" shape="soft" tone="line-accent">

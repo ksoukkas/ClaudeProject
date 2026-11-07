@@ -46,7 +46,6 @@ const catalog: TestDef[] = [
   { id: "split_lot_size", label: "Lot is big enough to split", action: "Confirm the lot size from a survey or parcel record", group: "Zoning and lot", scope: "public", gate: true },
   { id: "zoned_commercial", label: "Zoned for a qualifying commercial use", action: "Confirm the zoning with the city", group: "Zoning and lot", scope: "public" },
   { id: "corridor_frontage", label: "Fronts a qualifying corridor", action: "Measure the corridor frontage", group: "Zoning and lot", scope: "public", layerGap: true },
-  { id: "vacant", label: "Lot is vacant (SB 1123 only)", action: "Confirm the lot is vacant", group: "Zoning and lot", scope: "public" },
 
   // Ownership and title
   { id: "owned_by_qualifying_institution", label: "Owned by a qualifying institution", action: "Have counsel confirm the owner qualifies", group: "Ownership and title", scope: "human_only" },
@@ -128,9 +127,8 @@ function testIds(law: LawId): string[] {
     case "AB2011":
       return rule("AB2011").tests ?? [];
     case "SB684_SB1123":
-      return [
-        ...new Set([...(rule("SB684").tests ?? []), ...(rule("SB1123").tests ?? [])]),
-      ];
+      // Only tests both laws share: a lot that fails SB 1123 may still fit SB 684.
+      return (rule("SB684").tests ?? []).filter((id) => rule("SB1123").tests?.includes(id));
   }
 }
 
@@ -155,7 +153,11 @@ export function lawNeedsVerify(law: LawId): boolean {
 }
 
 /** SB 9 minimum lot size to split, from law-rules.json. */
-export const SB9_MIN_SQFT_TO_SPLIT = rule("SB9").lot?.min_sqft_to_split ?? 0;
+export const SB9_MIN_SQFT_TO_SPLIT = (() => {
+  const limit = rule("SB9").lot?.min_sqft_to_split;
+  if (limit === undefined) throw new Error("law-rules.json has no SB 9 minimum lot size");
+  return limit;
+})();
 
 const percent = (share: number) => `${Math.round(share * 100)}%`;
 
@@ -194,7 +196,7 @@ export function projectConditions(law: LawId): { label: string; value: string }[
         {
           label: "Density",
           value: tiers.length
-            ? `At least ${Math.min(...tiers)} to ${Math.max(...tiers)} homes per acre, depending on the lot and corridor.`
+            ? `At least ${Math.min(...tiers)} to ${Math.max(...tiers)} homes per acre, depending on the site.`
             : unknown,
         },
         {
@@ -218,6 +220,9 @@ export function projectConditions(law: LawId): { label: string; value: string }[
             ? `Up to ${u.max_total}, average up to ${u.max_avg_net_sqft?.toLocaleString("en-US")} net sq ft.`
             : unknown,
         },
+        ...(rule("SB1123").tests?.includes("vacant")
+          ? [{ label: "SB 1123 only", value: "Needs a vacant lot. SB 684 does not list this test." }]
+          : []),
       ];
     }
   }

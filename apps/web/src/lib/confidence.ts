@@ -40,7 +40,7 @@ export const CONFIDENCE_COPY = {
   notScreenedBody: "No tests have been run on this site, so there is nothing to rate.",
   body: {
     High: "Every test has an answer from a current source.",
-    Medium: "All or nearly all public tests have an answer, but some tests are still open.",
+    Medium: "Most of what public records can answer has an answer, but this is not settled yet.",
     Low: "Low does not mean this is a bad site. It means we do not know enough yet.",
     "Not enough data":
       "Too few tests have answers to rate this site. That does not make it a bad site. It means the checking has not been done.",
@@ -75,7 +75,8 @@ function parseDay(value: string | null | undefined): number | null {
   if (!match) return null;
   const [year, month, day] = match.slice(1).map(Number);
   const time = Date.UTC(year, month - 1, day);
-  return new Date(time).getUTCDate() === day ? time : null;
+  const parsed = new Date(time);
+  return parsed.getUTCMonth() === month - 1 && parsed.getUTCDate() === day ? time : null;
 }
 
 /** Unknown vintage, or a date in the future, counts as stale. */
@@ -152,9 +153,15 @@ export function normalizeTest(test: TestDef, check: RawCheck | undefined, today:
   const pool = current.length > 0 ? current : direct;
   const sources = pool.map((r) => r.source);
 
-  // R5: sources disagree.
-  if (new Set(pool.map((r) => r.outcome)).size > 1) {
-    return unknown("R5", "Sources disagree. Both are shown.", sources, "conflict");
+  // R5: sources disagree. A replaced layer's Fail still gets shown, never dropped silently.
+  const oldFail = pool.some((r) => r.outcome === "Pass") && direct.some((r) => r.outcome === "Fail");
+  if (new Set(pool.map((r) => r.outcome)).size > 1 || oldFail) {
+    return unknown(
+      "R5",
+      "Sources disagree. Both are shown.",
+      direct.map((r) => r.source),
+      "conflict",
+    );
   }
 
   const outcome = pool[0].outcome;
@@ -201,29 +208,44 @@ export function normalizeTest(test: TestDef, check: RawCheck | undefined, today:
     detail: note ?? `${outcome} from the source below.`,
     sources,
     asOf: latestAsOf(sources),
-    stale: superseded || sources.every((s) => isStale(s.kind, s.dataAsOf, today)),
+    stale: superseded || sources.some((s) => isStale(s.kind, s.dataAsOf, today)),
     sample: sources.some((s) => s.sample === true),
   };
 }
 
 type CapFlags = { sample: boolean; secondary: boolean; verify: boolean; stale: boolean };
+/** `applied` says which caps really changed the level, so the UI never claims one that did not. */
+type Graded = { level: Level; uncappedLevel: Level; applied: CapFlags };
 
 /** Caps, in order: sample, secondary, verify flag, then one stale drop with a floor of Low. */
-function applyCaps(start: Level, flags: CapFlags): { level: Level; uncappedLevel: Level } {
-  const rest = (level: Level): Level => {
+function applyCaps(start: Level, flags: CapFlags): Graded {
+  const rest = (level: Level) => {
     let next = level;
-    if (flags.secondary) next = capAt(next, "Medium");
-    if (flags.verify) next = capAt(next, "Medium");
-    if (flags.stale && rank(next) > rank("Low")) next = LEVELS[rank(next) - 1];
-    return next;
+    const applied = { secondary: false, verify: false, stale: false };
+    if (flags.secondary && rank(next) > rank("Medium")) {
+      next = "Medium";
+      applied.secondary = true;
+    }
+    if (flags.verify && rank(next) > rank("Medium")) {
+      next = "Medium";
+      applied.verify = true;
+    }
+    if (flags.stale && rank(next) > rank("Low")) {
+      next = LEVELS[rank(next) - 1];
+      applied.stale = true;
+    }
+    return { next, applied };
   };
+  const sample = flags.sample && rank(start) > rank("Low");
+  const capped = rest(sample ? capAt(start, "Low") : start);
   return {
-    level: rest(flags.sample ? capAt(start, "Low") : start),
-    uncappedLevel: rest(start),
+    level: capped.next,
+    uncappedLevel: rest(start).next,
+    applied: { ...capped.applied, sample },
   };
 }
 
-const isSecondary = (row: TestRow) => row.sources.every((s) => s.tier === "secondary");
+const isSecondary = (row: TestRow) => row.sources.some((s) => s.tier === "secondary");
 
 export type ConfidenceInput = {
   tests: TestDef[];
@@ -255,7 +277,7 @@ export function computeConfidence(input: ConfidenceInput): ConfidenceResult {
   const openGates = rows.filter((r) => r.test.gate && r.outcome === "Unknown");
   const rulesStale = isStale("law_rules", rulesCheckedOn, today);
 
-  let graded: { level: Level; uncappedLevel: Level };
+  let graded: Graded;
   if (fails.length > 0) {
     // Each Fail stands on its own evidence. Keep the best grade of each kind.
     const grades = fails.map((row) =>
@@ -266,9 +288,11 @@ export function computeConfidence(input: ConfidenceInput): ConfidenceResult {
         stale: row.stale || rulesStale,
       }),
     );
-    const best = (key: "level" | "uncappedLevel") =>
-      grades.map((g) => g[key]).reduce((a, b) => (rank(a) >= rank(b) ? a : b));
-    graded = { level: best("level"), uncappedLevel: best("uncappedLevel") };
+    const top = grades.reduce((a, b) => (rank(a.level) >= rank(b.level) ? a : b));
+    const uncappedLevel = grades
+      .map((g) => g.uncappedLevel)
+      .reduce((a, b) => (rank(a) >= rank(b) ? a : b));
+    graded = { ...top, uncappedLevel };
   } else {
     let start: Level;
     if (rows.length === 0 || openGates.length > 0) start = "Not enough data";
@@ -317,7 +341,7 @@ export function computeConfidence(input: ConfidenceInput): ConfidenceResult {
       answeredPublic: answeredPublic.length,
       openGates,
       rulesStale,
-      lawVerify,
+      applied: graded.applied,
     }),
   };
 }
@@ -329,7 +353,7 @@ function explain(r: {
   answeredPublic: number;
   openGates: TestRow[];
   rulesStale: boolean;
-  lawVerify: boolean;
+  applied: CapFlags;
 }): Pick<ConfidenceResult, "why" | "raise" | "next"> {
   const why: string[] = [];
   const raise: string[] = [];
@@ -346,7 +370,9 @@ function explain(r: {
       `${plural(fails.length, "test")} failed: ${fails.map((x) => x.test.label).join("; ")}. Confidence here is about that problem, so open tests do not lower it.`,
     );
   } else {
-    const people = openHuman.length > 0 ? ` ${plural(openHuman.length, "test")} also need a person.` : "";
+    const verb = openHuman.length === 1 ? "needs" : "need";
+    const people =
+      openHuman.length > 0 ? ` ${plural(openHuman.length, "test")} also ${verb} a person.` : "";
     why.push(`${r.answeredPublic} of ${plural(r.publicCount, "public test")} answered.${people}`);
     if (r.openGates.length > 0) {
       why.push(
@@ -354,12 +380,18 @@ function explain(r: {
       );
     }
   }
-  if (sample) why.push("The evidence is fictional sample data, which caps confidence at Low.");
-  if (stale) {
+  const { applied } = r;
+  if (applied.sample) why.push("The evidence is fictional sample data, which caps confidence at Low.");
+  if (applied.secondary) why.push("A secondary source caps confidence at Medium.");
+  if (applied.verify) {
+    why.push("This law's rule summary is flagged for verification, which caps confidence at Medium.");
+  }
+  if (applied.stale && stale) {
     why.push("A source is past its age limit or states no date, which lowers confidence one step.");
   }
-  if (r.rulesStale) why.push("Our law rules are past their age limit, which lowers confidence one step.");
-  if (r.lawVerify) why.push("This law's rule summary is flagged for verification, which caps confidence at Medium.");
+  if (applied.stale && r.rulesStale) {
+    why.push("Our law rules are past their age limit, which lowers confidence one step.");
+  }
 
   if (r.level !== "High") {
     if (fails.length > 0) {
@@ -371,9 +403,10 @@ function explain(r: {
       if (openHuman.length > 0) raise.push(`Have a person confirm ${plural(openHuman.length, "test")}.`);
     }
     if (sample) raise.push("Replace the fictional sample documents with real records.");
-    if (stale) raise.push("Use sources that state a current date.");
-    if (r.rulesStale) raise.push("Re-check the law rules.");
-    if (r.lawVerify) raise.push("Verify the current rule against the statute and state guidance.");
+    if (applied.secondary) raise.push("Confirm the answer from an official source.");
+    if (applied.stale && stale) raise.push("Use sources that state a current date.");
+    if (applied.stale && r.rulesStale) raise.push("Re-check the law rules.");
+    if (applied.verify) raise.push("Verify the current rule against the statute and state guidance.");
   }
 
   const nextRow =

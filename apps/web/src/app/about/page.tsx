@@ -32,7 +32,7 @@ const parts = [
   ["Confidence rule and tests", "Working"],
   ["Law source links", "Real, checked 2026-11-06"],
   ["Sites, owners and documents", "Fictional sample"],
-  ["Site ranking", "Typed sample order"],
+  ["Site order", "Typed sample order, not ranked by the tests"],
   ["Map", "Illustrative, not to scale"],
   ["Live parcel data", "Not connected yet"],
   ["Contact, alert and intro buttons", "Mock-ups: nothing is sent"],
@@ -55,7 +55,7 @@ export default function AboutPage() {
             If a test fails, confidence is about that failure. Open tests do not lower it, so a
             site can be a Red flag with High confidence.
           </li>
-          <li>If a required test such as zoning is open, the result is Not enough data.</li>
+          <li>For SB 9, if the zoning or lot-size test is open, the result is Not enough data.</li>
           <li>
             Otherwise: nothing unknown is High. At least {percent(MEDIUM_COVERAGE)} of public tests
             answered is Medium. At least {percent(LOW_COVERAGE)} is Low. Less is Not enough data.

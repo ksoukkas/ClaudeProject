@@ -96,7 +96,7 @@ const sampleSites: Record<Id, { checks: RawCheck[]; extraTests?: TestDef[] }> = 
             "Pass",
             "Sample zoning + AB 2011 screen",
             "zoning",
-            "Commercial corridor screen passes.",
+            "Commercial zoning screen passes.",
           ),
         ],
       },

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ConfidenceBadge } from "@/components/confidence-badge";
 import { CONFIDENCE_COPY, levelBody } from "@/lib/confidence";
+import { RULES_CHECKED } from "@/lib/law-tests";
 import type { ConfidenceResult, Outcome, TestGroup, TestRow } from "@/lib/types";
 
 const outcomeStyle: Record<Outcome, { glyph: string; className: string }> = {
@@ -11,8 +12,11 @@ const outcomeStyle: Record<Outcome, { glyph: string; className: string }> = {
 
 function rowSource(row: TestRow): string {
   if (row.sources.length === 0) return "No source yet · Not checked yet";
-  const names = row.sources.map((s) => s.name).join(" + ");
-  return `${names} · ${row.asOf ?? "No date stated"}`;
+  const sources = row.sources
+    .map((s) => `${s.name} · ${s.dataAsOf ?? "No date stated"}`)
+    .join(" / ");
+  if (row.rule === "R7") return `${sources} · Replaced by a newer layer`;
+  return row.stale && row.asOf ? `${sources} · Past its age limit` : sources;
 }
 
 function TestRowItem({ row }: { row: TestRow }) {
@@ -60,10 +64,8 @@ export function ConfidenceSummary({ result }: { result: ConfidenceResult }) {
         <ConfidenceBadge level={result.level} />
         <Summary result={result} />
       </div>
-      <p>{levelBody(result)}</p>
       <p className="text-ink-soft">
-        Worked out from the tests, not typed in. Next: {result.next}. The cut-offs are an
-        ASSUMPTION. {CONFIDENCE_COPY.sampleStrip}
+        {levelBody(result)} Worked out from the tests, not typed in. Cut-offs are an ASSUMPTION.
       </p>
     </div>
   );
@@ -73,9 +75,11 @@ export function ConfidenceSummary({ result }: { result: ConfidenceResult }) {
 export function ConfidenceBreakdown({
   result,
   conditions,
+  lawSources,
 }: {
   result: ConfidenceResult;
   conditions: { label: string; value: string }[];
+  lawSources: string[];
 }) {
   const groups = [...new Set(result.rows.map((row) => row.test.group))] as TestGroup[];
   const capped = result.level !== result.uncappedLevel;
@@ -110,16 +114,18 @@ export function ConfidenceBreakdown({
             ))}
           </ul>
         </div>
-        <div className="flex flex-col gap-2">
-          <h2 className="text-[13px] leading-[1.5] font-semibold text-ink">
-            {result.status === "Red flag" ? "What would change this" : "What would raise it"}
-          </h2>
-          <ul className="flex list-inside list-disc flex-col gap-1 text-[12px] leading-[1.5] text-ink">
-            {result.raise.map((line) => (
-              <li key={line}>{line}</li>
-            ))}
-          </ul>
-        </div>
+        {result.raise.length > 0 ? (
+          <div className="flex flex-col gap-2">
+            <h2 className="text-[13px] leading-[1.5] font-semibold text-ink">
+              {result.status === "Red flag" ? "What would change this" : "What would raise it"}
+            </h2>
+            <ul className="flex list-inside list-disc flex-col gap-1 text-[12px] leading-[1.5] text-ink">
+              {result.raise.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </div>
 
       <div className="flex flex-col gap-4">
@@ -150,6 +156,21 @@ export function ConfidenceBreakdown({
               </div>
             ))}
           </dl>
+          <p className="text-[11px] leading-[1.5] text-ink-soft">
+            From our working rule summary, checked {RULES_CHECKED}. A summary is not the rule, and
+            it may be out of date.{" "}
+            {lawSources.map((href, index) => (
+              <a
+                key={href}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className="mr-2 text-accent hover:underline"
+              >
+                Read source {lawSources.length > 1 ? index + 1 : ""} ↗
+              </a>
+            ))}
+          </p>
         </div>
       ) : null}
 
