@@ -39,14 +39,23 @@ A web workspace with five parts. Every screen says it is a prototype and not leg
    pass / fail / unknown verdict with who can resolve an unknown. Disagreements between sources
    are shown, never resolved silently. A title and CC&R checklist that never returns pass and
    drafts the request the user sends themselves.
-3. **On the market** (`/market`). Real Surplus Land Act notices for Orange County from HCD, with
-   provenance, plus a paste box for the user's own broker or MLS listings. No "off market" state:
-   absence of a signal reads "not known to be listed".
-4. **Honest confidence.** Confidence is how much the evidence can be trusted (coverage, source
-   freshness, borderline values), not how good the site is. Every threshold is labelled
-   ASSUMPTION on `/about`.
-5. **Map and filters** (`/results`). City, law, owner type, acreage, on-market and status filters
-   in the URL, over an interactive map of the real housing-element points.
+3. **Chapter 8 pipeline** (`/market`). The niche: tax-defaulted parcels in Santa Ana, Stanton and
+   Anaheim that a nonprofit may acquire by agreement before the county's tax auction, under the
+   Revenue and Taxation Code's Chapter 8 sales (sections cited on the page as unverified until
+   read in full). Paste the Treasurer-Tax Collector's auction list and each parcel gets a flag:
+   request window open, power to sell but not scheduled, auction passed, or redeemed. The
+   county's own facts (last auction June 25, 2025; redemption until 5 PM the day before) are
+   shown with the date read. Real Surplus Land Act notices stay as a second public-land channel.
+   Owner and assessee columns are dropped on sight; homes get their address withheld.
+4. **Honest confidence.** Confidence is how much the evidence can be trusted, not how good the
+   site is. For a Chapter 8 parcel: how many facts the county list answers and how fresh the
+   list is, since owners can redeem until the day before an auction. The staleness limit is
+   labelled ASSUMPTION on the page and in code. For the law tests, coverage and source freshness
+   as before, with those thresholds labelled on `/about`.
+5. **Filters and map.** City and status filters over the Chapter 8 list for the three focus
+   cities; the Results page keeps its city, law, owner, acreage and status filters over an
+   interactive map of the real housing-element points. Putting the tax-defaulted parcels on the
+   map is the next step: the county publishes a GIS map of them.
 
 **Demo video:** [link, or "uploaded on the hub"]
 **Live demo:** [link, optional]
@@ -80,7 +89,8 @@ Open <http://localhost:3000>. Then:
 - `/results?q=Anaheim, 40+ affordable units, near transit` for the filtered list and map (sample
   parcels plus real housing-element points; the live scout arrives with pull request 7)
 - `/report` for the feasibility reports (three synthetic parcels, then real public-land notices)
-- `/market` for the Surplus Land Act notices and the listings paste box
+- `/market` for the Chapter 8 pipeline (paste the county list or load the synthetic sample) and the
+  Surplus Land Act notices
 - `/about` for how confidence works and what is real versus mocked
 
 Optional, once pull request 7 is merged: copy `apps/web/.env.example` to `apps/web/.env.local` and
@@ -107,7 +117,10 @@ in the repo so the report and market pages work offline.
 | Housing-element sites | [SCAG HousingElementSite_poly_scag](https://maps.scag.ca.gov/scaggis/rest/services/LDX/HousingElementSite_poly_scag/MapServer/0), 2,126 Orange County sites, cached in `apps/web/public/data/` | 2026-11-07 |
 | Transit | [Caltrans CA High Quality Transit Areas](https://caltrans-gis.dot.ca.gov/arcgis/rest/services/CHrailroad/CA_HQ_Transit_Areas/FeatureServer/0) | 2026-11-06 |
 | Zoning | [SCAG Zoning_poly_OR](https://maps.scag.ca.gov/scaggis/rest/services/LDX/Zoning_poly_OR/MapServer) and city text where given | 2026-11-06 |
-| Public land offered | [HCD Surplus Land Act Notices of Availability](https://data.ca.gov/dataset/surplus-land-act-notices-of-availability-received), public domain, 231 Orange County rows cached in `apps/web/src/lib/market/data/` with provenance | file 2026-11-06, fetched 2026-11-07 |
+| Tax-defaulted parcels (Chapter 8) | [OC Treasurer-Tax Collector: Property Auctions](https://www.octreasurer.gov/taxauction), read in a browser: last auction June 25, 2025, Board approval March 11, 2025, redemption until 5 PM the day before, list viewable by all and downloadable by registered users. [Published Notices](https://www.octreasurer.gov/PublishedNotices) found via search, not read (UNVERIFIED). The list is pasted by the user, not cached | 2026-11-07 |
+| Chapter 8 statute (Rev. & Tax. Code 3692.4, 3791.4, Part 6 Chapter 8) | UNVERIFIED: leginfo did not render in automated reads; a FindLaw snippet of 3692.4 quotes "housing directly related to low-income persons". Read in full before relying on it | not fetched |
+| Chapter 8 list staleness | ASSUMPTION: a county list older than 30 days counts as stale, in `apps/web/src/lib/chapter8/flag.ts` | n/a |
+| Public land offered | [HCD Surplus Land Act Notices of Availability](https://data.ca.gov/dataset/surplus-land-act-notices-of-availability-received), public domain, 231 Orange County rows cached in `apps/web/src/lib/market/data/` with provenance; 138 shown for the focus cities | file 2026-11-06, fetched 2026-11-07 |
 | Hazards (fire, flood, fault) | FEMA, CAL FIRE and county layers listed in `apps/web/src/lib/feasibility/sources.ts`; registered but not yet queried per parcel, so hazard tests read unknown | 2026-11-06 |
 | Confidence thresholds | ASSUMPTION: coverage shares, borderline percent, sliver percent and source age limits in `apps/web/src/lib/thresholds.ts`, explained on `/about` | n/a |
 | Zoning category from text | ASSUMPTION: a keyword mapping of each source's zoning text; the original text is always shown beside it | n/a |
@@ -126,8 +139,8 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
 | Feasibility report: state-law tests with sources and verdicts | working; most hazard and local-code tests return unknown because those layers are not queried per parcel yet |
 | Feasibility report: local zoning plain-English translation | mocked: the slot exists, no city code text is wired |
 | Title and CC&R check | partly working: checklist, flags from parcel signals, and a draft request; no title data exists in public sources, so it never returns pass |
-| On the market: Surplus Land Act notices | working on real data; 0 of the 231 Orange County notices were active on 2026-11-06, and the page says so |
-| On the market: private listings | user-pasted only; no public source, no scraping |
+| Chapter 8 pipeline: county tax-defaulted list | user-pasted only, with a labelled synthetic sample; no real list is cached yet. Flags and evidence levels work on whatever is pasted |
+| Chapter 8 pipeline: Surplus Land Act notices (second channel) | working on real data; 0 of the 138 focus-city notices were active on 2026-11-06, and the page says so |
 | Honest confidence | working; sample-data sites are capped at Low because their documents are fictional |
 | Map and filters | working: filters over the sample parcels and the real housing-element points |
 | Saved sites, matchmaking directory, site memo | mocked: Figma screens over fictional sample data |

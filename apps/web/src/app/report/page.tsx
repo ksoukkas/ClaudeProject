@@ -36,8 +36,8 @@ export default async function ReportIndexPage() {
       <section className="flex flex-col gap-2">
         <h2 className="text-lg font-semibold">Public land from Surplus Land Act notices</h2>
         <p className="text-sm text-ink-soft">
-          {real.length} Orange County notices from the HCD list, each screened with only what the
-          notice says. Browse them with flags and dates on the{" "}
+          {real.length} notices for Santa Ana, Stanton and Anaheim from the HCD list, each screened
+          with only what the notice says. Browse them with flags and dates on the{" "}
           <Link href="/market" className="underline">
             On the market
           </Link>{" "}

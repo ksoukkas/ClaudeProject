@@ -47,7 +47,7 @@ export const SYNTHETIC_PARCELS: ParcelFacts[] = [
     id: "synthetic-002",
     label: "Synthetic parcel 2 (no real address)",
     synthetic: true,
-    city: "Anaheim",
+    city: "Santa Ana",
     apn: null,
     lotSqft: 43000, // ASSUMPTION
     lotSqftSourceId: "oc-parcels",
@@ -105,7 +105,7 @@ export const SYNTHETIC_PARCELS: ParcelFacts[] = [
     id: "synthetic-003",
     label: "Synthetic parcel 3 (no real address)",
     synthetic: true,
-    city: "Anaheim",
+    city: "Stanton",
     apn: null,
     lotSqft: 65000, // ASSUMPTION
     lotSqftSourceId: "oc-parcels",

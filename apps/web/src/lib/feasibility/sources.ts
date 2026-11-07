@@ -158,6 +158,62 @@ const LIST: Source[] = [
   src("irs-eo-bmf", "IRS Exempt Organizations Business Master File", "https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-file-extract-eo-bmf", "data-layer", "VERIFIED", CHECKED, "Page loads; file not downloaded. A proxy for ownership, not a fact."),
   src("hcd-surplus-notices", "HCD Surplus Land Act Notices of Availability (data.ca.gov)", "https://data.ca.gov/dataset/surplus-land-act-notices-of-availability-received", "data-layer", "VERIFIED", CHECKED, "DATA-SOURCES.md recorded the CSV as last modified 2026-10-30 when checked 2026-11-06; the resource showed 2026-11-06T16:54Z when fetched again on 2026-11-07. The cached OC subset carries the later date."),
 
+  // Chapter 8 agreement sales: tax-defaulted property
+  src(
+    "octtc-tax-auction",
+    "Orange County Treasurer-Tax Collector: Property Auctions",
+    "https://www.octreasurer.gov/taxauction",
+    "data-layer",
+    "VERIFIED",
+    "2026-11-07",
+    "Read in a browser on 2026-11-07. States: most recent auction June 25, 2025, approved by the Board of Supervisors on March 11, 2025; owners may redeem until 5 PM the day before the auction; parcel list viewable by anyone, spreadsheet download for registered users; a GIS map of auction parcels.",
+  ),
+  src(
+    "octtc-published-notices",
+    "Orange County Treasurer-Tax Collector: Published Notices",
+    "https://www.octreasurer.gov/PublishedNotices",
+    "data-layer",
+    "UNVERIFIED",
+    "2026-11-07",
+    "Page found via search on 2026-11-07 (snippet dated 2026-06-30 describes a list published to give notice of intent to auction tax-defaulted properties). Contents not read; treat as a lead.",
+  ),
+  src(
+    "rtc-3692-4",
+    "Revenue and Taxation Code 3692.4 (nonprofit request on tax-defaulted property)",
+    "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=3692.4",
+    "statute",
+    "UNVERIFIED",
+    null,
+    "leginfo did not render in automated reads on 2026-11-07. A FindLaw search snippet that day quotes the section: the property 'will serve the public benefit of providing housing directly related to low-income persons'. Read the full section in a browser before relying on it.",
+  ),
+  src(
+    "rtc-3791-4",
+    "Revenue and Taxation Code 3791.4 (nonprofit purchase of tax-defaulted property)",
+    "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=RTC&sectionNum=3791.4",
+    "statute",
+    "UNVERIFIED",
+    null,
+    "Cited from memory; not fetched. Verify the section number and text before relying on it.",
+  ),
+  src(
+    "rtc-chapter-8",
+    "Revenue and Taxation Code, Part 6, Chapter 8 (sale by agreement)",
+    "https://leginfo.legislature.ca.gov/faces/codes_displayexpandedbranch.xhtml?tocCode=RTC&division=1.&title=&part=6.&chapter=8.&article=",
+    "statute",
+    "UNVERIFIED",
+    null,
+    "Chapter heading cited from memory; URL built from leginfo's pattern and not fetched. Verify.",
+  ),
+  src(
+    "user-pasted-tax-list",
+    "County tax-defaulted list you pasted",
+    "",
+    "user-data",
+    "UNVERIFIED",
+    null,
+    "Rows the user pasted from the county's auction spreadsheet or published notice. Siteline never fetches them; owner and assessee columns are dropped on sight.",
+  ),
+
   // Data the user brings in themselves
   src(
     "user-uploaded-listings",
