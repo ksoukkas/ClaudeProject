@@ -17,6 +17,7 @@ export function hasAnthropicKey(): boolean {
   return Boolean(process.env.ANTHROPIC_API_KEY?.trim());
 }
 
+/** Date the scout's public endpoints and fields were last verified by query. */
 export const SOURCE_CHECKED = "2026-11-07";
 
 export type Assumption = { id: string; label: string; basis: string };
@@ -57,8 +58,14 @@ export const ASSUMPTIONS = {
   },
   cacheTtl: {
     id: "cache-ttl",
-    label: "Public-data responses are cached in memory for 1 hour",
-    basis: "Be kind to public servers (CLAUDE.md). The data does not change hourly.",
+    label: "Public-data responses are cached in memory for 1 hour (1 minute if a source failed)",
+    basis:
+      "Be kind to public servers (CLAUDE.md). The data does not change hourly. A degraded answer is kept briefly so a retry storm does not hammer a struggling service.",
+  },
+  throttle: {
+    id: "throttle",
+    label: "The /api/scout endpoint allows 10 requests per minute per client",
+    basis: "Keeps one client from driving volume at public servers or the Claude API. A round number, not a service limit.",
   },
 } satisfies Record<string, Assumption>;
 
@@ -74,6 +81,11 @@ export const TRANSIT_POINTS = 30;
 export const PLANNED_TRANSIT_POINTS = 10;
 /** ASSUMPTION: see ASSUMPTIONS.cacheTtl. */
 export const CACHE_TTL_MS = 60 * 60 * 1000;
+/** ASSUMPTION: see ASSUMPTIONS.cacheTtl. TTL for a degraded scout result. */
+export const DEGRADED_CACHE_TTL_MS = 60 * 1000;
+/** ASSUMPTION: see ASSUMPTIONS.throttle. */
+export const THROTTLE_LIMIT = 10;
+export const THROTTLE_WINDOW_MS = 60 * 1000;
 
 /** Per-request timeout for public services and Claude calls. */
 export const FETCH_TIMEOUT_MS = 12_000;

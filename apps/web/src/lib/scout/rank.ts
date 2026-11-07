@@ -34,6 +34,11 @@ import type { OcCity } from "./cities";
 
 const SQ_M_PER_ACRE = 4046.8564224;
 
+/** The unit goal, or null when none was given or it is not a positive number. */
+export function unitGoal(criteria: Criteria): number | null {
+  return typeof criteria.minUnits === "number" && criteria.minUnits > 0 ? criteria.minUnits : null;
+}
+
 export function goalBasis(
   criteria: Criteria,
   site: Pick<HousingElementSite, "lower" | "moderate" | "total">,
@@ -72,18 +77,20 @@ export function scoreSite(
   transit: Observation<TransitFact>,
 ): { score: number; parts: ScoreComponent[]; meetsGoal: boolean | null } {
   const basis = goalBasis(criteria, site);
-  const cap = criteria.minUnits ?? NO_GOAL_CAPACITY_CAP;
+  const goal = unitGoal(criteria);
+  // A goal of 0 or less is treated as no goal, so the division is always safe.
+  const cap = goal ?? NO_GOAL_CAPACITY_CAP;
   const capPoints = round1((Math.min(basis.units, cap) / cap) * CAPACITY_POINTS);
-  const meetsGoal = criteria.minUnits == null ? null : basis.units >= criteria.minUnits;
+  const meetsGoal = goal == null ? null : basis.units >= goal;
   const parts: ScoreComponent[] = [
     {
       label: "Capacity",
       points: capPoints,
       max: CAPACITY_POINTS,
       why:
-        criteria.minUnits == null
+        goal == null
           ? `${fmt(basis.units)} units of ${basis.label}, scaled against 100 units (ASSUMPTION: no goal given).`
-          : `${fmt(basis.units)} units of ${basis.label} against your ${criteria.minUnits}-unit goal${
+          : `${fmt(basis.units)} units of ${basis.label} against your ${goal}-unit goal${
               meetsGoal ? " (meets it)" : " (below it)"
             }.`,
     },
@@ -123,9 +130,24 @@ function acresObservation(site: HousingElementSite, zoning: ZoningRecord | null 
   return { value: "unknown", sourceId: null, note: "No area in either SCAG layer" };
 }
 
-function zoningObservation(zoning: ZoningRecord | null | undefined, checked: boolean): Observation<string> {
-  if (!checked) return { value: "unknown", sourceId: null, note: "SCAG zoning layer could not be read" };
-  if (!zoning?.codes.length) return { value: "unknown", sourceId: null, note: "No SCAG zoning record for this parcel" };
+function zoningObservation(
+  site: HousingElementSite,
+  zoning: ZoningRecord | null | undefined,
+  enrichment: Enrichment,
+): Observation<string> {
+  if (enrichment.zoning === null) return { value: "unknown", sourceId: null, note: "SCAG zoning layer could not be read" };
+  if (site.idField !== "PID24") {
+    return { value: "unknown", sourceId: null, note: "No PID24 for this parcel, so zoning was not looked up" };
+  }
+  if (!zoning?.codes.length) {
+    return {
+      value: "unknown",
+      sourceId: null,
+      note: enrichment.zoningTruncated
+        ? "SCAG zoning response was truncated; this parcel's record may be missing"
+        : "No SCAG zoning record for this parcel",
+    };
+  }
   return {
     value: zoning.codes.join(" / "),
     sourceId: "scag-zoning",
@@ -198,7 +220,7 @@ export function templateWhy(c: Omit<ScoutCandidate, "why" | "whySource">, criter
     `Listed in ${c.city}'s housing element site inventory (SCAG ${c.capacity.year ?? "year unknown"} data) with ${fmt(
       c.goalBasis.units,
     )} units of ${c.goalBasis.label}${
-      c.meetsGoal === true ? `, meeting your ${criteria.minUnits}-unit goal` : c.meetsGoal === false ? `, below your ${criteria.minUnits}-unit goal` : ""
+      c.meetsGoal === true ? `, meeting your ${unitGoal(criteria)}-unit goal` : c.meetsGoal === false ? `, below your ${unitGoal(criteria)}-unit goal` : ""
     }.`,
   ];
   if (c.transit.value !== "unknown" && criteria.nearTransit !== null) {
@@ -220,6 +242,8 @@ export type Enrichment = {
   transitNote: string;
   /** null = the zoning service could not be read. */
   zoning: Map<string, ZoningRecord> | null;
+  /** The zoning response was truncated: missing records are unknown, not absent. */
+  zoningTruncated?: boolean;
 };
 
 /** Build, score and rank candidates. Returns at most RESULT_COUNT. */
@@ -234,14 +258,14 @@ export function rankCandidates(
     const transit: Observation<TransitFact> = tf
       ? { value: tf, sourceId: "caltrans-hqta", note: "Point-in-polygon test of the parcel centroid" }
       : { value: "unknown", sourceId: null, note: enrichment.transitNote };
-    const zoningRec = enrichment.zoning?.get(site.pid24);
-    const zoning = zoningObservation(zoningRec, enrichment.zoning !== null);
+    const zoningRec = site.idField === "PID24" ? enrichment.zoning?.get(site.pid24) : undefined;
+    const zoning = zoningObservation(site, zoningRec, enrichment);
     const { score, parts, meetsGoal } = scoreSite(criteria, site, transit);
     const links = [
-      { label: "SCAG housing element record", href: recordUrl(SCAG_HE_LAYER, site.pid24) },
+      { label: "SCAG housing element record", href: recordUrl(SCAG_HE_LAYER, site.idField, site.pid24) },
     ];
     if (zoning.value !== "unknown") {
-      links.push({ label: "SCAG zoning record", href: recordUrl(SCAG_ZONING_LAYER, site.pid24) });
+      links.push({ label: "SCAG zoning record", href: recordUrl(SCAG_ZONING_LAYER, "PID24", site.pid24) });
     }
     if (transit.value !== "unknown") {
       links.push({ label: "Caltrans HQTA layer", href: scoutSources["caltrans-hqta"].url });

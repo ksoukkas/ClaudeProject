@@ -9,7 +9,7 @@ import type { Criteria, IncomeLevel, OwnerHint } from "./types";
 type Rule = { re: RegExp };
 
 const UNIT_RE =
-  /\b(?:at\s+least\s+|min(?:imum)?\s+(?:of\s+)?)?(\d{1,5})\s*(?:\+|or\s+more|plus)?\s*(?:affordable\s+|lower[-\s]income\s+|low[-\s]income\s+|moderate[-\s]income\s+|income[-\s]restricted\s+|new\s+)?(?:units?|homes?|apartments?|dwellings?|du)\b/i;
+  /\b(?:at\s+least\s+|min(?:imum)?\s+(?:of\s+)?)?(\d{1,6})\s*(?:\+|or\s+more|plus)?\s*(?:affordable\s+|lower[-\s]income\s+|low[-\s]income\s+|moderate[-\s]income\s+|income[-\s]restricted\s+|new\s+)?(?:units?|homes?|apartments?|dwellings?|du)\b/i;
 const PERCENT_RE = /\b(\d{1,3})\s*%/;
 
 const AFFORDABLE_RE =
@@ -17,7 +17,14 @@ const AFFORDABLE_RE =
 const LOWER_RE = /\b(low(?:er)?[-\s]income|very[-\s]low(?:[-\s]income)?)\b/i;
 const MODERATE_RE = /\bmoderate[-\s]income\b/i;
 
-const NO_TRANSIT_RE = /\b(no|not|without)\s+(near\s+)?transit\b/i;
+const TRANSIT_NOUN = String.raw`(?:transit|rail|metrolink|trains?|stations?|bus(?:es)?|brt|hqta)`;
+/** "not near transit", "away from the station", "avoid rail", "far from transit"... */
+const NO_TRANSIT_RE = new RegExp(
+  String.raw`\b(?:no|not|without)\s+(?:near\s+|close\s+to\s+|by\s+)?(?:any\s+|the\s+|a\s+)?${TRANSIT_NOUN}\b` +
+    String.raw`|\b(?:away|far)\s+from\s+(?:any\s+|the\s+|a\s+)?${TRANSIT_NOUN}\b` +
+    String.raw`|\bavoid(?:s|ing)?\s+(?:any\s+|the\s+|a\s+)?${TRANSIT_NOUN}\b`,
+  "i",
+);
 const TRANSIT_RE =
   /\b(transit|rail|metrolink|train|station|bus(?:es)?|brt|hqta|tod|transit[-\s]oriented)\b/i;
 
@@ -70,9 +77,15 @@ export function findCity(q: string): { city: OcCity | null; matched: string | nu
   return { city: null, matched: null };
 }
 
+/** "1,000" -> "1000" so thousands separators do not split numbers. */
+export function normalizeNumbers(q: string): string {
+  return q.replace(/(\d),(?=\d{3}\b)/g, "$1");
+}
+
 export function parseQueryFallback(raw: string): Criteria {
-  const q = raw.trim();
+  const q = normalizeNumbers(raw.trim());
   let rest = ` ${q} `;
+  const notes: string[] = [];
   const strip = (s: string | null | undefined) => {
     if (s) rest = rest.replace(s, " ");
   };
@@ -81,7 +94,11 @@ export function parseQueryFallback(raw: string): Criteria {
   strip(matched);
 
   const unitMatch = q.match(UNIT_RE);
-  const minUnits = unitMatch ? Number(unitMatch[1]) : null;
+  let minUnits = unitMatch ? Number(unitMatch[1]) : null;
+  if (minUnits !== null && !(minUnits > 0)) {
+    notes.push(`Ignored unit count ${unitMatch![1]} (must be more than 0)`);
+    minUnits = null;
+  }
   strip(unitMatch?.[0]);
 
   const pct = q.match(PERCENT_RE);
@@ -122,6 +139,9 @@ export function parseQueryFallback(raw: string): Criteria {
     nearTransit,
     pathways,
     ownerHints,
-    unparsed: leftover.length ? [`Not understood: ${[...new Set(leftover)].join(", ")}`] : [],
+    unparsed: [
+      ...notes,
+      ...(leftover.length ? [`Not understood: ${[...new Set(leftover)].join(", ")}`] : []),
+    ],
   };
 }

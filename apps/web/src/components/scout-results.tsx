@@ -128,7 +128,7 @@ function CandidateCard({ c, query, goal }: { c: ScoutCandidate; query: string; g
       <p className="text-[12px] leading-[1.5] text-ink">
         {c.why}{" "}
         <span className="text-[10px] text-muted">
-          ({c.whySource === "claude" ? "drafted by Claude from the listed facts, fact-checked" : "template"})
+          ({c.whySource === "claude" ? "drafted by Claude from the facts above; verify" : "template from the facts above"})
         </span>
       </p>
       <ul className="flex flex-col gap-[2px] text-[10px] leading-[1.5] text-muted">

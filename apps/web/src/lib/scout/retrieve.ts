@@ -19,11 +19,11 @@ export class SourceError extends Error {
   }
 }
 
-type ArcFeature = {
+export type ArcFeature = {
   attributes: Record<string, unknown>;
   geometry?: { rings?: Ring[] };
 };
-type ArcResponse = {
+export type ArcResponse = {
   features?: ArcFeature[];
   exceededTransferLimit?: boolean;
   error?: { code?: number; message?: string };
@@ -65,7 +65,10 @@ const num = (v: unknown): number => (typeof v === "number" && Number.isFinite(v)
 const str = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
 
 export type HousingElementSite = {
+  /** Lookup key: the PID24 value, or APN24 when PID24 is missing. */
   pid24: string;
+  /** Which SCAG field `pid24` holds. */
+  idField: "PID24" | "APN24";
   apn: string;
   jurisdiction: string;
   lower: number;
@@ -81,7 +84,7 @@ export type HousingElementSite = {
 /** Every SCAG housing-element site for one OC city. One request, cached. */
 export function fetchHousingElementSites(
   city: OcCity,
-): Promise<{ sites: HousingElementSite[]; truncated: boolean }> {
+): Promise<{ sites: HousingElementSite[]; truncated: boolean; duplicates: number }> {
   const jurisdiction = scagJurisdiction(city);
   return cached(`he:${jurisdiction}`, CACHE_TTL_MS, async () => {
     const body = await arcQuery("SCAG housing element sites", SCAG_HE_LAYER, {
@@ -103,38 +106,62 @@ export function fetchHousingElementSites(
       geometryPrecision: "6",
       resultRecordCount: "2000",
     });
-    const sites = (body.features ?? []).map((f): HousingElementSite => {
-      const a = f.attributes;
-      const area = a["Shape.STArea()"];
-      return {
-        pid24: str(a.PID24) || str(a.APN24),
-        apn: str(a.Assessor_Parcel_Number) || str(a.APN24),
-        jurisdiction: str(a.Jurisdiction),
-        lower: num(a.Low_Income_HE_Capacity),
-        moderate: num(a.Moderate_Income_HE_Capacity),
-        aboveModerate: num(a.Above_Moderate_Income_HE_Capacity),
-        total: num(a.Total_HE_Capacity),
-        year: typeof a.YEAR === "number" ? a.YEAR : null,
-        areaM2: typeof area === "number" && area > 0 ? area : null,
-        centroid: polygonCentroid(f.geometry?.rings),
-      };
-    });
-    return { sites: sites.filter((s) => s.pid24), truncated: Boolean(body.exceededTransferLimit) };
+    return parseHousingElementFeatures(body);
   });
+}
+
+/** Map raw features to sites; drop rows with no id; keep the first of duplicate ids. */
+export function parseHousingElementFeatures(body: ArcResponse): {
+  sites: HousingElementSite[];
+  truncated: boolean;
+  duplicates: number;
+} {
+  const seen = new Set<string>();
+  const sites: HousingElementSite[] = [];
+  let duplicates = 0;
+  for (const f of body.features ?? []) {
+    const a = f.attributes;
+    const pid = str(a.PID24);
+    const key = pid || str(a.APN24);
+    if (!key) continue;
+    if (seen.has(key)) {
+      duplicates++;
+      continue;
+    }
+    seen.add(key);
+    const area = a["Shape.STArea()"];
+    sites.push({
+      pid24: key,
+      idField: pid ? "PID24" : "APN24",
+      apn: str(a.Assessor_Parcel_Number) || str(a.APN24),
+      jurisdiction: str(a.Jurisdiction),
+      lower: num(a.Low_Income_HE_Capacity),
+      moderate: num(a.Moderate_Income_HE_Capacity),
+      aboveModerate: num(a.Above_Moderate_Income_HE_Capacity),
+      total: num(a.Total_HE_Capacity),
+      year: typeof a.YEAR === "number" ? a.YEAR : null,
+      areaM2: typeof area === "number" && area > 0 ? area : null,
+      centroid: polygonCentroid(f.geometry?.rings),
+    });
+  }
+  return { sites, truncated: Boolean(body.exceededTransferLimit), duplicates };
 }
 
 /**
  * Which points fall inside a Caltrans HQTA polygon. One multipoint
  * intersect request returns only the polygons touching any point; the
  * point-by-point test is done locally.
+ *
+ * If the service truncated its response (exceededTransferLimit), a point
+ * with no matching polygon may simply be missing one, so only positive
+ * matches are returned and the rest stay unknown.
  */
 export function fetchTransitForPoints(
   points: { id: string; at: [number, number] }[],
-): Promise<Map<string, TransitFact>> {
+): Promise<{ facts: Map<string, TransitFact>; truncated: boolean }> {
   const key = `hqta:${points.map((p) => p.id).sort().join(",")}`;
   return cached(key, CACHE_TTL_MS, async () => {
-    const out = new Map<string, TransitFact>();
-    if (!points.length) return out;
+    if (!points.length) return { facts: new Map<string, TransitFact>(), truncated: false };
     const body = await arcQuery("Caltrans HQTA", CALTRANS_HQTA_LAYER, {
       geometry: JSON.stringify({
         points: points.map((p) => p.at),
@@ -148,46 +175,71 @@ export function fetchTransitForPoints(
       outSR: "4326",
       geometryPrecision: "6",
     });
-    const polys = (body.features ?? []).filter((f) => f.geometry?.rings?.length);
-    for (const p of points) {
-      const hits = polys.filter((f) => pointInPolygon(p.at, f.geometry!.rings!));
-      const planned = (f: ArcFeature) => str(f.attributes.hqta_details).includes("planned");
-      out.set(p.id, {
-        inHqta: hits.length > 0,
-        plannedOnly: hits.length > 0 && hits.every(planned),
-        types: [...new Set(hits.map((f) => str(f.attributes.hqta_type)).filter(Boolean))],
-        agencies: [...new Set(hits.map((f) => str(f.attributes.agency_primary)).filter(Boolean))],
-      });
-    }
-    return out;
+    return transitFromFeatures(points, body);
   });
+}
+
+export function transitFromFeatures(
+  points: { id: string; at: [number, number] }[],
+  body: ArcResponse,
+): { facts: Map<string, TransitFact>; truncated: boolean } {
+  const truncated = Boolean(body.exceededTransferLimit);
+  const facts = new Map<string, TransitFact>();
+  const polys = (body.features ?? []).filter((f) => f.geometry?.rings?.length);
+  const planned = (f: ArcFeature) => str(f.attributes.hqta_details).includes("planned");
+  for (const p of points) {
+    const hits = polys.filter((f) => pointInPolygon(p.at, f.geometry!.rings!));
+    if (!hits.length && truncated) continue;
+    facts.set(p.id, {
+      inHqta: hits.length > 0,
+      plannedOnly: hits.length > 0 && hits.every(planned),
+      types: [...new Set(hits.map((f) => str(f.attributes.hqta_type)).filter(Boolean))],
+      agencies: [...new Set(hits.map((f) => str(f.attributes.agency_primary)).filter(Boolean))],
+    });
+  }
+  return { facts, truncated };
 }
 
 export type ZoningRecord = { acres: number | null; codes: string[]; year: number | null };
 
-/** SCAG zoning by PID24 for a short list of parcels. One request, cached. */
-export function fetchZoning(pid24s: string[]): Promise<Map<string, ZoningRecord>> {
-  const ids = [...new Set(pid24s.filter((p) => /^\d+$/.test(p)))].sort();
+/** PID24 values safe to put in a SQL IN list. */
+const SAFE_ID = /^[0-9A-Za-z-]+$/;
+
+/**
+ * SCAG zoning by PID24 for a short list of parcels. One request, cached.
+ * `truncated` means some parcels' records may be missing from the response.
+ */
+export function fetchZoning(
+  pid24s: string[],
+): Promise<{ records: Map<string, ZoningRecord>; truncated: boolean }> {
+  const ids = [...new Set(pid24s.filter((p) => SAFE_ID.test(p)))].sort();
   return cached(`zn:${ids.join(",")}`, CACHE_TTL_MS, async () => {
-    const out = new Map<string, ZoningRecord>();
-    if (!ids.length) return out;
+    if (!ids.length) return { records: new Map<string, ZoningRecord>(), truncated: false };
     const body = await arcQuery("SCAG zoning", SCAG_ZONING_LAYER, {
       where: `PID24 IN (${ids.map((p) => `'${p}'`).join(",")})`,
       outFields: "PID24,ACRES,ZN24_CITY,YEAR",
       returnGeometry: "false",
     });
-    for (const f of body.features ?? []) {
-      const a = f.attributes;
-      const pid = str(a.PID24);
-      if (!pid) continue;
-      const prev = out.get(pid) ?? { acres: null, codes: [], year: null };
-      const code = str(a.ZN24_CITY);
-      out.set(pid, {
-        acres: prev.acres ?? (typeof a.ACRES === "number" && a.ACRES > 0 ? a.ACRES : null),
-        codes: code && !prev.codes.includes(code) ? [...prev.codes, code] : prev.codes,
-        year: prev.year ?? (typeof a.YEAR === "number" ? a.YEAR : null),
-      });
-    }
-    return out;
+    return zoningFromFeatures(body);
   });
+}
+
+export function zoningFromFeatures(body: ArcResponse): {
+  records: Map<string, ZoningRecord>;
+  truncated: boolean;
+} {
+  const records = new Map<string, ZoningRecord>();
+  for (const f of body.features ?? []) {
+    const a = f.attributes;
+    const pid = str(a.PID24);
+    if (!pid) continue;
+    const prev = records.get(pid) ?? { acres: null, codes: [], year: null };
+    const code = str(a.ZN24_CITY);
+    records.set(pid, {
+      acres: prev.acres ?? (typeof a.ACRES === "number" && a.ACRES > 0 ? a.ACRES : null),
+      codes: code && !prev.codes.includes(code) ? [...prev.codes, code] : prev.codes,
+      year: prev.year ?? (typeof a.YEAR === "number" ? a.YEAR : null),
+    });
+  }
+  return { records, truncated: Boolean(body.exceededTransferLimit) };
 }

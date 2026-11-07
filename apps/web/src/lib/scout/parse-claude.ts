@@ -11,6 +11,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import type { LawId } from "../sample-data";
 import { OC_CITIES, toOcCity } from "./cities";
 import { CLAUDE_TIMEOUT_MS, scoutModel } from "./config";
+import { normalizeNumbers } from "./parse-fallback";
 import type { Criteria, IncomeLevel, OwnerHint } from "./types";
 
 const LAW_IDS: LawId[] = ["SB9", "SB684_SB1123", "AB2011", "SB4"];
@@ -63,7 +64,7 @@ export class ClaudeParseError extends Error {}
 export function sanitizeClaudeCriteria(raw: unknown, query: string): Criteria {
   if (!raw || typeof raw !== "object") throw new ClaudeParseError("Claude returned no object");
   const r = raw as Record<string, unknown>;
-  const numbersInQuery = new Set((query.match(/\d+(?:\.\d+)?/g) ?? []).map(Number));
+  const numbersInQuery = new Set((normalizeNumbers(query).match(/\d+(?:\.\d+)?/g) ?? []).map(Number));
   const notes: string[] = [];
 
   const city = toOcCity(r.city);
@@ -105,7 +106,10 @@ export function sanitizeClaudeCriteria(raw: unknown, query: string): Criteria {
   };
 }
 
-export async function parseQueryWithClaude(query: string): Promise<Criteria> {
+/** Parse with Claude. `model` is the model that actually answered (fallbacks may differ). */
+export async function parseQueryWithClaude(
+  query: string,
+): Promise<{ criteria: Criteria; model: string }> {
   const client = new Anthropic({ timeout: CLAUDE_TIMEOUT_MS, maxRetries: 1 });
   const response = await client.beta.messages.create({
     model: scoutModel(),
@@ -132,7 +136,7 @@ export async function parseQueryWithClaude(query: string): Promise<Criteria> {
   } catch {
     throw new ClaudeParseError("Claude returned invalid JSON");
   }
-  return sanitizeClaudeCriteria(parsed, query);
+  return { criteria: sanitizeClaudeCriteria(parsed, query), model: response.model || scoutModel() };
 }
 
 /** Short, user-safe description of why a Claude call failed. */

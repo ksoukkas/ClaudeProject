@@ -6,6 +6,8 @@
  * values matched what the scout expects. UNVERIFIED = a lead only.
  */
 
+import { SOURCE_CHECKED } from "./config";
+
 export type SourceStatus = "VERIFIED" | "UNVERIFIED";
 
 export type SourceId = "scag-he" | "caltrans-hqta" | "scag-zoning" | "hcd-sites";
@@ -36,7 +38,7 @@ export const scoutSources: Record<SourceId, ScoutSource> = {
     name: "SCAG housing element sites (HousingElementSite_poly_scag, layer 0)",
     publisher: "Southern California Association of Governments",
     url: SCAG_HE_LAYER,
-    checked: "2026-11-07",
+    checked: SOURCE_CHECKED,
     status: "VERIFIED",
     how:
       "Read layer metadata (?f=json) and queried COUNTY='Orange': 2,126 sites in 28 jurisdictions, all YEAR=2025. Anaheim returned 124 sites with APNs and capacity values. Santa Ana, Costa Mesa, Huntington Beach, Orange, Tustin, Laguna Woods and Rancho Santa Margarita returned 0 sites.",
@@ -59,7 +61,7 @@ export const scoutSources: Record<SourceId, ScoutSource> = {
     name: "Caltrans California High Quality Transit Areas (layer 0)",
     publisher: "Caltrans",
     url: CALTRANS_HQTA_LAYER,
-    checked: "2026-11-07",
+    checked: SOURCE_CHECKED,
     status: "VERIFIED",
     how:
       "Read layer metadata and ran a multipoint intersect with six Anaheim site centroids: 8 polygons returned (OCTA major bus stops and an HQ bus corridor, plus one MPO-planned stop). Layer description says corridors are estimated from GTFS headways of 20 minutes or less.",
@@ -70,7 +72,7 @@ export const scoutSources: Record<SourceId, ScoutSource> = {
     name: "SCAG zoning by parcel (Zoning_poly_OR, layer 0)",
     publisher: "Southern California Association of Governments",
     url: SCAG_ZONING_LAYER,
-    checked: "2026-11-07",
+    checked: SOURCE_CHECKED,
     status: "VERIFIED",
     how:
       "Queried by PID24 for three Anaheim housing-element parcels: each returned CITY, ACRES and a local zoning code (ZN24_CITY). Dataset YEAR=2024. The regional code ZN24_SCAG is not shown because its legend was not checked.",
@@ -90,9 +92,9 @@ export const scoutSources: Record<SourceId, ScoutSource> = {
 };
 
 /** A link that opens the exact public record for one parcel. */
-export function recordUrl(layer: string, pid24: string): string {
+export function recordUrl(layer: string, field: "PID24" | "APN24", value: string): string {
   const params = new URLSearchParams({
-    where: `PID24='${pid24}'`,
+    where: `${field}='${value.replace(/'/g, "''")}'`,
     outFields: "*",
     returnGeometry: "false",
     f: "html",

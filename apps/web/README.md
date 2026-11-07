@@ -94,9 +94,12 @@ units, near transit`. Code: `src/lib/scout/` (framework-free).
    and link to the official source. The SCAG layer has no street address, so
    sites show the APN and "Address unknown".
 5. **Why call.** A template sentence built from the facts. With a key, Claude
-   drafts the line from the same facts only; a line is rejected (template
-   kept) if it has a number that is not in that site's facts, a currency
-   sign, or is too long.
+   drafts the line from the same facts only. A mechanical check (not a full
+   fact check) rejects a line, and keeps the template, if it has a number not
+   in that site's facts, a currency sign, a mention of transit or zoning when
+   that fact is unknown, an owner or land-use word (church, school, city-owned,
+   nonprofit, commercial...) not in the facts, or a vague quantity ("dozens").
+   The UI labels Claude lines "drafted by Claude from the facts above; verify".
 
 ### Data sources (checked 2026-11-07 by querying each service)
 
@@ -119,7 +122,8 @@ Each site links to its exact public record ("View source ↗"). The registry is
 | "Affordable" with no income level counts lower-income capacity only | The strictest category in the SCAG layer, so goals are not overstated. "Moderate income" counts lower + moderate; no affordability words counts total capacity. |
 | With no unit goal, capacity points max out at 100 units | A round number for ranking, not a policy threshold. |
 | Score weights 50 / 30 / 10, goal-meeting sites first | A team choice to make the order explainable, not a measure of feasibility (`src/lib/scout/config.ts`, `rank.ts`). |
-| Public-data responses cached for 1 hour | Be kind to public servers. |
+| Public-data responses cached for 1 hour; a degraded result (a source failed or was truncated, or a Claude call failed) for 1 minute | Be kind to public servers, and retry a struggling one soon but not on every request. |
+| `/api/scout` allows 10 requests per minute per client (in-memory, by `x-forwarded-for`), else 429 | Keeps one client from driving volume at public servers or the Claude API. Not a security control. |
 | Acres come from SCAG zoning `ACRES`; if missing, from the housing element polygon area (`Shape.STArea()`, m², EPSG:26911) | Labelled on each site. Not an assessor lot size. |
 
 ### Live vs. mocked
@@ -147,8 +151,15 @@ Each site links to its exact public record ("View source ↗"). The registry is
 - One city per search. With several cities named, the keyword parser keeps
   the longest matching name; with none, the page asks for one.
 - If a service times out or errors, the page shows the reason and falls back
-  (housing elements) or marks that fact unknown (transit, zoning). Degraded
-  results are not cached, so the next search retries.
+  (housing elements) or marks that fact unknown (transit, zoning). If a
+  service truncates its response (`exceededTransferLimit`), sites it may have
+  missed show that fact as unknown and the page warns. Degraded results
+  (`degraded: true` in the API) are cached for 1 minute only.
+- "1,000 units" is read as 1000; a unit goal of 0 is ignored. "Away from /
+  avoid / not near transit" is read as avoid-transit, which is noted but not
+  scored.
+- Duplicate SCAG records for one parcel id are skipped (first kept, with a
+  warning). Sites with no PID24 are keyed by APN24 and skip the zoning lookup.
 - The in-memory cache is per server process and resets on restart.
 
 ## Layout

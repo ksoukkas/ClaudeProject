@@ -121,5 +121,11 @@ export type ScoutResult = {
   sources: SourceId[];
   warnings: string[];
   explainer: { kind: "claude" | "template"; model: string | null; note: string | null };
+  /**
+   * True when part of the answer is missing because something failed: a data
+   * layer errored or was truncated, or a Claude call failed while a key is
+   * set. Degraded results are cached only briefly.
+   */
+  degraded: boolean;
   generatedAt: string;
 };

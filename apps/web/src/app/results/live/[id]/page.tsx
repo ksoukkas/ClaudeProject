@@ -48,7 +48,15 @@ export default async function LiveSitePage({
   const { id } = await params;
   const q = first((await searchParams).q).trim();
   const result = q ? await runScout(q) : null;
-  const c = result?.candidates.find((x) => x.id === decodeURIComponent(id));
+  // Next may or may not have decoded the segment; ids are "he-<digits>", so
+  // accept either form and never throw on a malformed escape.
+  let decoded = id;
+  try {
+    decoded = decodeURIComponent(id);
+  } catch {
+    // keep the raw segment
+  }
+  const c = result?.candidates.find((x) => x.id === id || x.id === decoded);
   const back = q ? `/results?q=${encodeURIComponent(q)}` : "/results";
 
   if (!result || !c) {
