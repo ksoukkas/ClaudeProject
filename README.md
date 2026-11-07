@@ -28,10 +28,12 @@ shows every test, the record behind it, and what is still unknown, with a drafte
 
 A web workspace with five parts. Every screen says it is a prototype and not legal advice.
 
-1. **Scout.** Type a goal such as "Anaheim, 40+ affordable units, near transit". The agent pulls
-   adopted housing-element sites for the city from SCAG, joins Caltrans transit areas and SCAG
-   zoning, and ranks candidates with the sources it used. Live public data, cached, throttled.
-   *In [pull request 7](https://github.com/ksoukkas/Unlot/pull/7) at the time of writing.*
+1. **Scout** (arrives with [pull request 7](https://github.com/ksoukkas/Unlot/pull/7), not yet
+   merged at the time of writing). Type a goal such as "Anaheim, 40+ affordable units, near
+   transit". The agent will pull adopted housing-element sites for the city from SCAG, join
+   Caltrans transit areas and SCAG zoning, and rank candidates with the sources it used, from
+   live public data, cached and throttled. On `main` today, `/results` filters sample parcels and
+   the real housing-element points.
 2. **Feasibility report** (`/report/[id]`). One row per site test under each law: the requirement,
    the source that states it, the data layer that answered it, the value found, and a
    pass / fail / unknown verdict with who can resolve an unknown. Disagreements between sources
@@ -134,8 +136,8 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
 ## Where it gets things wrong
 
 - **Housing-element sites are not the same as law-eligible parcels.** They are a city's own
-  inventory. The scout uses them as a starting universe; the countywide parcel layer is the next
-  step.
+  inventory. The scout in pull request 7 uses them as a starting universe once it merges; the
+  countywide parcel layer is the next step.
 - **The zoning keyword mapping is crude.** "Open Space with Commercial Option" reads as
   commercial. The original text is always shown so a person can override it.
 - **Unknown dominates.** On the first real public-land notice we opened (`/report/sla-001`),
