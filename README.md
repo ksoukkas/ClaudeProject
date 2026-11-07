@@ -33,7 +33,7 @@ One list. Every screen says it is a prototype and not legal advice.
 
 1. **Chapter 8 scout** (`/chapter8`, also the home page). Every parcel from the Orange County
    Treasurer-Tax Collector's published tax-defaulted list across all of Orange County:
-   108 land parcels from Exhibit I for the June 25, 2025 auction, with a city dropdown. Each is scored
+   108 parcels from Exhibit I for the June 25, 2025 auction, with a city dropdown. Each is scored
    out of 100 on five metrics of 20 points: acquisition certainty, buildability, housing yield,
    funding competitiveness, and cost and complexity. Every point shows its reason. Unknown data
    scores half points and is marked "to verify"; water and sewer is always "verify with the
@@ -122,7 +122,7 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
 
 | Part | Status |
 |---|---|
-| Chapter 8 scout list | real: all 108 land parcels across Orange County from the county's June 25, 2025 Exhibit I (44 vacant, 64 with a building), filterable by city; about 16 months old as of 2026-11-07, and the page says parcels may have sold or been redeemed |
+| Chapter 8 scout list | real: all 108 parcels across Orange County from the county's June 25, 2025 Exhibit I (44 vacant, 64 with a building), filterable by city; about 16 months old as of 2026-11-07, and the page says parcels may have sold or been redeemed |
 | Score out of 100 | working on real inputs where they exist (vacant vs built, housing-element membership); every other line scores half points marked to verify |
 | Deadline badge | working; reads "passed" for the loaded list, and red / orange / green for a pasted list with a future auction date |
 | City dropdown and tier filters | working, in the URL |

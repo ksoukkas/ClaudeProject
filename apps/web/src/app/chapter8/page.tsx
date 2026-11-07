@@ -154,7 +154,7 @@ export default async function Chapter8ScoutPage({ searchParams }: { searchParams
           When property taxes go unpaid long enough, the county can sell the parcel. Under Chapter 8
           of the Revenue and Taxation Code, as this team understands it (statute text UNVERIFIED,
           see About), an eligible nonprofit can apply to buy it by agreement with the county instead
-          of bidding at auction. This list is every land parcel from the county&apos;s published
+          of bidding at auction. This list is every parcel from the county&apos;s published
           list across {FOCUS_LABEL}, scored out of 100 on five metrics of 20: acquisition certainty,
           buildability, housing yield, funding competitiveness, and cost and complexity. Unknown
           facts score half points and are marked to verify. The Chapter 8 deadline is shown beside
@@ -190,7 +190,7 @@ export default async function Chapter8ScoutPage({ searchParams }: { searchParams
       ) : null}
 
       <p className="rounded-[12px] bg-canvas px-4 py-3 text-[12px] leading-[1.5] text-ink-soft">
-        {rows.length} of {parcels.length} land parcels on the county list across {cityOptions.length}{" "}
+        {rows.length} of {parcels.length} parcels on the county list across {cityOptions.length}{" "}
         jurisdictions. Real data from the{" "}
         <a href={listSource.url} target="_blank" rel="noreferrer" className="text-accent hover:underline">
           County of Orange Treasurer-Tax Collector, Exhibit I for Sale #1398
