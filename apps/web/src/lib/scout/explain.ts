@@ -29,6 +29,8 @@ export function factsFor(c: ScoutCandidate, criteria: Criteria) {
     localZoningCode: c.zoning.value,
     inHighQualityTransitArea:
       c.transit.value === "unknown" ? "unknown" : c.transit.value.inHqta && !c.transit.value.plannedOnly,
+    onlyNearPlannedMajorStop:
+      c.transit.value === "unknown" ? "unknown" : c.transit.value.inHqta && c.transit.value.plannedOnly,
     owner: "unknown",
     hazards: "unknown",
     utilities: "unknown",
@@ -43,7 +45,7 @@ Hard rules:
 - Every number you write must appear in that parcel's JSON.
 - If a fact is "unknown" or null, say it is unknown or leave it out. Never guess.
 - Owner, hazards, utilities and pathway eligibility are unknown for every parcel; mention that at least one key unknown remains.
-- Mention transit only if inHighQualityTransitArea is true or false. Do not say what a zoning code means (e.g. "commercial"). Do not describe the owner or land use.
+- Mention transit only if inHighQualityTransitArea is true or false. If onlyNearPlannedMajorStop is true, say the site is near a planned major transit stop with no existing service yet; do not just say it is outside a transit area. Do not say what a zoning code means (e.g. "commercial"). Do not describe the owner or land use.
 - No vague quantities ("dozens", "hundreds"). No legal or financial advice. No superlatives. Under 60 words per parcel.`;
 
 const SCHEMA = {
@@ -99,6 +101,7 @@ const VAGUE_QUANTITIES =
  * - every number in it appears in the facts (thousands separators ignored),
  * - it has no currency and is short,
  * - it mentions transit only when the transit fact is known (true/false),
+ *   and says "planned" when only a planned major stop matched,
  * - it mentions zoning only when a zoning code is known,
  * - it uses no owner / land-use / availability claim word that is absent
  *   from the fact values, and no vague quantity ("dozens", "hundreds").
@@ -127,6 +130,8 @@ export function validateWhy(text: unknown, facts: Record<string, unknown>): stri
 
   const lower = t.toLowerCase();
   if (TRANSIT_WORDS.test(t) && typeof facts.inHighQualityTransitArea !== "boolean") return null;
+  // A planned-only stop must not be flattened into "not in a transit area".
+  if (TRANSIT_WORDS.test(t) && facts.onlyNearPlannedMajorStop === true && !/\bplanned\b/i.test(t)) return null;
   if (ZONING_WORDS.test(t) && (!facts.localZoningCode || facts.localZoningCode === "unknown")) return null;
   if (CLAIM_WORDS.some((w) => lower.includes(w) && !valueText.includes(w))) return null;
   if (VAGUE_QUANTITIES.test(t)) return null;

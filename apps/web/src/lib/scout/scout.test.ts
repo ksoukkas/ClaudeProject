@@ -188,6 +188,18 @@ test("'why' lines with numbers not in the facts are rejected", () => {
   assert.ok(validateWhy("The 3.01-acre site's owner is unknown.", facts));
 });
 
+test("'why' lines must say 'planned' when only a planned major stop matched", () => {
+  const facts = {
+    apn: "034-460-33",
+    lowerIncomeCapacity: 86,
+    inHighQualityTransitArea: false,
+    onlyNearPlannedMajorStop: true,
+  };
+  assert.equal(validateWhy("APN 034-460-33 is not in a high-quality transit area; owner unknown.", facts), null);
+  assert.ok(validateWhy("APN 034-460-33 is near a planned major transit stop with no service yet; owner unknown.", facts));
+  assert.ok(validateWhy("APN 034-460-33 lists 86 lower-income units; owner unknown.", facts));
+});
+
 test("with a unit goal, goal-meeting sites rank above higher-scoring sites below it", () => {
   const criteria = parseQueryFallback("Anaheim, 40+ affordable units, near transit");
   const transit = new Map([
