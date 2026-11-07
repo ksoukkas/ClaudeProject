@@ -18,7 +18,10 @@ export interface SurplusNotice {
   dueDateRaw: string;
   status: string;
   noticeUrl: string | null;
+  /** Blank when withheld; see addressWithheld. */
   address: string;
+  /** Set when the existing use reads as an occupied residence; address and coordinates are then blanked. */
+  addressWithheld: string | null;
   city: string;
   zip: string;
   lon: number | null;
@@ -38,7 +41,9 @@ export interface NoticeProvenance {
   fetched: string;
   totalRowsStatewide: number;
   rowsKept: number;
+  rowsAddressWithheld: number;
   filter: string;
+  privacy: string;
   columnsDropped: string[];
   derivedFields: string[];
 }

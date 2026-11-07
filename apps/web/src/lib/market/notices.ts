@@ -48,21 +48,25 @@ export function noticeToSignal(n: SurplusNotice): MarketSignal {
 /**
  * Turn a notice into ParcelFacts so the feasibility engine can screen it.
  * Only what the notice itself says is filled in. Everything else is unknown,
- * and the report says so. The owner is the disposing public agency.
+ * and the report says so. The disposing agency is recorded as a proxy public
+ * owner: the notice names it, but no deed or Assessor record was checked.
  */
 export function noticeToParcelFacts(n: SurplusNotice): ParcelFacts {
   const zoningText = n.generalPlanZoning;
   const use = n.existingUse;
+  // Only what the text says: vacant words → yes, occupied → no, anything else → unknown.
+  const vacantValue = /vacant|undeveloped|unimproved/i.test(use)
+    ? "yes"
+    : /occupied/i.test(use) && !/unoccupied/i.test(use)
+      ? "no"
+      : "unknown";
   const vacant: ParcelFacts["vacant"] = use
-    ? {
-        sourceId: SOURCE_ID,
-        value: /vacant|undeveloped|unimproved/i.test(use) ? "yes" : "no",
-        detail: use,
-      }
+    ? { sourceId: SOURCE_ID, value: vacantValue, detail: use }
     : null;
+  const place = n.addressWithheld ? "address withheld" : n.address || "address not given";
   return {
     id: n.id,
-    label: `Surplus notice ${n.parentCase || n.id}: ${n.address || "address not given"}`,
+    label: `Surplus notice ${n.parentCase || n.id}: ${place}`,
     synthetic: false,
     city: n.city || n.agency,
     apn: n.apnRaw || null,
@@ -89,9 +93,9 @@ export function noticeToParcelFacts(n: SurplusNotice): ParcelFacts {
     tenantOccupiedLast3Years: null,
     owner: {
       type: "public",
-      basis: "confirmed",
+      basis: "proxy",
       sourceId: SOURCE_ID,
-      detail: `${n.agencyType ? `${n.agencyType}, ` : ""}${n.agency} (the disposing agency named in the notice)`,
+      detail: `${n.agencyType ? `${n.agencyType}, ` : ""}${n.agency} filed the notice as the disposing agency; not checked against the deed or Assessor roll`,
     },
     perimeterUrbanPct: null,
     hoaOrCcrs: null,

@@ -156,7 +156,7 @@ const LIST: Source[] = [
   src("caltrans-hqta", "Caltrans CA High Quality Transit Areas", "https://caltrans-gis.dot.ca.gov/arcgis/rest/services/CHrailroad/CA_HQ_Transit_Areas/FeatureServer/0", "data-layer", "VERIFIED", CHECKED),
   src("osm-place-of-worship", "OpenStreetMap amenity=place_of_worship", "https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dplace_of_worship", "data-layer", "VERIFIED", CHECKED, "Tag docs verified; a live Overpass query failed (server at capacity). A proxy for ownership, not a fact."),
   src("irs-eo-bmf", "IRS Exempt Organizations Business Master File", "https://www.irs.gov/charities-non-profits/exempt-organizations-business-master-file-extract-eo-bmf", "data-layer", "VERIFIED", CHECKED, "Page loads; file not downloaded. A proxy for ownership, not a fact."),
-  src("hcd-surplus-notices", "HCD Surplus Land Act Notices of Availability (data.ca.gov)", "https://data.ca.gov/dataset/surplus-land-act-notices-of-availability-received", "data-layer", "VERIFIED", CHECKED, "CSV downloaded and parsed; last modified 2026-10-30."),
+  src("hcd-surplus-notices", "HCD Surplus Land Act Notices of Availability (data.ca.gov)", "https://data.ca.gov/dataset/surplus-land-act-notices-of-availability-received", "data-layer", "VERIFIED", CHECKED, "DATA-SOURCES.md recorded the CSV as last modified 2026-10-30 when checked 2026-11-06; the resource showed 2026-11-06T16:54Z when fetched again on 2026-11-07. The cached OC subset carries the later date."),
 
   // Data the user brings in themselves
   src(

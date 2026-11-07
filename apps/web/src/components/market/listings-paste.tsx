@@ -154,9 +154,19 @@ export function ListingsPaste() {
                     )}
                   </td>
                   <td className="py-2 pr-3">
-                    <FlagBadge flag={r.flag} />
+                    {r.matchId ? (
+                      <FlagBadge flag={r.flag} />
+                    ) : (
+                      <span className="inline-block rounded border border-neutral-300 bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-700">
+                        No parcel matched
+                      </span>
+                    )}
                   </td>
-                  <td className="py-2 text-neutral-700">{r.flag.reason}</td>
+                  <td className="py-2 text-neutral-700">
+                    {r.matchId
+                      ? r.flag.reason
+                      : "Your row says this is listed, but no parcel in Siteline matches it by siteline_id or APN, so there is nothing to flag yet."}
+                  </td>
                 </tr>
               ))}
             </tbody>

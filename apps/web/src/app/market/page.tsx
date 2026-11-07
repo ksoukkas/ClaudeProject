@@ -98,7 +98,11 @@ export default function MarketPage() {
                   </td>
                   <td className="py-2 pr-3">{n.city || "—"}</td>
                   <td className="py-2 pr-3">
-                    <p>{n.address || "—"}</p>
+                    {n.addressWithheld ? (
+                      <p className="text-neutral-500">{n.addressWithheld}</p>
+                    ) : (
+                      <p>{n.address || "—"}</p>
+                    )}
                     <p className="text-xs text-neutral-500">APN {n.apnRaw || "—"}</p>
                   </td>
                   <td className="py-2 pr-3">
@@ -153,6 +157,7 @@ export default function MarketPage() {
           <p className="mt-1 text-neutral-700">
             {prov.rowsKept} of {prov.totalRowsStatewide} statewide rows kept. {prov.filter}
           </p>
+          <p className="mt-1 text-neutral-700">{prov.privacy}</p>
           <p className="mt-2 text-xs font-medium uppercase tracking-wide text-neutral-500">
             Columns dropped
           </p>

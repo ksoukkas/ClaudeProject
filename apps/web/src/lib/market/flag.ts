@@ -14,10 +14,10 @@ export function computeOnMarketFlag(signals: MarketSignal[]): OnMarketFlag {
   if (active) {
     return {
       state: "public-notice-active",
-      label: "Coming to market: active public notice",
-      reason: `A local agency has published an active Surplus Land Act notice for this land${active.date ? `, due ${active.date}` : ""}. Affordable-housing sponsors get first notice under the Act; read the notice and the HCD guidelines for the response steps.`,
+      label: "Offered: active public notice",
+      reason: `A local agency has published an active Surplus Land Act notice for this land${active.date ? `, due ${active.date}` : ""}. Under the Act, agencies disposing of land must first offer it for affordable housing and publish a notice of availability (docs/background.md, citing HCD's Surplus Land Act page, checked 2026-11-06). Read the notice and the HCD guidelines for the response steps.`,
       signals,
-      sourceIds,
+      sourceIds: uniq([...sourceIds, "repo-background", "hcd-sla-guidelines-2024"]),
     };
   }
   const listing = signals.find((s) => s.kind === "uploaded-listing");

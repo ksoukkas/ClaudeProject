@@ -62,8 +62,11 @@ export function csvToObjects(text: string): Record<string, string>[] {
  */
 export function normalizeApn(raw: string | null | undefined): string | null {
   if (!raw) return null;
-  const t = raw.trim();
-  if (!t || /\b(and|&|,)\b/i.test(t) || /\(.*\).*\(/.test(t)) return null;
-  const digits = t.replace(/\D/g, "");
-  return digits.length >= 6 ? digits : null;
+  // Split on anything that joins several APNs, then keep groups with 6+ digits.
+  const groups = raw
+    .split(/[&,;/+]|\band\b/i)
+    .map((part) => part.replace(/\D/g, ""))
+    .filter((digits) => digits.length >= 6);
+  // Exactly one APN-sized group, or we refuse to match rather than risk the wrong parcel.
+  return groups.length === 1 ? groups[0] : null;
 }
