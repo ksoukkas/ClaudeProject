@@ -17,17 +17,17 @@ export default async function ReportIndexPage() {
     >
       <section className="flex flex-col gap-2">
         <h2 className="text-lg font-semibold">Synthetic test parcels</h2>
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-ink-soft">
           Made up for testing. Every value is an ASSUMPTION. They show each verdict path.
         </p>
         <ul className="flex flex-col gap-2">
           {synthetic.map((p) => (
-            <li key={p.id} className="rounded-md border border-neutral-200 p-3">
+            <li key={p.id} className="rounded-md border border-line p-3">
               <Link href={`/report/${p.id}`} className="font-medium hover:underline">
                 {p.label}
               </Link>
-              <span className="ml-2 text-sm text-neutral-600">{p.city}</span>
-              <span className="ml-2 rounded bg-amber-50 px-1 text-xs text-amber-800">synthetic</span>
+              <span className="ml-2 text-sm text-ink-soft">{p.city}</span>
+              <span className="ml-2 rounded bg-review-soft px-1 text-xs text-review">synthetic</span>
             </li>
           ))}
         </ul>
@@ -35,7 +35,7 @@ export default async function ReportIndexPage() {
 
       <section className="flex flex-col gap-2">
         <h2 className="text-lg font-semibold">Public land from Surplus Land Act notices</h2>
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-ink-soft">
           {real.length} notices for Santa Ana, Stanton and Anaheim from the HCD list, each screened
           with only what the notice says. Browse them with flags and dates on the{" "}
           <Link href="/market" className="underline">
@@ -49,12 +49,12 @@ export default async function ReportIndexPage() {
               <Link href={`/report/${p.id}`} className="hover:underline">
                 {p.label}
               </Link>
-              <span className="ml-2 text-neutral-600">{p.city}</span>
+              <span className="ml-2 text-ink-soft">{p.city}</span>
             </li>
           ))}
         </ul>
         {real.length > 25 ? (
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-muted">
             Showing 25 of {real.length}. The full list is on the On the market page.
           </p>
         ) : null}

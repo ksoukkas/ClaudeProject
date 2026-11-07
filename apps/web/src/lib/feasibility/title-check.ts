@@ -103,7 +103,7 @@ export function buildTitleCheck(facts: ParcelFacts): TitleCheck {
     "",
     "[Your name and organization]",
     "",
-    "-- Draft only. Siteline does not send messages. Review before sending. --",
+    "-- Draft only. Cucumber does not send messages. Review before sending. --",
   ].join("\n");
 
   return {

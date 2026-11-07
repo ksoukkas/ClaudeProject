@@ -13,9 +13,9 @@ import type {
 } from "@/lib/feasibility/types";
 
 const VERDICT_STYLES: Record<Verdict, string> = {
-  pass: "border-green-200 bg-green-50 text-green-800",
-  fail: "border-red-200 bg-red-50 text-red-800",
-  unknown: "border-amber-200 bg-amber-50 text-amber-800",
+  pass: "border-line bg-feasible-soft text-feasible",
+  fail: "border-line bg-blocked-soft text-blocked",
+  unknown: "border-line bg-review-soft text-review",
 };
 
 export function VerdictBadge({ verdict }: { verdict: Verdict }) {
@@ -31,7 +31,7 @@ export function VerdictBadge({ verdict }: { verdict: Verdict }) {
 function SourceLink({ id }: { id: string }) {
   const s = getSource(id);
   const statusStyle =
-    s.status === "VERIFIED" ? "bg-neutral-100 text-neutral-700" : "bg-amber-50 text-amber-800";
+    s.status === "VERIFIED" ? "bg-canvas text-ink-soft" : "bg-review-soft text-review";
   return (
     <span className="inline-flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs">
       {s.url ? (
@@ -42,14 +42,14 @@ function SourceLink({ id }: { id: string }) {
         <span>{s.name}</span>
       )}
       <span className={`rounded px-1 ${statusStyle}`}>{s.status}</span>
-      <span className="text-neutral-500">{s.checked ? `checked ${s.checked}` : "not fetched"}</span>
+      <span className="text-muted">{s.checked ? `checked ${s.checked}` : "not fetched"}</span>
     </span>
   );
 }
 
 function SourceList({ ids, emptyText }: { ids: string[]; emptyText?: string }) {
   if (ids.length === 0) {
-    return <span className="text-xs text-neutral-500">{emptyText ?? "No data source yet."}</span>;
+    return <span className="text-xs text-muted">{emptyText ?? "No data source yet."}</span>;
   }
   return (
     <ul className="flex flex-col gap-1">
@@ -75,7 +75,7 @@ function Section({
     <section className="flex flex-col gap-3">
       <div>
         <h2 className="text-lg font-semibold">{title}</h2>
-        {intro ? <p className="mt-1 text-sm text-neutral-600">{intro}</p> : null}
+        {intro ? <p className="mt-1 text-sm text-ink-soft">{intro}</p> : null}
       </div>
       {children}
     </section>
@@ -85,18 +85,18 @@ function Section({
 function CoverageBox({ coverage }: { coverage: Coverage }) {
   const resolved = coverage.passed + coverage.failed;
   return (
-    <div className="rounded-md border border-neutral-200 bg-neutral-50 p-4 text-sm">
+    <div className="rounded-md border border-line bg-canvas p-4 text-sm">
       <p className="font-medium">
         {resolved} of {coverage.totalTests} tests resolved ({coverage.passed} pass,{" "}
         {coverage.failed} fail), {coverage.unknown} unknown.
       </p>
-      <p className="mt-1 text-neutral-700">
+      <p className="mt-1 text-ink-soft">
         {coverage.resolvedFromUnverifiedSources} resolved{" "}
         {coverage.resolvedFromUnverifiedSources === 1 ? "test relies" : "tests rely"} on an
         UNVERIFIED source. {coverage.conflicts}{" "}
         {coverage.conflicts === 1 ? "disagreement" : "disagreements"} between sources.
       </p>
-      <p className="mt-2 text-xs text-neutral-500">
+      <p className="mt-2 text-xs text-muted">
         Confidence here is a count of resolved tests, never a probability.
       </p>
     </div>
@@ -108,7 +108,7 @@ function TestTable({ tests }: { tests: TestResult[] }) {
     <div className="overflow-x-auto">
       <table className="w-full min-w-[760px] border-collapse text-sm">
         <thead>
-          <tr className="border-b border-neutral-200 text-left text-xs uppercase tracking-wide text-neutral-500">
+          <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
             <th className="py-2 pr-3 font-medium">Requirement</th>
             <th className="py-2 pr-3 font-medium">Data used</th>
             <th className="py-2 pr-3 font-medium">Value found</th>
@@ -118,11 +118,11 @@ function TestTable({ tests }: { tests: TestResult[] }) {
         </thead>
         <tbody>
           {tests.map((t) => (
-            <tr key={t.id} className="border-b border-neutral-100 align-top">
+            <tr key={t.id} className="border-b border-line align-top">
               <td className="py-2 pr-3">
                 <p>{t.requirement}</p>
                 {t.requirementStatus === "unverified" ? (
-                  <span className="mt-1 inline-block rounded bg-amber-50 px-1 text-xs text-amber-800">
+                  <span className="mt-1 inline-block rounded bg-review-soft px-1 text-xs text-review">
                     Requirement wording unverified
                   </span>
                 ) : null}
@@ -133,14 +133,14 @@ function TestTable({ tests }: { tests: TestResult[] }) {
               <td className="py-2 pr-3">
                 <SourceList ids={t.dataSourceIds} />
               </td>
-              <td className="py-2 pr-3 text-neutral-700">{t.valueFound}</td>
+              <td className="py-2 pr-3 text-ink-soft">{t.valueFound}</td>
               <td className="py-2 pr-3">
                 <VerdictBadge verdict={t.verdict} />
               </td>
-              <td className="py-2 text-neutral-700">
+              <td className="py-2 text-ink-soft">
                 <p>{t.reason}</p>
                 {t.verdict === "unknown" && t.resolver ? (
-                  <p className="mt-1 text-xs text-neutral-500">
+                  <p className="mt-1 text-xs text-muted">
                     Resolve: {RESOLVER_LABELS[t.resolver]}
                   </p>
                 ) : null}
@@ -156,20 +156,20 @@ function TestTable({ tests }: { tests: TestResult[] }) {
 function PathwayCard({ pathway }: { pathway: PathwayResult }) {
   const blocked = pathway.status === "blocked";
   return (
-    <article className="rounded-md border border-neutral-200 p-4">
+    <article className="rounded-md border border-line p-4">
       <header className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <h3 className="text-base font-semibold">
             {pathway.name}{" "}
-            <span className="font-normal text-neutral-500">· {pathway.statute}</span>
+            <span className="font-normal text-muted">· {pathway.statute}</span>
           </h3>
-          <p className="text-sm text-neutral-600">{pathway.whatItOpens}</p>
+          <p className="text-sm text-ink-soft">{pathway.whatItOpens}</p>
         </div>
         <span
           className={`rounded border px-2 py-0.5 text-xs font-medium ${
             blocked
-              ? "border-red-200 bg-red-50 text-red-800"
-              : "border-sky-200 bg-sky-50 text-sky-800"
+              ? "border-line bg-blocked-soft text-blocked"
+              : "border-line bg-accent-soft text-accent"
           }`}
         >
           {blocked ? "Blocked by a failing test" : "No failing tests (unknowns remain)"}
@@ -179,14 +179,14 @@ function PathwayCard({ pathway }: { pathway: PathwayResult }) {
         <TestTable tests={pathway.tests} />
       </div>
       {pathway.notes.length ? (
-        <ul className="mt-3 list-disc pl-5 text-xs text-neutral-600">
+        <ul className="mt-3 list-disc pl-5 text-xs text-ink-soft">
           {pathway.notes.map((n) => (
             <li key={n}>{n}</li>
           ))}
         </ul>
       ) : null}
       <div className="mt-3">
-        <p className="text-xs font-medium text-neutral-500">Statute and summaries</p>
+        <p className="text-xs font-medium text-muted">Statute and summaries</p>
         <SourceList ids={pathway.sourceIds} />
       </div>
     </article>
@@ -197,7 +197,7 @@ function ConflictList({ conflicts }: { conflicts: Conflict[] }) {
   return (
     <ul className="flex flex-col gap-2">
       {conflicts.map((c) => (
-        <li key={c.topic} className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm">
+        <li key={c.topic} className="rounded-md border border-line bg-review-soft p-3 text-sm">
           <p className="font-medium">{c.topic}</p>
           <ul className="mt-1 list-disc pl-5">
             {c.observations.map((o, i) => (
@@ -206,7 +206,7 @@ function ConflictList({ conflicts }: { conflicts: Conflict[] }) {
               </li>
             ))}
           </ul>
-          <p className="mt-1 text-neutral-700">{c.note}</p>
+          <p className="mt-1 text-ink-soft">{c.note}</p>
         </li>
       ))}
     </ul>
@@ -215,7 +215,7 @@ function ConflictList({ conflicts }: { conflicts: Conflict[] }) {
 
 function NextSteps({ steps }: { steps: NextStep[] }) {
   if (steps.length === 0) {
-    return <p className="text-sm text-neutral-600">No unknowns left to resolve.</p>;
+    return <p className="text-sm text-ink-soft">No unknowns left to resolve.</p>;
   }
   return (
     <ol className="flex list-decimal flex-col gap-2 pl-5 text-sm">
@@ -223,7 +223,7 @@ function NextSteps({ steps }: { steps: NextStep[] }) {
         <li key={s.resolver}>
           <span className="font-medium">{s.label}</span>: clears {s.unknownsResolved}{" "}
           {s.unknownsResolved === 1 ? "unknown" : "unknowns"}{" "}
-          <span className="text-xs text-neutral-500">({s.testIds.join(", ")})</span>
+          <span className="text-xs text-muted">({s.testIds.join(", ")})</span>
         </li>
       ))}
     </ol>
@@ -235,22 +235,22 @@ function TitleSection({ title }: { title: TitleCheck }) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <VerdictBadge verdict={title.verdict} />
-        <span className="text-sm text-neutral-700">
+        <span className="text-sm text-ink-soft">
           Title is never resolved from public data. This section is a checklist.
         </span>
       </div>
       <ul className="flex flex-col gap-2">
         {title.flags.map((f) => (
-          <li key={f.label} className="rounded-md border border-neutral-200 p-3 text-sm">
+          <li key={f.label} className="rounded-md border border-line p-3 text-sm">
             <p className="font-medium">
               {f.label}
               {f.assumption ? (
-                <span className="ml-2 rounded bg-amber-50 px-1 text-xs text-amber-800">
+                <span className="ml-2 rounded bg-review-soft px-1 text-xs text-review">
                   ASSUMPTION
                 </span>
               ) : null}
             </p>
-            <p className="mt-1 text-neutral-700">{f.reason}</p>
+            <p className="mt-1 text-ink-soft">{f.reason}</p>
             {f.sourceIds.length ? (
               <div className="mt-1">
                 <SourceList ids={f.sourceIds} />
@@ -259,17 +259,17 @@ function TitleSection({ title }: { title: TitleCheck }) {
           </li>
         ))}
       </ul>
-      <ul className="list-disc pl-5 text-sm text-neutral-700">
+      <ul className="list-disc pl-5 text-sm text-ink-soft">
         {title.notes.map((n) => (
           <li key={n}>{n}</li>
         ))}
       </ul>
       <div>
         <p className="text-sm font-medium">Draft request to a title company</p>
-        <p className="text-xs text-neutral-500">
-          Copy, review and send it yourself. Siteline does not send messages.
+        <p className="text-xs text-muted">
+          Copy, review and send it yourself. Cucumber does not send messages.
         </p>
-        <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-md border border-neutral-200 bg-neutral-50 p-3 text-xs">
+        <pre className="mt-2 overflow-x-auto whitespace-pre-wrap rounded-md border border-line bg-canvas p-3 text-xs">
           {title.draftRequest}
         </pre>
       </div>
@@ -286,18 +286,18 @@ export function FeasibilityReportView({ report }: { report: FeasibilityReport })
     <div className="flex flex-col gap-10">
       <header className="flex flex-col gap-3">
         {parcel.synthetic ? (
-          <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900">
+          <div className="rounded-md border border-line bg-review-soft p-3 text-sm text-review">
             <span className="font-semibold">Synthetic parcel.</span> Every value on this page is
             made up for testing (ASSUMPTION). It does not describe a real property.
           </div>
         ) : null}
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">{parcel.label}</h1>
-          <p className="mt-1 text-neutral-600">
+          <p className="mt-1 text-ink-soft">
             {parcel.city} · {parcel.apn ? `APN ${parcel.apn}` : "APN unknown"} · {lot}
             {parcel.existingUse ? ` · ${parcel.existingUse.value}` : ""}
           </p>
-          <p className="mt-1 text-xs text-neutral-500">
+          <p className="mt-1 text-xs text-muted">
             Generated {report.generatedAt}. A prototype, not legal advice.
           </p>
         </div>
@@ -326,23 +326,23 @@ export function FeasibilityReportView({ report }: { report: FeasibilityReport })
         title="Law delta"
         intro="What local zoning reads as, and which state pathways have no failing test."
       >
-        <div className="rounded-md border border-neutral-200 p-4 text-sm">
+        <div className="rounded-md border border-line p-4 text-sm">
           <p>
             <span className="font-medium">Zoning reads as:</span>{" "}
             {report.delta.zoningCategories.length
               ? report.delta.zoningCategories.join(", ")
               : "unknown"}
           </p>
-          <p className="mt-1 text-neutral-700">{report.delta.baseZoningNote}</p>
+          <p className="mt-1 text-ink-soft">{report.delta.baseZoningNote}</p>
           <div className="mt-3 flex flex-wrap gap-6">
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted">
                 No failing tests
               </p>
               <p>{report.delta.open.length ? report.delta.open.join(", ") : "none"}</p>
             </div>
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted">
                 Blocked
               </p>
               <p>{report.delta.blocked.length ? report.delta.blocked.join(", ") : "none"}</p>
@@ -369,7 +369,7 @@ export function FeasibilityReportView({ report }: { report: FeasibilityReport })
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-neutral-200 text-left text-xs uppercase tracking-wide text-neutral-500">
+              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-muted">
                 <th className="py-2 pr-3 font-medium">Code</th>
                 <th className="py-2 pr-3 font-medium">Description</th>
                 <th className="py-2 pr-3 font-medium">Our category</th>
@@ -379,7 +379,7 @@ export function FeasibilityReportView({ report }: { report: FeasibilityReport })
             <tbody>
               {parcel.zoning.length ? (
                 parcel.zoning.map((z, i) => (
-                  <tr key={`${z.sourceId}-${i}`} className="border-b border-neutral-100 align-top">
+                  <tr key={`${z.sourceId}-${i}`} className="border-b border-line align-top">
                     <td className="py-2 pr-3 font-mono text-xs">{z.code ?? "—"}</td>
                     <td className="py-2 pr-3">{z.description ?? "—"}</td>
                     <td className="py-2 pr-3">{z.category}</td>
@@ -390,7 +390,7 @@ export function FeasibilityReportView({ report }: { report: FeasibilityReport })
                 ))
               ) : (
                 <tr>
-                  <td colSpan={4} className="py-2 text-neutral-600">
+                  <td colSpan={4} className="py-2 text-ink-soft">
                     No zoning observation for this parcel.
                   </td>
                 </tr>
@@ -400,8 +400,8 @@ export function FeasibilityReportView({ report }: { report: FeasibilityReport })
         </div>
         {parcel.localCode ? (
           <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-md border border-neutral-200 p-3 text-sm">
-              <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+            <div className="rounded-md border border-line p-3 text-sm">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted">
                 Original text
               </p>
               <p className="mt-1 font-medium">{parcel.localCode.citation}</p>
@@ -415,25 +415,25 @@ export function FeasibilityReportView({ report }: { report: FeasibilityReport })
                   Open the source
                 </a>
               ) : null}
-              <p className="mt-2 whitespace-pre-wrap text-neutral-700">{parcel.localCode.text}</p>
+              <p className="mt-2 whitespace-pre-wrap text-ink-soft">{parcel.localCode.text}</p>
             </div>
-            <div className="rounded-md border border-dashed border-neutral-300 p-3 text-sm">
-              <p className="text-xs font-medium uppercase tracking-wide text-neutral-500">
+            <div className="rounded-md border border-dashed border-line p-3 text-sm">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted">
                 Plain English
               </p>
               {parcel.localCode.plainEnglish ? (
-                <p className="mt-2 whitespace-pre-wrap text-neutral-700">
+                <p className="mt-2 whitespace-pre-wrap text-ink-soft">
                   {parcel.localCode.plainEnglish}
                 </p>
               ) : (
-                <p className="mt-2 text-neutral-600">
+                <p className="mt-2 text-ink-soft">
                   No translation yet. Read the original text; it is the rule.
                 </p>
               )}
             </div>
           </div>
         ) : (
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-ink-soft">
             No local code section has been attached to this parcel. The zoning code and its
             section are unknown until someone reads the city&apos;s ordinance.
           </p>
@@ -455,7 +455,7 @@ export function FeasibilityReportView({ report }: { report: FeasibilityReport })
       </Section>
 
       <Section title="Assumptions">
-        <ul className="list-disc pl-5 text-sm text-neutral-700">
+        <ul className="list-disc pl-5 text-sm text-ink-soft">
           {report.assumptions.map((a) => (
             <li key={a}>{a}</li>
           ))}

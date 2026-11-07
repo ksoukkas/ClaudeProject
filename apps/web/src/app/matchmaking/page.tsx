@@ -89,13 +89,13 @@ export default function MatchmakingPage() {
         </div>
       </div>
 
-      <div className="flex flex-col gap-[18px] rounded-[16px] bg-[#1d1d1f] p-6 sm:flex-row sm:items-center">
+      <div className="flex flex-col gap-[18px] rounded-[16px] bg-accent p-6 sm:flex-row sm:items-center">
         <FigmaIcon src="/figma/match/handshake.svg" size={28} />
         <div className="flex flex-1 flex-col gap-[5px]">
           <p className="font-display text-[22px] leading-[1.2] font-semibold text-white">
             An introduction, not an obligation.
           </p>
-          <p className="text-[12px] leading-[1.5] text-[#d1d1d6]">
+          <p className="text-[12px] leading-[1.5] text-line">
             Both sides opt in before contact details are shared. You decide
             whether the goals, timing and site are a fit.
           </p>

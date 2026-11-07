@@ -110,7 +110,7 @@ export function SavedPipeline() {
                   <h2 className="flex items-center gap-2 text-[13px] leading-[1.5] font-semibold text-ink">
                     <span
                       className={`size-[7px] rounded-[4px] ${
-                        column.marker === "warm" ? "bg-[#ff5a1f]" : "bg-accent"
+                        column.marker === "warm" ? "bg-review" : "bg-accent"
                       }`}
                     />
                     {column.stage}

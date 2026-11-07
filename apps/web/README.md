@@ -1,6 +1,6 @@
-# Siteline web app
+# Cucumber web app
 
-The web workspace for Siteline. This is the skeleton: layout, routes and shared
+The web workspace for Cucumber. This is the skeleton: layout, routes and shared
 components, with placeholders where features will go.
 
 ## Try it
