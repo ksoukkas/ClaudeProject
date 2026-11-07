@@ -89,7 +89,7 @@ export default function MarketPage() {
           )}
         </ul>
         <p className="mt-3 text-xs text-neutral-500">
-          A prototype, not legal advice. Siteline sends nothing; the request to the tax collector
+          A prototype, not legal advice. Cucumber sends nothing; the request to the tax collector
           is yours to make.
         </p>
       </div>

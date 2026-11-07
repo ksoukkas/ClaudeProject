@@ -7,7 +7,7 @@ import type { Source } from "./types";
  * UNVERIFIED were not fetched; treat them as leads.
  */
 const CHECKED = "2026-11-06";
-const REPO = "https://github.com/ksoukkas/Unlot/blob/main";
+const REPO = "https://github.com/ksoukkas/Cucumber/blob/main";
 
 function src(
   id: string,
@@ -211,7 +211,7 @@ const LIST: Source[] = [
     "user-data",
     "UNVERIFIED",
     null,
-    "Rows the user pasted from the county's auction spreadsheet or published notice. Siteline never fetches them; owner and assessee columns are dropped on sight.",
+    "Rows the user pasted from the county's auction spreadsheet or published notice. Cucumber never fetches them; owner and assessee columns are dropped on sight.",
   ),
 
   // Data the user brings in themselves

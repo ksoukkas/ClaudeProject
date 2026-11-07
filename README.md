@@ -1,7 +1,8 @@
-# Siteline
+# Cucumber
 
-> For small nonprofits, congregations and city housing staff in Orange County: find land where
-> affordable housing could legally go, and see exactly which public record says so.
+> For housing nonprofits in Santa Ana, Stanton and Anaheim: find tax-defaulted land the county is
+> about to auction, see whether a Chapter 8 agreement sale could put it in your hands first, and
+> see exactly which public record says so.
 
 **Team:** Unlot
 **Members:** Felix Hallmann, Laurence Chau, Kevin Sohn, Haven Park, Save Soukkaseum
@@ -13,49 +14,53 @@ The event's own README, with the schedule, lanes and submission rules, is at
 
 ## The real user
 
-A one-person acquisitions team at a small housing nonprofit. They have no GIS staff. Sites reach
-them by luck: a city calls about surplus land, or a congregation offers a parking lot. California
-has opened land under SB 9, SB 684 / SB 1123, AB 2011 and SB 4, but nobody has joined those laws to
-the parcel data in a way they can use.
+A one-person acquisitions team at a small housing nonprofit in north-central Orange County. They
+have no GIS staff and lose every bidding war to cash buyers. Tax-defaulted land may be the one
+place the law puts them first: as this team understands California's tax-sale law (UNVERIFIED,
+Revenue and Taxation Code, Part 6, Chapter 8, cited on the page until read in full), a county may
+sell such parcels by agreement to a nonprofit for low-income housing instead of at public auction.
+Nobody has joined that list to zoning, the state housing laws and a title checklist in a way they
+can use.
 
-**Before:** they read the websites of the county's 34 incorporated cities
-(`lanes/2-clear-it/data/oc-cities.json`), call planning counters one at a time, and still cannot
-tell a legal site from a usable one.
-**After:** they type a city and a goal, get ranked sites from public data, and open a report that
-shows every test, the record behind it, and what is still unknown, with a drafted next step.
+**Before:** they hear about the county auction after it happens, or scan a PDF of parcel numbers
+with no idea which lots could hold homes, and never get a request in before the cutoff.
+**After:** they paste the county's list, see which parcels in Santa Ana, Stanton and Anaheim are
+still in the window, open a report that shows every law test with its record and what is still
+unknown, and get the request drafted for them to send before the day-before cutoff.
 
 ## What we built
 
-A web workspace with five parts. Every screen says it is a prototype and not legal advice.
+One niche, five parts, three cities. Every screen says it is a prototype and not legal advice.
 
-1. **Scout** (arrives with [pull request 7](https://github.com/ksoukkas/Unlot/pull/7), not yet
-   merged at the time of writing). Type a goal such as "Anaheim, 40+ affordable units, near
-   transit". The agent will pull adopted housing-element sites for the city from SCAG, join
-   Caltrans transit areas and SCAG zoning, and rank candidates with the sources it used, from
-   live public data, cached and throttled. On `main` today, `/results` filters sample parcels and
-   the real housing-element points.
-2. **Feasibility report** (`/report/[id]`). One row per site test under each law: the requirement,
-   the source that states it, the data layer that answered it, the value found, and a
-   pass / fail / unknown verdict with who can resolve an unknown. Disagreements between sources
-   are shown, never resolved silently. A title and CC&R checklist that never returns pass and
-   drafts the request the user sends themselves.
-3. **Chapter 8 pipeline** (`/market`). The niche: tax-defaulted parcels in Santa Ana, Stanton and
-   Anaheim that a nonprofit may acquire by agreement before the county's tax auction, under the
-   Revenue and Taxation Code's Chapter 8 sales (sections cited on the page as unverified until
-   read in full). Paste the Treasurer-Tax Collector's auction list and each parcel gets a flag:
-   request window open, power to sell but not scheduled, auction passed, or redeemed. The
-   county's own facts (last auction June 25, 2025; redemption until 5 PM the day before) are
-   shown with the date read. Real Surplus Land Act notices stay as a second public-land channel.
-   Owner and assessee columns are dropped on sight; homes get their address withheld.
-4. **Honest confidence.** Confidence is how much the evidence can be trusted, not how good the
-   site is. For a Chapter 8 parcel: how many facts the county list answers and how fresh the
-   list is, since owners can redeem until the day before an auction. The staleness limit is
-   labelled ASSUMPTION on the page and in code. For the law tests, coverage and source freshness
-   as before, with those thresholds labelled on `/about`.
-5. **Filters and map.** City and status filters over the Chapter 8 list for the three focus
-   cities; the Results page keeps its city, law, owner, acreage and status filters over an
-   interactive map of the real housing-element points. Putting the tax-defaulted parcels on the
-   map is the next step: the county publishes a GIS map of them.
+1. **Chapter 8 pipeline** (`/market`). The heart of the product. Paste the Orange County
+   Treasurer-Tax Collector's tax-defaulted auction list and every parcel in Santa Ana, Stanton or
+   Anaheim gets a flag: listed for auction with the cutoff computed as 5 PM the day before (the
+   county's own stated redemption deadline, read 2026-11-07), power to sell but not yet scheduled,
+   cutoff passed, or redeemed. The county's facts are shown with the date read; the statute
+   sections are cited UNVERIFIED until read in full. Owner and assessee columns are dropped on
+   sight and homes get their address withheld. Real Surplus Land Act notices stay as a second
+   public-land channel, filtered to the same three cities.
+2. **Feasibility report** (`/report/[id]`). What a tax-defaulted lot could become. One row per
+   site test under SB 9, SB 684 / SB 1123, AB 2011 and SB 4: the requirement, the source that
+   states it, the data layer that answered it, the value found, and a pass / fail / unknown
+   verdict with who can resolve an unknown. Disagreements between sources are shown, never
+   resolved silently. Tax-defaulted land often carries liens and odd lot lines, so the title and
+   CC&R checklist never returns pass and drafts the title request the user sends themselves.
+3. **Scout** (`/` and `/results`). Type a city and a goal such as "Santa Ana, 10 homes, near
+   transit". The agent pulls adopted housing-element sites from SCAG, joins Caltrans transit areas
+   and SCAG zoning, and ranks candidates with the sources it used, from live public data, cached
+   and throttled. Today it searches housing-element sites; joining its candidates to the pasted
+   Chapter 8 list by parcel number is the next step, so a tax-defaulted lot that also sits on the
+   city's own housing inventory rises to the top.
+4. **Honest confidence.** Confidence is how much the evidence can be trusted, never how good the
+   site is. For a Chapter 8 parcel: how many facts the county list answers and how fresh the list
+   is, because owners can redeem until the day before an auction and rows vanish without notice.
+   The 30-day staleness limit is labelled ASSUMPTION on the page and in code. For the law tests,
+   coverage and source freshness, with those thresholds labelled on `/about`.
+5. **Filters and map.** City and status filters over the Chapter 8 list; the Results page keeps
+   its city, law, owner, acreage and status filters over an interactive map of the real
+   housing-element points. Putting the tax-defaulted parcels on that map is next: the county
+   publishes a GIS map of every auction parcel.
 
 **Demo video:** [link, or "uploaded on the hub"]
 **Live demo:** [link, optional]
@@ -64,12 +69,11 @@ A web workspace with five parts. Every screen says it is a prototype and not leg
 
 - We built the app with Claude Code, in parallel branches, with a cheap Claude review on every
   push before a human merged (see the pull request history).
-- Inside the tool, the scout in [pull request 7](https://github.com/ksoukkas/Unlot/pull/7) (not
-  yet merged at the time of writing) uses Claude, when an `ANTHROPIC_API_KEY` is set, to turn the
-  search text into explicit criteria and to draft the one-line "why call" for each candidate.
-  Both are labelled as drafted by Claude and shown next to the facts they came from. Without a
-  key, a keyword parser runs instead. Nothing on `main` reads the key until that PR merges.
-  Claude never decides a verdict: every pass, fail or unknown comes from a rule and a record.
+- Inside the tool, the scout uses Claude, when an `ANTHROPIC_API_KEY` is set, to turn the search
+  text into explicit criteria and to draft the one-line "why call" for each candidate. Both are
+  labelled as drafted by Claude and shown next to the facts they came from. Without a key, a
+  keyword parser runs instead. Claude never decides a verdict: every pass, fail or unknown comes
+  from a rule and a record, and every Chapter 8 flag comes from the county's list and dates.
 - A person checks the sources, confirms unknowns with the city or a title company, and sends any
   outreach themselves. The tool sends nothing.
 
@@ -78,24 +82,22 @@ A web workspace with five parts. Every screen says it is a prototype and not leg
 You need [Node.js](https://nodejs.org/) 20 or newer (built and tested with 22.15.0) and npm.
 
 ```bash
-git clone https://github.com/ksoukkas/Unlot.git
-cd Unlot/apps/web
+git clone https://github.com/ksoukkas/Cucumber.git
+cd Cucumber/apps/web
 npm install
 npm run dev
 ```
 
 Open <http://localhost:3000>. Then:
 
-- `/results?q=Anaheim, 40+ affordable units, near transit` for the filtered list and map (sample
-  parcels plus real housing-element points; the live scout arrives with pull request 7)
+- `/market` first: click **Load SYNTHETIC sample** to see the Chapter 8 flags, or paste the county
+  list you downloaded from the Treasurer-Tax Collector
+- `/results?q=Santa Ana, 10 homes, near transit` for the live scout, filters and map
 - `/report` for the feasibility reports (three synthetic parcels, then real public-land notices)
-- `/market` for the Chapter 8 pipeline (paste the county list or load the synthetic sample) and the
-  Surplus Land Act notices
 - `/about` for how confidence works and what is real versus mocked
 
-Optional, once pull request 7 is merged: copy `apps/web/.env.example` to `apps/web/.env.local` and
-set `ANTHROPIC_API_KEY` to turn on Claude parsing in the scout. The app runs without it, and
-nothing on `main` reads the key today. Never commit `.env.local`.
+Optional: copy `apps/web/.env.example` to `apps/web/.env.local` and set `ANTHROPIC_API_KEY` to turn
+on Claude parsing in the scout. The app runs without it. Never commit `.env.local`.
 
 Other commands, from `apps/web`: `npm run build` (production build and type check), `npm run lint`,
 `npm test` (offline unit tests).
@@ -125,7 +127,7 @@ in the repo so the report and market pages work offline.
 | Confidence thresholds | ASSUMPTION: coverage shares, borderline percent, sliver percent and source age limits in `apps/web/src/lib/thresholds.ts`, explained on `/about` | n/a |
 | Zoning category from text | ASSUMPTION: a keyword mapping of each source's zoning text; the original text is always shown beside it | n/a |
 | Next-step ranking | ASSUMPTION: ranked by how many unknowns a step clears, not by cost | n/a |
-| Unit goal default of 40, "small site" of half an acre, scout throttle (the throttle is in pull request 7, not yet on `main`) | ASSUMPTION: demo defaults, labelled in code and UI | n/a |
+| Unit goal default of 40, "small site" of half an acre, scout throttle | ASSUMPTION: demo defaults, labelled in code and UI | n/a |
 | Synthetic parcels and the sample workspace | ASSUMPTION: three synthetic parcels in `apps/web/src/lib/feasibility/fixtures.ts` and the Figma sample workspace (organization, owners, saved sites, directory) are fictional; every value is made up | n/a |
 
 Every number we made up is labelled ASSUMPTION here and in the tool.
@@ -134,8 +136,9 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
 
 | Part | Status |
 |---|---|
-| Scout search over live SCAG, Caltrans and zoning layers | in pull request 7, not yet merged: live public data with a labelled sample fallback. On `main` today, `/results` filters sample parcels and real housing-element points |
-| Claude parsing of the goal and "why call" lines | in pull request 7, not yet merged: works with an API key, keyword parser without. Nothing on `main` calls Claude today |
+| Scout search over live SCAG, Caltrans and zoning layers | working on live public data, with a labelled sample fallback when a layer is down |
+| Scout joined to the Chapter 8 list by parcel number | not built yet; next step |
+| Claude parsing of the goal and "why call" lines | working with an API key; keyword parser without |
 | Feasibility report: state-law tests with sources and verdicts | working; most hazard and local-code tests return unknown because those layers are not queried per parcel yet |
 | Feasibility report: local zoning plain-English translation | mocked: the slot exists, no city code text is wired |
 | Title and CC&R check | partly working: checklist, flags from parcel signals, and a draft request; no title data exists in public sources, so it never returns pass |
@@ -149,8 +152,8 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
 ## Where it gets things wrong
 
 - **Housing-element sites are not the same as law-eligible parcels.** They are a city's own
-  inventory. The scout in pull request 7 uses them as a starting universe once it merges; the
-  countywide parcel layer is the next step.
+  inventory. The scout uses them as a starting universe; the county's tax-defaulted list and the
+  countywide parcel layer are the next universes to add.
 - **The zoning keyword mapping is crude.** "Open Space with Commercial Option" reads as
   commercial. The original text is always shown so a person can override it.
 - **Unknown dominates.** On the first real public-land notice we opened (`/report/sla-001`),
@@ -166,15 +169,18 @@ Every number we made up is labelled ASSUMPTION here and in the tool.
 
 ## Next steps
 
-For a nonprofit or city to use this next month: one rule engine behind every page; the countywide
-parcel layer as the search universe with cached, throttled queries; hazard layers queried per
-parcel; one city's zoning code text wired into the plain-English slot; and a second data check by
-a planner.
+For a nonprofit to use this on the next Orange County tax auction: read Revenue and Taxation Code
+3692.4, 3791.4 and Chapter 8 in full and replace the UNVERIFIED labels with page citations; cache
+the county's published list so the page works without a paste, refreshed on the county's
+schedule; join each listed parcel to the county parcel layer by APN for lot size, zoning and the
+law tests; join the scout's candidates to the same list; and ask the Treasurer-Tax Collector for
+the county's own Chapter 8 request cutoff and process so the flag can show it.
 
-With one more week: an acquisition-fit score beside confidence (owner reachable, buildable,
-nonprofit-first, price) with each part sourced or unknown; a weekly re-run that shows what is new;
-the congregation flow ("could our land become homes?") on mobile; and an Assessor-roll request
-for owner type so SB 4 stops relying on proxies.
+With one more week: the tax-defaulted parcels on the map from the county's GIS layer; one rule
+engine behind every page; hazard layers queried per parcel; one city's zoning code text in the
+plain-English slot; a title-and-lien checklist tuned to tax-sale risks; and an acquisition-fit
+score beside confidence (reachable seller, buildable, nonprofit-first, price) with each part
+sourced or unknown.
 
 ## Data and privacy
 
