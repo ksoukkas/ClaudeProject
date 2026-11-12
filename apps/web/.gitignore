@@ -43,3 +43,7 @@ next-env.d.ts
 
 # keep the example env file
 !.env.example
+
+# aerial-read cache
+/.cache/
+/public/maplibre/

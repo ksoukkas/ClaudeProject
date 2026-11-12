@@ -7,8 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "tsx --test src/lib/*.test.ts",
-    "test:scout": "tsc -p tsconfig.scout-test.json && node --test .scout-test/lib/scout/scout.test.js"
+    "test": "tsx --test src/lib/*.test.ts src/lib/search/*.test.ts",
+    "test:scout": "tsc -p tsconfig.scout-test.json && node --test .scout-test/lib/scout/scout.test.js",
+    "predev": "node -e \"require('fs').cpSync('node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs','public/maplibre/maplibre-gl-worker.mjs',{recursive:true})\"",
+    "prebuild": "node -e \"require('fs').cpSync('node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs','public/maplibre/maplibre-gl-worker.mjs',{recursive:true})\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",

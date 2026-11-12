@@ -17,6 +17,11 @@ export function SiteFooter() {
         </p>
         <p className="whitespace-nowrap">County list: auction {listSource.auctionDate}</p>
       </div>
+      <div className="mx-auto w-full max-w-[1440px] px-6 pb-4 text-[10px] leading-[1.5] text-muted lg:px-12">
+        Map: street basemap from OpenFreeMap, data &copy; OpenStreetMap contributors. Aerial imagery: U.S.
+        Geological Survey, The National Map (public domain). AI aerial reads describe an image and are not
+        a site inspection.
+      </div>
     </footer>
   );
 }

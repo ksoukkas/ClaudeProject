@@ -7,7 +7,8 @@ import { FOCUS_LABEL } from "@/lib/focus";
 import { CucumberLogo } from "@/components/cucumber-logo";
 
 function isActive(pathname: string, href: string) {
-  if (href === "/chapter8") return pathname === "/" || pathname.startsWith("/chapter8") || pathname.startsWith("/report");
+  if (href === "/") return pathname === "/";
+  if (href === "/chapter8") return pathname.startsWith("/chapter8") || pathname.startsWith("/report");
   return pathname.startsWith(href);
 }
 

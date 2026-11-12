@@ -1,0 +1,769 @@
+{
+ "source": {
+  "name": "OC Public Works Parcels (countywide) FeatureServer, layer 0",
+  "url": "https://www.ocgis.com/arcpub/rest/services/Map_Layers/Parcels/FeatureServer/0",
+  "fetchedOn": "2026-11-12",
+  "method": "Queried ASSESSMENT_NO IN (...) in batches; centroid is the area-weighted centroid of the largest ring (outSR 4326); acres = polygon area in US survey feet (outSR 2230) / 43,560. Computed from geometry, not an official lot size.",
+  "addressPolicy": "SITE_ADDRESS is kept only for unimproved parcels. Improved parcels are mostly lived-in homes, so their address is left null, matching the county-list file.",
+  "requested": 108,
+  "found": 86
+ },
+ "parcels": [
+  {
+   "apn": "002-162-29",
+   "lat": 33.762384,
+   "lon": -117.868785,
+   "acres": 0.15,
+   "address": null
+  },
+  {
+   "apn": "008-091-03",
+   "lat": 33.747687,
+   "lon": -117.884549,
+   "acres": 0.148,
+   "address": null
+  },
+  {
+   "apn": "024-025-16",
+   "lat": 33.664496,
+   "lon": -118.007173,
+   "acres": 0.121,
+   "address": null
+  },
+  {
+   "apn": "024-082-19",
+   "lat": 33.665198,
+   "lon": -117.998839,
+   "acres": 0.169,
+   "address": null
+  },
+  {
+   "apn": "033-382-15",
+   "lat": 33.869624,
+   "lon": -117.886666,
+   "acres": 0.175,
+   "address": null
+  },
+  {
+   "apn": "035-223-09",
+   "lat": 33.8414,
+   "lon": -117.905428,
+   "acres": 0.161,
+   "address": null
+  },
+  {
+   "apn": "035-223-10",
+   "lat": 33.841625,
+   "lon": -117.905672,
+   "acres": 0.161,
+   "address": null
+  },
+  {
+   "apn": "037-073-21",
+   "lat": 33.822789,
+   "lon": -117.912162,
+   "acres": 0.176,
+   "address": null
+  },
+  {
+   "apn": "037-081-18",
+   "lat": 33.826082,
+   "lon": -117.909818,
+   "acres": 0.177,
+   "address": null
+  },
+  {
+   "apn": "041-031-31",
+   "lat": 33.786525,
+   "lon": -117.867023,
+   "acres": 0.259,
+   "address": null
+  },
+  {
+   "apn": "093-112-48",
+   "lat": 33.789223,
+   "lon": -117.806202,
+   "acres": 0.145,
+   "address": null
+  },
+  {
+   "apn": "093-333-16",
+   "lat": 33.796999,
+   "lon": -117.805287,
+   "acres": 0.451,
+   "address": null
+  },
+  {
+   "apn": "096-161-03",
+   "lat": 33.754193,
+   "lon": -118.00634,
+   "acres": 0.205,
+   "address": null
+  },
+  {
+   "apn": "126-434-04",
+   "lat": 33.807446,
+   "lon": -117.9923,
+   "acres": 0.141,
+   "address": null
+  },
+  {
+   "apn": "130-243-07",
+   "lat": 33.786522,
+   "lon": -118.036007,
+   "acres": 0.142,
+   "address": null
+  },
+  {
+   "apn": "134-242-09",
+   "lat": 33.818996,
+   "lon": -118.013021,
+   "acres": 0.197,
+   "address": null
+  },
+  {
+   "apn": "135-091-29",
+   "lat": 33.838456,
+   "lon": -117.99466,
+   "acres": 0.844,
+   "address": null
+  },
+  {
+   "apn": "139-479-09",
+   "lat": 33.66873,
+   "lon": -117.940049,
+   "acres": 0.15,
+   "address": null
+  },
+  {
+   "apn": "141-164-12",
+   "lat": 33.680314,
+   "lon": -117.914384,
+   "acres": 0.183,
+   "address": null
+  },
+  {
+   "apn": "165-354-08",
+   "lat": 33.702144,
+   "lon": -118.012329,
+   "acres": 0.153,
+   "address": null
+  },
+  {
+   "apn": "178-062-27",
+   "lat": 33.723731,
+   "lon": -118.058495,
+   "acres": 0.115,
+   "address": null
+  },
+  {
+   "apn": "203-611-50",
+   "lat": 33.76738,
+   "lon": -118.033484,
+   "acres": 0.141,
+   "address": null
+  },
+  {
+   "apn": "222-093-16",
+   "lat": 33.799815,
+   "lon": -118.070623,
+   "acres": 0.205,
+   "address": null
+  },
+  {
+   "apn": "224-181-01",
+   "lat": 33.796029,
+   "lon": -118.01556,
+   "acres": 0.064,
+   "address": null
+  },
+  {
+   "apn": "272-034-22",
+   "lat": 33.842678,
+   "lon": -117.944815,
+   "acres": 0.027,
+   "address": null
+  },
+  {
+   "apn": "296-181-10",
+   "lat": 33.929982,
+   "lon": -117.902322,
+   "acres": 0.404,
+   "address": null
+  },
+  {
+   "apn": "346-142-04",
+   "lat": 33.855962,
+   "lon": -117.83691,
+   "acres": 0.733,
+   "address": null
+  },
+  {
+   "apn": "349-241-19",
+   "lat": 33.891823,
+   "lon": -117.782677,
+   "acres": 0.161,
+   "address": null
+  },
+  {
+   "apn": "359-152-10",
+   "lat": 33.847213,
+   "lon": -117.825941,
+   "acres": 0.115,
+   "address": null
+  },
+  {
+   "apn": "378-341-09",
+   "lat": 33.810109,
+   "lon": -117.828106,
+   "acres": 0.165,
+   "address": null
+  },
+  {
+   "apn": "401-283-07",
+   "lat": 33.746813,
+   "lon": -117.813945,
+   "acres": 0.136,
+   "address": null
+  },
+  {
+   "apn": "425-471-28",
+   "lat": 33.618883,
+   "lon": -117.918244,
+   "acres": 0.148,
+   "address": null
+  },
+  {
+   "apn": "434-191-48",
+   "lat": 33.689755,
+   "lon": -117.805368,
+   "acres": 0.081,
+   "address": null
+  },
+  {
+   "apn": "502-391-17",
+   "lat": 33.760689,
+   "lon": -117.77586,
+   "acres": 1.346,
+   "address": null
+  },
+  {
+   "apn": "502-391-18",
+   "lat": 33.760945,
+   "lon": -117.775068,
+   "acres": 2.69,
+   "address": null
+  },
+  {
+   "apn": "502-391-19",
+   "lat": 33.760297,
+   "lon": -117.775182,
+   "acres": 0.861,
+   "address": null
+  },
+  {
+   "apn": "610-621-47",
+   "lat": 33.673836,
+   "lon": -117.685922,
+   "acres": 0.078,
+   "address": null
+  },
+  {
+   "apn": "621-131-21",
+   "lat": 33.608298,
+   "lon": -117.72453,
+   "acres": 1.233,
+   "address": null
+  },
+  {
+   "apn": "637-154-13",
+   "lat": 33.538798,
+   "lon": -117.689196,
+   "acres": 0.171,
+   "address": null
+  },
+  {
+   "apn": "741-073-57",
+   "lat": 33.547989,
+   "lon": -117.640425,
+   "acres": 0.151,
+   "address": null
+  },
+  {
+   "apn": "759-691-09",
+   "lat": 33.546506,
+   "lon": -117.639211,
+   "acres": 0.107,
+   "address": null
+  },
+  {
+   "apn": "780-071-43",
+   "lat": 33.597138,
+   "lon": -117.622292,
+   "acres": 0.148,
+   "address": null
+  },
+  {
+   "apn": "804-771-12",
+   "lat": 33.633024,
+   "lon": -117.561885,
+   "acres": 0.142,
+   "address": null
+  },
+  {
+   "apn": "930-199-44",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "930-391-39",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "930-393-86",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "930-445-52",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "931-681-65",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "931-887-24",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "932-182-15",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "932-760-34",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "932-891-18",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "932-960-78",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "933-063-00",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "933-522-28",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "933-754-36",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "933-920-74",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "934-830-30",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "936-290-22",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "937-190-89",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "938-050-33",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "938-591-23",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "939-193-95",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "939-364-50",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  },
+  {
+   "apn": "017-271-21",
+   "lat": 33.944943,
+   "lon": -117.947939,
+   "acres": 0.142,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "056-240-57",
+   "lat": 33.515928,
+   "lon": -117.750591,
+   "acres": 6.417,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "056-240-65",
+   "lat": 33.519945,
+   "lon": -117.751863,
+   "acres": 69.707,
+   "address": "30802 S COAST HWY LAGUNA BEACH"
+  },
+  {
+   "apn": "056-240-67",
+   "lat": 33.522547,
+   "lon": -117.745986,
+   "acres": 153.349,
+   "address": null
+  },
+  {
+   "apn": "057-102-41",
+   "lat": 33.431203,
+   "lon": -117.609345,
+   "acres": 0.382,
+   "address": null
+  },
+  {
+   "apn": "060-160-04",
+   "lat": 33.396939,
+   "lon": -117.60061,
+   "acres": 0.291,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "105-101-10",
+   "lat": 33.744955,
+   "lon": -117.616711,
+   "acres": 6.301,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "105-101-11",
+   "lat": 33.746015,
+   "lon": -117.616561,
+   "acres": 1.385,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "105-152-16",
+   "lat": 33.746362,
+   "lon": -117.617121,
+   "acres": 0.154,
+   "address": "29432 SILVERADO CANYON RD SILVERADO"
+  },
+  {
+   "apn": "105-192-33",
+   "lat": 33.744388,
+   "lon": -117.582199,
+   "acres": 0.595,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "105-222-71",
+   "lat": 33.706926,
+   "lon": -117.638912,
+   "acres": 1.277,
+   "address": "25151 MODJESKA GRADE RD MODJESKA"
+  },
+  {
+   "apn": "107-665-13",
+   "lat": 33.717463,
+   "lon": -117.981636,
+   "acres": 0.083,
+   "address": null
+  },
+  {
+   "apn": "110-186-09",
+   "lat": 33.69433,
+   "lon": -118.00882,
+   "acres": 0.064,
+   "address": null
+  },
+  {
+   "apn": "110-186-14",
+   "lat": 33.694015,
+   "lon": -118.008875,
+   "acres": 0.064,
+   "address": null
+  },
+  {
+   "apn": "121-254-30",
+   "lat": 33.474305,
+   "lon": -117.677122,
+   "acres": 0.69,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "135-123-19",
+   "lat": 33.837535,
+   "lon": -117.998245,
+   "acres": 0.279,
+   "address": "8601 GRAND AVE BUENA PARK"
+  },
+  {
+   "apn": "199-201-74",
+   "lat": 33.749923,
+   "lon": -118.091074,
+   "acres": 0.553,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "199-201-81",
+   "lat": 33.75048,
+   "lon": -118.091258,
+   "acres": 0.238,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "222-043-19",
+   "lat": 33.799311,
+   "lon": -118.062019,
+   "acres": 0.002,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "222-052-30",
+   "lat": 33.799107,
+   "lon": -118.056374,
+   "acres": 0.003,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "222-092-18",
+   "lat": 33.802141,
+   "lon": -118.073399,
+   "acres": 0.006,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "280-176-24",
+   "lat": 33.886431,
+   "lon": -117.973268,
+   "acres": 0.045,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "312-041-06",
+   "lat": 33.930477,
+   "lon": -117.767812,
+   "acres": 2.823,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "323-391-17",
+   "lat": 33.896617,
+   "lon": -117.797575,
+   "acres": 0.729,
+   "address": "19367 VIA DE LA CIELO"
+  },
+  {
+   "apn": "326-021-43",
+   "lat": 33.910122,
+   "lon": -117.764175,
+   "acres": 0.98,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "346-181-02",
+   "lat": 33.867222,
+   "lon": -117.830092,
+   "acres": 0.061,
+   "address": "17342 ATWOOD AVE PLACENTIA"
+  },
+  {
+   "apn": "356-121-50",
+   "lat": 33.853884,
+   "lon": -117.759549,
+   "acres": 1.145,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "398-381-03",
+   "lat": 33.74887,
+   "lon": -117.854622,
+   "acres": 0.199,
+   "address": null
+  },
+  {
+   "apn": "408-191-12",
+   "lat": 33.715054,
+   "lon": -117.914066,
+   "acres": 0.2,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "502-391-10",
+   "lat": 33.761086,
+   "lon": -117.774163,
+   "acres": 0.651,
+   "address": "2098 LOWER LAKE RD TUSTIN"
+  },
+  {
+   "apn": "641-221-11",
+   "lat": 33.551317,
+   "lon": -117.777427,
+   "acres": 0.007,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "644-414-10",
+   "lat": 33.530786,
+   "lon": -117.763771,
+   "acres": 0.115,
+   "address": "1000 DEL MAR AVE LAGUNA BEACH"
+  },
+  {
+   "apn": "644-426-08",
+   "lat": 33.527823,
+   "lon": -117.763235,
+   "acres": 0.058,
+   "address": "800 SAN JOSE ST LAGUNA BEACH"
+  },
+  {
+   "apn": "656-124-20",
+   "lat": 33.526474,
+   "lon": -117.764841,
+   "acres": 0.402,
+   "address": "2301 SAN CLEMENTE ST"
+  },
+  {
+   "apn": "675-172-38",
+   "lat": 33.458001,
+   "lon": -117.632449,
+   "acres": 0.002,
+   "address": "14 TESORO SAN CLEMENTE"
+  },
+  {
+   "apn": "679-161-32",
+   "lat": 33.45344,
+   "lon": -117.621903,
+   "acres": 1.285,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "680-301-09",
+   "lat": 33.465861,
+   "lon": -117.641443,
+   "acres": 23.906,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "692-121-15",
+   "lat": 33.431824,
+   "lon": -117.629675,
+   "acres": 0.148,
+   "address": "1629 CALLE LAS BOLAS"
+  },
+  {
+   "apn": "692-121-17",
+   "lat": 33.431334,
+   "lon": -117.629389,
+   "acres": 0.139,
+   "address": "1601 CALLE COLINA"
+  },
+  {
+   "apn": "842-102-17",
+   "lat": 33.660702,
+   "lon": -117.590758,
+   "acres": 0.255,
+   "address": "20781 TRABUCO OAKS DR TRABUCO CANYON"
+  },
+  {
+   "apn": "866-052-31",
+   "lat": 33.714362,
+   "lon": -117.644636,
+   "acres": 1.54,
+   "address": "ADDRESS NOT AVAILABLE"
+  },
+  {
+   "apn": "867-061-03",
+   "lat": 33.716506,
+   "lon": -117.643461,
+   "acres": 10.557,
+   "address": "28081 MODJESKA CANYON RD"
+  },
+  {
+   "apn": "867-061-04",
+   "lat": 33.716506,
+   "lon": -117.643461,
+   "acres": 10.557,
+   "address": "28081 MODJESKA CANYON RD"
+  },
+  {
+   "apn": "931-982-85",
+   "lat": null,
+   "lon": null,
+   "acres": null,
+   "address": null
+  }
+ ]
+}
