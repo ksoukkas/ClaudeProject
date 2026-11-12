@@ -12,6 +12,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { CLAUDE_TIMEOUT_MS, hasAnthropicKey, scoutModel } from "@/lib/scout/config";
 import { CHIP_METERS, NAIP_URL, aerialImageUrl } from "./aerial-url";
+import { committedRead, committedSource } from "./aerial-reads";
 import { siteIndex } from "./sites";
 import type { AerialLabel, AerialRead, SourceRef } from "./types";
 
@@ -88,6 +89,20 @@ export async function aerialRead(id: string): Promise<AerialRead> {
   const site = siteIndex().byId.get(id);
   if (!site) return unavailable(id, "No site with this id.");
   if (site.lat === null || site.lon === null) return unavailable(id, "This site has no coordinates, so no image can be read.");
+  // The committed batch read wins, so the list and the panel never disagree.
+  const committed = committedRead(id);
+  if (committed) {
+    return {
+      id,
+      available: true,
+      label: committed.label,
+      notes: committed.notes,
+      model: committed.model,
+      caveat: committedSource.caveat ?? AERIAL_CAVEAT,
+      imagery: committedSource.imagery ?? imageryRef,
+      readAt: committed.readAt,
+    };
+  }
   if (!hasAnthropicKey()) return unavailable(id, "No ANTHROPIC_API_KEY is configured, so no reading was made.");
 
   const hit = readCached(id);

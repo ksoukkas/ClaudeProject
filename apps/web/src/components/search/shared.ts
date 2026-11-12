@@ -38,6 +38,18 @@ export const AERIAL_LABEL_TEXT: Record<AerialLabel, string> = {
   unclear: "Unclear",
 };
 
+export const AERIAL_ORDER: AerialLabel[] = [
+  "vacant-lot",
+  "parking-lot",
+  "building-intact",
+  "building-possibly-distressed",
+  "unclear",
+];
+
+export function isAerial(v: string | null | undefined): v is AerialLabel {
+  return !!v && (AERIAL_ORDER as string[]).includes(v);
+}
+
 export function isSource(v: string | null | undefined): v is SiteSource {
   return !!v && (SOURCE_ORDER as string[]).includes(v);
 }

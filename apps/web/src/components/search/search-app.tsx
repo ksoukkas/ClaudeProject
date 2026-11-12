@@ -3,11 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
-import type { SearchResponse, SiteResult, SiteSource } from "@/lib/search/types";
+import type { AerialLabel, SearchResponse, SiteResult, SiteSource } from "@/lib/search/types";
 import { Eyebrow } from "@/components/ui";
 import { ResultCard, ResultSkeleton } from "./result-card";
 import { SitePanel } from "./site-panel";
-import { SOURCE_COLOR, SOURCE_LABEL, SOURCE_ORDER, isSource } from "./shared";
+import { AERIAL_LABEL_TEXT, AERIAL_ORDER, SOURCE_COLOR, SOURCE_LABEL, SOURCE_ORDER, isAerial, isSource } from "./shared";
 
 const SiteMap = dynamic(() => import("./site-map"), {
   ssr: false,
@@ -18,7 +18,7 @@ const SiteMap = dynamic(() => import("./site-map"), {
 
 const PAGE_SIZE = 20;
 
-type Filters = { q: string; city: string; source: SiteSource | ""; pathway: string };
+type Filters = { q: string; city: string; source: SiteSource | ""; pathway: string; aerial: AerialLabel | "" };
 
 function chipClass(active: boolean) {
   return `inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-semibold transition-colors ${
@@ -32,6 +32,7 @@ function buildQuery(f: Filters, extra: Record<string, string | number> = {}) {
   if (f.city) p.set("city", f.city);
   if (f.source) p.set("source", f.source);
   if (f.pathway) p.set("pathway", f.pathway);
+  if (f.aerial) p.set("aerial", f.aerial);
   for (const [k, v] of Object.entries(extra)) p.set(k, String(v));
   return p;
 }
@@ -40,17 +41,19 @@ export function SearchApp() {
   const initial = useSearchParams();
   const [filters, setFilters] = useState<Filters>(() => {
     const s = initial.get("source");
+    const a = initial.get("aerial");
     return {
       q: initial.get("q") ?? "",
       city: initial.get("city") ?? "",
       source: isSource(s) ? s : "",
       pathway: initial.get("pathway") ?? "",
+      aerial: isAerial(a) ? a : "",
     };
   });
   const [debouncedQ, setDebouncedQ] = useState(filters.q);
   const [results, setResults] = useState<SiteResult[]>([]);
   const [total, setTotal] = useState(0);
-  const [facets, setFacets] = useState<SearchResponse["facets"]>({ source: {}, city: {} });
+  const [facets, setFacets] = useState<SearchResponse["facets"]>({ source: {}, city: {}, aerial: {} });
   const [warnings, setWarnings] = useState<string[]>([]);
   const [pathwayLabels, setPathwayLabels] = useState<Record<string, string>>({});
   const [doneKey, setDoneKey] = useState<string | null>(null);
@@ -141,11 +144,11 @@ export function SearchApp() {
     setSelectedId(null);
   };
   const clearAll = () => {
-    setFilters({ q: "", city: "", source: "", pathway: "" });
+    setFilters({ q: "", city: "", source: "", pathway: "", aerial: "" });
     setDebouncedQ("");
     setSelectedId(null);
   };
-  const hasFilters = !!(filters.q || filters.city || filters.source || filters.pathway);
+  const hasFilters = !!(filters.q || filters.city || filters.source || filters.pathway || filters.aerial);
 
   const select = useCallback((id: string) => setSelectedId(id), []);
   const selected = results.find((r) => r.id === selectedId) ?? null;
@@ -238,6 +241,29 @@ export function SearchApp() {
                   title="Sites where this pathway is likely or possible"
                 >
                   {pathwayLabels[id]}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2" role="group" aria-label="From the air (AI read)">
+            <span className="text-[11px] font-semibold tracking-[1.2px] text-ink-soft uppercase">
+              From the air (AI read)
+            </span>
+            {AERIAL_ORDER.map((a) => {
+              const active = filters.aerial === a;
+              const n = facets.aerial?.[a];
+              return (
+                <button
+                  key={a}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => update({ aerial: active ? "" : a })}
+                  className={chipClass(active)}
+                  title="AI reading of an aerial image of unknown capture date, not an inspection. Only sites that were read can match."
+                >
+                  {AERIAL_LABEL_TEXT[a]}
+                  {n != null ? <span className="font-normal opacity-80">{n}</span> : null}
                 </button>
               );
             })}

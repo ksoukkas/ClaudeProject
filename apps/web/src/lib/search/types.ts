@@ -41,6 +41,8 @@ export interface SiteResult {
   /** In-app link to the fuller page when one exists, else null. */
   detailHref: string | null;
   sourceRef: SourceRef;
+  /** Committed AI reading of the aerial image (see data/aerial-reads.json), or null. */
+  aerial: { label: AerialLabel; notes: string } | null;
 }
 
 export interface SearchParams {
@@ -49,6 +51,8 @@ export interface SearchParams {
   source?: SiteSource;
   /** Pathway id; keeps results whose status for it is "likely" or "possible". */
   pathway?: string;
+  /** Keeps sites whose committed AI aerial read has this label. */
+  aerial?: AerialLabel;
   limit?: number;
   offset?: number;
 }
@@ -60,6 +64,8 @@ export interface SearchResponse {
   facets: {
     source: Record<string, number>;
     city: Record<string, number>;
+    /** Keyed by AerialLabel, plus "none" for sites without a committed read. */
+    aerial: Record<string, number>;
   };
   sources: SourceRef[];
   warnings: string[];

@@ -1,0 +1,1886 @@
+{
+ "source": {
+  "imagery": {
+   "name": "USGS National Map NAIP imagery (public domain; credit USGS, USDA)",
+   "url": "https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer",
+   "checkedAt": "2026-11-12"
+  },
+  "model": "claude-opus-5-5, claude-haiku-5-5",
+  "generatedOn": "2026-11-12",
+  "caveat": "This is an AI reading of an aerial image of unknown capture date, not a site inspection. It says nothing about ownership, zoning or legality."
+ },
+ "reads": {
+  "tax-defaulted:346-181-02": {
+   "label": "building-intact",
+   "notes": "The centre shows a single-storey house with a grey roof on a residential street, next to a large tree, and its roof appears complete. Neighbouring houses line the street, the backyards are dry and bare, and a road and rail line run along the top of the image.",
+   "model": "claude-opus-5-5",
+   "readAt": "2026-11-12T23:05:04.766Z"
+  },
+  "tax-defaulted:105-101-10": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows steep hillside covered with dry grass and shrubs, with dirt trails and no building or paved lot visible. The land appears open and undeveloped.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:10:38.426Z"
+  },
+  "tax-defaulted:105-101-11": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is sloped open hillside with dry grass, scattered shrubs and a dirt trail, with no building or paved lot at the centre. Houses and a road are visible only near the top edge of the image.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:10:49.793Z"
+  },
+  "tax-defaulted:105-152-16": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on sloped, tree-covered hillside near a road, with scattered buildings to the upper left and right rather than a clear structure at the exact centre. Individual roofs are small and partly hidden by vegetation, so the centre site cannot be confidently classified.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:02.894Z"
+  },
+  "tax-defaulted:105-192-33": {
+   "label": "unclear",
+   "notes": "The centre of the chip is dense tree canopy with a dirt track nearby; the small white dome-like structure with a dark shadow sits left of centre near a cleared patch, and it is too small and ambiguous to confirm as a building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:04.285Z"
+  },
+  "tax-defaulted:105-222-71": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is dense tree canopy and shrubland with no building or paved parking visible at the centre. The nearby houses and the road lie toward the edges of the frame.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:10:56.341Z"
+  },
+  "tax-defaulted:107-665-13": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a flat-roofed building with a grey roof and surrounding parking spaces, with rows of cars nearby and no visible roof damage or debris. Adjacent buildings appear similarly intact with no obvious overgrowth.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:09.754Z"
+  },
+  "tax-defaulted:110-186-09": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is bare, dry ground with dirt tracks and a gravelled clearing, and no building is visible there. A small square foundation-like structure sits near the lower centre, with a major road along the bottom edge.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:11.951Z"
+  },
+  "tax-defaulted:110-186-14": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is bare, grey-brown open ground with dirt tracks and no building or paved vehicle lot. A road runs along the lower side with houses beyond it, and a small utility-like structure sits near the centre-right edge of the open area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:10.572Z"
+  },
+  "tax-defaulted:312-041-06": {
+   "label": "unclear",
+   "notes": "The centre of the chip is dense tree canopy with scattered shrubs and patches of dry grass. A small structure is visible near the top right edge, away from the centre, and a dirt track curves along the right side. No building or paved lot is clearly visible at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:17.433Z"
+  },
+  "tax-defaulted:398-381-03": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed industrial building with a grey roof and no visible collapse or debris. Parked vehicles line the adjacent street and yards, but the roof and walls at the centre appear intact.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:16.731Z"
+  },
+  "tax-defaulted:408-191-12": {
+   "label": "building-possibly-distressed",
+   "notes": "The centre of the chip is occupied by a large flat-roofed commercial building with a light membrane roof showing many dark patches and stains, and some roof hatches or equipment. Some dark staining and patchy weathering are visible, but no collapse or clear debris is seen.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:16.472Z"
+  },
+  "tax-defaulted:502-391-10": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, dry grassy plot with no building on it, bordered by a road to the north and trees to the south. The house with a pool lies to the upper left, outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:28.177Z"
+  },
+  "tax-defaulted:842-102-17": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on sloped, dry scrub and tree cover beside a road, with no clear building or paved lot at the exact centre. Nearby structures and a parking area lie to the east, so the centre cannot be confidently assigned.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:29.318Z"
+  },
+  "tax-defaulted:866-052-31": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a building with an orange tile roof surrounded by trees and a driveway, with no obvious roof collapse or debris visible. Some vegetation is close to the structure but it does not appear to be heavy overgrowth on the building itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:25.217Z"
+  },
+  "tax-defaulted:867-061-03": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry scrubland with scattered shrubs and no building or paving. A small orange-roofed structure sits off-centre in the lower left, away from the site centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:39.449Z"
+  },
+  "tax-defaulted:867-061-04": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open, sparsely vegetated scrubland with dirt tracks and no building or paved lot. A small orange-roofed structure sits toward the lower left, away from the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:39.827Z"
+  },
+  "tax-defaulted:017-271-21": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential house with a dark gabled roof and a driveway, surrounded by trees and neighbouring homes with pools. No obvious roof damage, collapse, debris or heavy overgrowth is visible on the building at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:36.727Z"
+  },
+  "tax-defaulted:056-240-57": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is dense shrubland and scrub with patches of bare sandy ground and no building or paved lot visible. Built-up rooftops appear only in the far bottom-left corner, outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:29:47.669Z"
+  },
+  "tax-defaulted:056-240-65": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows dense dark shrubland and scrub with no building or paved lot visible. A small paved area appears only at the top-left corner, away from the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:11:46.618Z"
+  },
+  "tax-defaulted:056-240-67": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open natural land covered with scrub and shrubs, with a dirt track running diagonally through the image. No building or paved parking area is visible at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:48.895Z"
+  },
+  "tax-defaulted:057-102-41": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open hillside covered with dense shrubs and trees with no building or paved parking visible at the centre. Houses sit along the upper edge of the frame, away from the middle.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:03.313Z"
+  },
+  "tax-defaulted:060-160-04": {
+   "label": "unclear",
+   "notes": "The centre of the chip is sandy beach between the surf and a railway line, with no building or paved lot at the exact centre. Buildings are visible only toward the upper right edge, so the centre site cannot be clearly categorised as a vacant lot or built site.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:03.656Z"
+  },
+  "tax-defaulted:121-254-30": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, unpaved patch of dry, sparse scrubby ground with no building on it, bordered by a rail line to the west and a road and parking lots nearby. The site appears to be bare land with no visible structure.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:03.830Z"
+  },
+  "tax-defaulted:135-123-19": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a flat, dry, bare-soil plot with no building or pavement on it, bordered by houses to the west and a street to the east. No visible roof damage or debris is noted on the open land itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:29:59.528Z"
+  },
+  "tax-defaulted:199-201-74": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential house with a pitched roof and a swimming pool beside it, with no visible roof damage, debris or overgrowth. Neighbouring homes and curving streets are also intact.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:11.812Z"
+  },
+  "tax-defaulted:199-201-81": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a cul-de-sac turnaround with a small landscaped island, surrounded by residential houses with pitched roofs, solar panels and backyard pools. No visible roof damage, debris or overgrowth on the nearby buildings.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:12.645Z"
+  },
+  "tax-defaulted:222-043-19": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip falls on a paved parking area with marked stalls and a parked red car, beside a sports court and near a road junction. Open dry ground to the right is undeveloped but the centre itself is the paved lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:31.087Z"
+  },
+  "tax-defaulted:222-052-30": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved area with painted parking stall markings and a few parked cars along its edge, adjacent to a street and houses. No building sits at the centre; a small shed and ballfield lie to the south.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:24.224Z"
+  },
+  "tax-defaulted:222-092-18": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved lot with many parked cars in rows, bordered by landscaping strips and a building to the north. The building at centre-north appears intact with no visible roof damage or debris.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:27.234Z"
+  },
+  "tax-defaulted:280-176-24": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a residential street junction with a single-storey house with a tiled roof and a solar panel on its rear side nearby, and no obvious roof collapse or debris is visible. Surrounding houses appear intact with tiled roofs and some vegetation, but the central area is mostly roadway.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:40.051Z"
+  },
+  "tax-defaulted:323-391-17": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large grey-roofed residence with a pool and landscaped grounds, and no visible roof damage, debris or overgrowth on the building. Neighbouring houses nearby also appear intact with maintained yards.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:27:37.751Z"
+  },
+  "tax-defaulted:326-021-43": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland and scrubby hillside with no building or paved lot visible. Residential homes with pools sit at the edges of the image, but the middle is undeveloped land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:38.937Z"
+  },
+  "tax-defaulted:356-121-50": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is bare, graded dirt and sand with no building present, only a few blue containers and a small vehicle near the edge. The surrounding land is open dry grass with scattered shrubs and trees.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:30:11.293Z"
+  },
+  "tax-defaulted:641-221-11": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large light-colored flat-roofed commercial building with a smaller blue-roofed structure beside it, surrounded by paved areas and a parking lot to the north. No obvious roof collapse, debris, or heavy overgrowth is visible on the building itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:56.557Z"
+  },
+  "tax-defaulted:644-414-10": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open hillside covered with scrub vegetation and dirt trails, with no building or paved lot at the middle. Houses sit along the edges to the left and right.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:12:52.254Z"
+  },
+  "tax-defaulted:644-426-08": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is dense shrubland and open dry ground with no building or paved lot at the centre. Structures are visible only toward the upper right and lower left, away from the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:13.043Z"
+  },
+  "tax-defaulted:656-124-20": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is dense natural scrub and tree cover with no building or paved lot visible. Houses and a driveway sit toward the right and lower edge, outside the central area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:12.941Z"
+  },
+  "tax-defaulted:675-172-38": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a road curve with vegetated slopes and a patch of open grass and scrub nearby, with no building or paved parking lot at the exact centre. Houses are visible at the lower left and lower right edges, outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:13.555Z"
+  },
+  "tax-defaulted:679-161-32": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland and scrub with scattered shrubs and trees and no building or paved lot visible. A multi-lane road runs along the lower right edge, outside the central area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:27:59.943Z"
+  },
+  "tax-defaulted:680-301-09": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows open natural ground with scrub and dense vegetation, plus a winding unpaved dirt track running diagonally through the scene. No building or paved vehicle lot is visible at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:17.588Z"
+  },
+  "tax-defaulted:692-121-15": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows an open, dry grassy area with no building footprint, bordered by a curving road and surrounding houses. No paved parking or building sits on the central parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:19.493Z"
+  },
+  "tax-defaulted:692-121-17": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large area of dry, brown bare ground with sparse scrub and no building on it, bordered by a curving road and residential buildings. Some low vegetation and a few small debris-like patches are visible, but no structure sits at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:34.341Z"
+  },
+  "tax-defaulted:002-162-29": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a cluster of small residential-style buildings with grey and tan roofs amid tree cover and driveways, with no obvious roof collapse or debris. A large striped parking lot sits to the right of centre, but the centre itself is occupied by buildings rather than open paved parking.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:36.114Z"
+  },
+  "tax-defaulted:008-091-03": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare-dirt parcel with no building, with construction-style equipment and tracks visible on the ground. Surrounding houses and a major road are visible around the edges.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:28:05.082Z"
+  },
+  "tax-defaulted:024-025-16": {
+   "label": "unclear",
+   "notes": "The centre of the chip sits on a road intersection among residential buildings and a few parked cars. No clear building or open lot is isolated at the exact centre, so the site cannot be reliably classified.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:52.359Z"
+  },
+  "tax-defaulted:024-082-19": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential building with a grey roof and a small garden area, surrounded by other houses and yards. No visible roof collapse, debris, or heavy overgrowth is apparent on the building at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:51.955Z"
+  },
+  "tax-defaulted:041-031-31": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a cluster of commercial buildings and paved lots along a multi-lane road, with a roofed structure and parked vehicles near the middle. No obvious collapsed roof, debris, or heavy overgrowth is visible on the central building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:52.001Z"
+  },
+  "tax-defaulted:093-112-48": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential-style building with a dark roof and surrounding yard, with no visible roof collapse, debris, or heavy overgrowth. Nearby buildings and streets appear intact.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:58.827Z"
+  },
+  "tax-defaulted:093-333-16": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows an open, unbuilt parcel of dry brown grass and bare ground between houses, with no building at its centre. A few small vehicles are visible at its edge along the driveway area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:13:58.714Z"
+  },
+  "tax-defaulted:139-479-09": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a two-storey house with a grey roof and a paved driveway, backed by a row of similar homes along a street. No visible roof damage, debris or heavy overgrowth on the building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:28:11.495Z"
+  },
+  "tax-defaulted:141-164-12": {
+   "label": "building-possibly-distressed",
+   "notes": "The centre of the chip shows a small brown-roofed house on a lot with scattered debris and heavy vegetation around it, including a dark tarp-like area and cluttered yard. Other nearby homes appear intact, but the central parcel shows signs of overgrowth and disorder.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:14.933Z"
+  },
+  "tax-defaulted:165-354-08": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential street bend with a paved cul-de-sac area and a house with a pitched roof nearby. The building at the centre appears to have an intact roof with no visible debris or collapse.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:17.456Z"
+  },
+  "tax-defaulted:178-062-27": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a waterfront house with a tiled roof and a boat dock on a canal, with no visible damage, collapse, debris, or heavy overgrowth. Neighbouring homes and boats line the water nearby.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:14.880Z"
+  },
+  "tax-defaulted:378-341-09": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential house with a grey-brown roof on a street-facing lot, with a driveway and yard visible. No obvious roof collapse, debris, or heavy overgrowth is visible on or around the building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:25.010Z"
+  },
+  "tax-defaulted:401-283-07": {
+   "label": "building-intact",
+   "notes": "The centre shows a single-storey commercial building with a flat white roof and surrounding parking spaces and trees. No visible roof collapse, debris, or heavy overgrowth on the building itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:24.518Z"
+  },
+  "tax-defaulted:502-391-17": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large grey-roofed house with a paved driveway and courtyard, surrounded by trees and landscaping. The roof and walls appear intact with no visible damage, debris, or collapse.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:26.567Z"
+  },
+  "tax-defaulted:502-391-18": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a lawn and tree-covered grounds near a curved driveway, with a tennis court to the upper left and a small circular feature at the left. No clear building or paved vehicle lot sits at the exact centre, so the site type is hard to determine confidently.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:31.277Z"
+  },
+  "tax-defaulted:502-391-19": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open grassy field with scattered trees and no building or paved lot on it. Roads border the field, and a building with a pool sits to the lower left, outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:32.916Z"
+  },
+  "tax-defaulted:621-131-21": {
+   "label": "building-possibly-distressed",
+   "notes": "The centre shows a large flat-roofed commercial building with a cluttered yard in front holding stacked pallets, debris-like piles, and scattered materials. The roof looks intact, but the surrounding yard shows visible clutter and possible debris.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:33.962Z"
+  },
+  "tax-defaulted:741-073-57": {
+   "label": "building-intact",
+   "notes": "The centre of the chip sits on a residential house with a grey-tiled roof beside a road and a pool nearby. The roof and surrounding area show no visible damage, debris, or collapse.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:47.138Z"
+  },
+  "tax-defaulted:759-691-09": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a residential house with a tan tile roof and a small driveway, appearing intact with no visible roof damage, debris, or overgrowth. Neighbouring homes and a curved cul-de-sac road surround it.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:38.010Z"
+  },
+  "tax-defaulted:780-071-43": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential house with a pitched tan roof and a garden, next to a curving street. No visible roof collapse, debris or heavy overgrowth is evident on the building at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:41.448Z"
+  },
+  "tax-defaulted:804-771-12": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a row of tile-roofed houses along a curving street, with a pool visible beside some homes. The roofs and walls appear intact with no visible damage, debris, or overgrowth on the buildings.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:55.653Z"
+  },
+  "tax-defaulted:033-382-15": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a tan-roofed house with a paved driveway and a few parked cars, surrounded by neighbouring residential buildings and trees. No visible roof damage, collapse, or debris is apparent at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:53.193Z"
+  },
+  "tax-defaulted:035-223-09": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a flat-roofed building with a grey-green roof and a surrounding lot, set among other rooftops along a street. No obvious roof collapse, debris, or heavy overgrowth is visible on the central building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:14:55.700Z"
+  },
+  "tax-defaulted:035-223-10": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a flat-roofed commercial building with grey roofing and an adjacent tan building along a street lined with parked cars. No obvious roof collapse, debris, or heavy overgrowth is visible at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:02.212Z"
+  },
+  "tax-defaulted:037-073-21": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a road intersection with crosswalks, near a low commercial or residential building with a tan roof and green lawn strip. The building at the centre appears intact with no visible roof damage or debris.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:03.331Z"
+  },
+  "tax-defaulted:037-081-18": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a dense residential block with a gray-roofed building and neighbouring structures; the roofs appear intact with no obvious collapse, debris, or heavy overgrowth. The image is somewhat low resolution, so fine detail is limited.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:03.472Z"
+  },
+  "tax-defaulted:096-161-03": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential block with several houses and a small blue-roofed structure among trees and yard areas, with no obvious roof collapse or debris. A street with parked cars runs along the lower part of the image.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:10.291Z"
+  },
+  "tax-defaulted:126-434-04": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a narrow street with parked cars along the curb, between rows of commercial lots and buildings. The site itself is not clearly a vacant lot, parking lot, or building, so the centre cannot be assigned confidently.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:10.900Z"
+  },
+  "tax-defaulted:130-243-07": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential house with a gray pitched roof, a driveway and small yard, set between neighbouring homes along a suburban street. No obvious roof collapse, debris or heavy overgrowth is visible on the building at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:11.829Z"
+  },
+  "tax-defaulted:134-242-09": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a mix of a residential driveway, a parking area, and a row of multi-unit buildings with grey roofs. No single clear site type dominates the exact centre, so the classification is uncertain.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:18.229Z"
+  },
+  "tax-defaulted:135-091-29": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved surface with painted parking stalls and some parked cars along its edges, adjacent to commercial buildings with flat roofs. No visible damage or debris is apparent on the buildings.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:19.100Z"
+  },
+  "tax-defaulted:203-611-50": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a residential street near a house with a tiled roof and a pale driveway, with a neighbouring house and pool nearby. The building at the centre shows no visible damage, debris or overgrowth.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:21.656Z"
+  },
+  "tax-defaulted:222-093-16": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip sits on a paved area with rows of parked cars and marked stalls, bordered by a street and a building with an orange tile roof to the lower left. The paved lot shows no signs of building damage at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:30.845Z"
+  },
+  "tax-defaulted:224-181-01": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on an intersection of residential streets with a narrow median strip and a small planted area, not on a clearly identifiable building or lot. No specific building or open parcel at the exact centre can be confidently made out from this aerial view.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:28:28.286Z"
+  },
+  "tax-defaulted:272-034-22": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a row of residential buildings with flat-to-pitched roofs and a swimming pool beside the middle block, with no obvious roof collapse, debris, or heavy overgrowth visible. The surrounding area is dense with trees and streets, and the rooftops appear generally intact.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:33.843Z"
+  },
+  "tax-defaulted:296-181-10": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed commercial building with a grey roof and no visible roof collapse, debris, or overgrowth. Parking areas and paved roads surround it, and the building appears structurally intact.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:47.474Z"
+  },
+  "tax-defaulted:346-142-04": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a flat-roofed commercial building with rooftop solar panels, surrounded by a parking area with parked cars. No visible roof collapse, debris, or heavy overgrowth is apparent on the building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:28:32.688Z"
+  },
+  "tax-defaulted:349-241-19": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a street and the edge of a residential block; the nearest houses on either side look intact with roofs present and no visible debris or collapse. The centre is a road rather than a clear building, so the label is a best judgment from the neighbouring structures.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:46.868Z"
+  },
+  "tax-defaulted:359-152-10": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential house with a grey roof and surrounding yard, with no visible roof collapse, debris, or heavy overgrowth. Neighbouring houses appear similarly intact along the street grid.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:15:59.210Z"
+  },
+  "tax-defaulted:425-471-28": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a residential property with a flat-roofed building beside a swimming pool, near a road junction. No visible roof collapse, debris, or heavy overgrowth on the building appears in the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:30:51.631Z"
+  },
+  "tax-defaulted:434-191-48": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a tiled-roof house with a clear, undamaged roof, surrounded by similar houses, driveways and landscaped yards. No visible roof damage, debris or overgrowth is apparent on the central building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:16:11.220Z"
+  },
+  "tax-defaulted:610-621-47": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip shows tennis courts with green surfacing and white line markings, surrounded by dense trees and a road. No building is visible at the centre, and the surrounding houses have intact roofs.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:16:15.416Z"
+  },
+  "tax-defaulted:637-154-13": {
+   "label": "unclear",
+   "notes": "The centre of the chip sits among trees and scrubby vegetation between houses, with an open patch of bare ground near the middle. It is not clear whether the centre is an open lot or a building edge, so no confident label can be assigned.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:16:22.175Z"
+  },
+  "surplus-notice:sla-024": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a multi-lane road with a median and open dry scrubland to its right, with no clear building or lot at the exact centre. The land beside the road is sparsely vegetated, so the site type cannot be confidently determined.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:28:53.483Z"
+  },
+  "surplus-notice:sla-023": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip falls on a large paved lot with marked parking rows holding parked cars, planted islands and a central fountain court near a larger building with a red roof. Across the road to the south are apartment-style buildings, but the centre itself is the paved vehicle lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:16:32.419Z"
+  },
+  "surplus-notice:sla-017": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a multi-storey building with a flat roof and a courtyard-style inner section, surrounded by parking spaces and trees. No obvious roof collapse, debris, or heavy overgrowth is visible on the central building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:30:56.965Z"
+  },
+  "surplus-notice:sla-018": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip sits on a large paved lot filled with rows of parked cars, bordered by buildings with orange-tiled roofs. No damage or debris is visible on the surrounding structures.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:16:38.477Z"
+  },
+  "surplus-notice:sla-019": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved area filled with rows of parked cars, bordered by trees and a low commercial building to its north. The surface is clearly marked as a vehicle lot with no building footprint at the exact centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:16:57.846Z"
+  },
+  "surplus-notice:sla-021": {
+   "label": "building-intact",
+   "notes": "The centre of the chip is occupied by a flat-roofed commercial building with a light grey roof and red-brown trim, surrounded by parking and trees. The roof appears intact with no visible collapse, debris, or heavy overgrowth.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:16:53.521Z"
+  },
+  "surplus-notice:sla-022": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a flat-roofed commercial building with a grey roof and a paved lot with parked cars along its frontage. No visible roof collapse, debris, or heavy overgrowth is apparent on the building at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:16:49.511Z"
+  },
+  "surplus-notice:sla-015": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a multi-lane road with crosswalk markings and a median strip, flanked by parking areas and buildings. No clear building or open lot sits at the exact centre, so the site cannot be classified with confidence.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:03.136Z"
+  },
+  "surplus-notice:sla-016": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a multi-lane road with crosswalk markings and a median strip, flanked by parking lots and building roofs. No clear building or open lot sits at the exact centre, so the site cannot be classified with confidence.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:11.736Z"
+  },
+  "surplus-notice:sla-001": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare sandy-grey plot with no building, bordered by a road on the left and houses on the right, with a single tree near its top. Some sparse vegetation and debris-like patches appear along its lower edge, but no structure sits at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:03.545Z"
+  },
+  "surplus-notice:sla-002": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, unpaved tract of bare sandy-brown ground with no building on it, bordered by a road on the left and residential houses on the right. A single tree sits near the centre-left of the open land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:27.844Z"
+  },
+  "surplus-notice:sla-003": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large bare, sandy-toned open plot with no building, lying between a multi-lane road on the left and a row of houses on the right. Faint tire-like tracks and a few trees along the edges are visible, but no structure sits on the central land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:15.526Z"
+  },
+  "surplus-notice:sla-004": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare-soil parcel with no building visible, bordered by a road intersection to the north and residential houses to the east. A parking area with parked cars lies to the west, but the central land itself is undeveloped.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:29:15.904Z"
+  },
+  "surplus-notice:sla-005": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open plot of bare, sandy-toned ground with no building on it, bounded by a road on the left and residential houses on the right. A single tree sits near the centre-left of the plot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:30.744Z"
+  },
+  "surplus-notice:sla-006": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large bare, sandy-toned open field with no building or paved lot on it, bordered by a major road to the west and houses to the east. A few small trees sit along the edges, but the central area is undeveloped open land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:37.491Z"
+  },
+  "surplus-notice:sla-007": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large, flat, bare dirt parcel with no building on it, lying between a multi-lane road on the left and a row of houses on the right. Some tire tracks and faint patches are visible, but no structure stands at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:32.423Z"
+  },
+  "surplus-notice:sla-008": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare sandy-grey plot with no building on it, bordered by a major road to the west and residential houses to the east. A single tree sits at the upper part of the plot, outside the exact centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:48.408Z"
+  },
+  "surplus-notice:sla-009": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large expanse of bare, flat, sandy-toned open ground with no building, bordered by a major road on the left and residential houses on the right. A few trees sit near the edges, but no structure occupies the central area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:43.584Z"
+  },
+  "surplus-notice:sla-010": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, unpaved tan expanse with no building, lying between a multi-lane road on the left and residential houses on the right. Faint tire-track or grading marks are visible, but no structure stands on it.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:41.926Z"
+  },
+  "surplus-notice:sla-011": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare sandy-toned parcel with no building visible, bordered by a road intersection and residential houses to the east. The parcel appears unpaved with no structures on it.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:52.354Z"
+  },
+  "surplus-notice:sla-012": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open bare-soil field with no building, bordered by a major road on the left and houses on the right. A single tree sits just left of centre, but no structure occupies the middle of the site.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:52.430Z"
+  },
+  "surplus-notice:sla-013": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, unpaved tan field with no building, bordered by a road on the left and houses on the right. Faint tire-like tracks and a few small features are visible, but no structure sits at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:52.359Z"
+  },
+  "surplus-notice:sla-014": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is bare, flat, light-brown open ground with no building on it, bordered by a road intersection to the north and a street to the east. Parked cars and a parking lot appear nearby on the left, but the central parcel itself is undeveloped land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:17:55.514Z"
+  },
+  "surplus-notice:sla-027": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a road intersection with asphalt lanes and crosswalks, not on a building or open lot. Surrounding buildings and parking lots are visible, but no clear site at the exact centre can be identified.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:06.418Z"
+  },
+  "surplus-notice:sla-028": {
+   "label": "unclear",
+   "notes": "The centre of the chip sits on a road intersection with asphalt lanes and crosswalk markings, not a building or lot. Nearby buildings are intact with no visible roof damage or debris, so the centre site cannot be clearly assigned to a label.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:06.432Z"
+  },
+  "surplus-notice:sla-029": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a cluster of light-grey commercial buildings on a large paved lot with parked vehicles, next to a road and freeway interchange. The buildings and surfaces show no visible roof collapse, debris, or heavy overgrowth.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:20.475Z"
+  },
+  "surplus-notice:sla-123": {
+   "label": "unclear",
+   "notes": "The centre of the chip is occupied by a wide divided road or highway with lanes and a median strip, not a building or lot. A small structure with a dark roof sits off to the upper right, away from the centre, so the centre site cannot be classified as a building, vacant lot or parking lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:11.232Z"
+  },
+  "surplus-notice:sla-183": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved area marked with rows of white parking stalls and driving aisles, with a few parked cars and a small truck or trailer visible. No building is present at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:19.116Z"
+  },
+  "surplus-notice:sla-184": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows open bare ground with patchy grass and a few trees between a major road and a freeway, with no building on it. Scattered vehicles are visible on the nearby roads, not on the centre parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:31.767Z"
+  },
+  "surplus-notice:sla-185": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open dirt and gravel strip between the road and the freeway with no building on it, only sparse trees and grass along the edge. A small paved patch and a few buildings sit to the lower left, outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:27.339Z"
+  },
+  "surplus-notice:sla-186": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open dry dirt strip between a frontage road and a freeway, with scattered shrubs and trees but no building. Vehicles visible are on the nearby roads and parking areas, not on the central parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:27.618Z"
+  },
+  "surplus-notice:sla-187": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows open bare dirt and sparse scrub strip between the freeway and the arterial road, with no building present. Some patches of grass and a few small trees line the edge, but the central area is undeveloped land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:34.721Z"
+  },
+  "surplus-notice:sla-188": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open bare ground and sparse dry grass between the freeway embankment and the arterial road, with no building present. Some small structures sit at the upper left and lower right edges, outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:34.837Z"
+  },
+  "surplus-notice:sla-174": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed commercial complex with a courtyard and landscaped walkway between buildings. The roofs appear uniform with no visible collapse, missing roofing, or debris, though there are some small rooftop units and a pile of materials near the lower-left building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:35.906Z"
+  },
+  "surplus-notice:sla-175": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed commercial building complex with a courtyard and circular planter at its middle, with no obvious roof collapse or debris. Parking lots and a major road border the area, and the rooftops appear uniform and undamaged.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:38.486Z"
+  },
+  "surplus-notice:sla-176": {
+   "label": "building-intact",
+   "notes": "The centre shows a large flat-roofed commercial building complex with a courtyard and landscaped walkways between wings. The roofs appear largely intact with no obvious collapse, debris, or heavy overgrowth, though some scattered materials are visible near the lower left.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:38.502Z"
+  },
+  "surplus-notice:sla-177": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed commercial building complex with a courtyard and circular planter, with no obvious roof collapse or debris visible. Parking lots and a major road lie to the north and west, and the roofs appear largely intact.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:38.490Z"
+  },
+  "surplus-notice:sla-178": {
+   "label": "building-intact",
+   "notes": "The centre shows a large, flat-roofed commercial building complex with a central plaza featuring a circular planter and landscaped walkways. The roofs appear uniform with no visible collapse, missing roof sections, or debris, though some small rooftop equipment and a few piles of materials are visible near the lower left.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:41.123Z"
+  },
+  "surplus-notice:sla-179": {
+   "label": "building-intact",
+   "notes": "The centre shows a large flat-roofed commercial complex with a courtyard and landscaped walkway between buildings. The roofs appear intact with no visible collapse, debris, or heavy overgrowth on the buildings themselves.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:41.029Z"
+  },
+  "surplus-notice:sla-180": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed commercial complex with a courtyard and landscaped walkway between buildings. The roofs appear uniform with no visible collapse, missing roofing, or debris.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:40.951Z"
+  },
+  "surplus-notice:sla-181": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed commercial building complex with a courtyard and circular planter, with no obvious roof collapse or debris visible. Parking lots and a road lie nearby at the edges of the frame.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:43.696Z"
+  },
+  "surplus-notice:sla-182": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed commercial building complex with a courtyard and circular planter, and no obvious roof collapse or debris on the main structures. A small patch of construction materials appears near the lower left, away from the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:43.700Z"
+  },
+  "surplus-notice:sla-025": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a curved road and roadside vegetation rather than a clear building or lot. The large building with a rooftop and paved yard lies to the upper left, outside the centre, and shows no obvious damage.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:48.711Z"
+  },
+  "surplus-notice:sla-189": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a residential house with a tan roof beside the curved street and near the pond edge, with no visible roof damage, debris, or overgrowth. The surrounding houses and yards appear in normal condition.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:02.520Z"
+  },
+  "surplus-notice:sla-190": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a residential house with a tiled roof and a lawn along the street, next to a golf course pond. No visible roof damage, debris, or overgrowth on the building is apparent.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:53.671Z"
+  },
+  "surplus-notice:sla-055": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare-ground area with no building, showing only sparse patches of dry vegetation and a few tire-like marks. Parked cars and a paved lot lie along the edges to the south and east, but the central open land is undeveloped.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:18:53.601Z"
+  },
+  "surplus-notice:sla-125": {
+   "label": "unclear",
+   "notes": "The centre of the chip is a large paved plaza with pale concrete panels and a grey asphalt area, with no building or parking stalls clearly at the exact centre. The surrounding lawn, trees and a small structure make the site type ambiguous from above.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:06.589Z"
+  },
+  "surplus-notice:sla-126": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open grassy and dirt area with scattered trees along its edges, with no building on it. A playground structure with a red piece sits just east of centre, and paved lots lie to the south and northwest.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:17.343Z"
+  },
+  "surplus-notice:sla-192": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip shows a large paved surface with many parked vehicles in rows, bordered by a diagonal lane and roadway. Some construction-like features and debris-like patches appear at the lower centre, but the dominant use is vehicle parking.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:15.574Z"
+  },
+  "surplus-notice:sla-026": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, dry grassy field with no building on it, bordered by tree rows on the west and a curving road to the north. Houses and a parking area sit at the edges of the frame, not at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:21.764Z"
+  },
+  "surplus-notice:sla-032": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a mix of open paved ground, dry grass, and tree-lined strip between residential lots and a warehouse row, so no single site is clearly identifiable. The area shows a paved expanse to the left-centre and sparse dry vegetation to the right, making the centre ambiguous.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:32.642Z"
+  },
+  "surplus-notice:sla-033": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a mix of a bare dirt lot, a paved area and a building roofline with trees along its edge, so no single site type clearly dominates. The dry open ground to the right of centre is visible, but the exact centre point is ambiguous at this resolution.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:22.337Z"
+  },
+  "surplus-notice:sla-034": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, grassy or dry-brown plot with no building on it, bordered by houses to the north and a paved parking lot with trees to the south. Some small debris-free patches of bare ground are visible, but no structures sit on the central area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:31:31.172Z"
+  },
+  "surplus-notice:sla-035": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, dry grassy field with no building on it, bordered by a hedge row to the south and a parking area to the north. Surrounding buildings and paved lots lie outside the central open area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:38.059Z"
+  },
+  "surplus-notice:sla-036": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a flat-roofed commercial building with a terracotta-tiled section along its southern side, adjacent to a large paved parking lot to the north. No visible roof collapse, debris, or heavy overgrowth on the building itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:43.180Z"
+  },
+  "surplus-notice:sla-037": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows open, sandy desert ground dotted with scattered dark shrubs and faint tracks, with no building or paved lot visible. The surface looks undisturbed apart from a few faint pale trails.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:47.788Z"
+  },
+  "surplus-notice:sla-191": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed commercial building with a paved parking lot to its south and rows of parked white vehicles. The roof appears intact with no visible damage, debris, or collapse.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:47.057Z"
+  },
+  "surplus-notice:sla-129": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large dark-roofed commercial building with two long light-coloured skylights or roof panels, with a paved parking area and parked cars to its south-east. No obvious roof collapse, debris, or heavy overgrowth is visible on the building itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:47.518Z"
+  },
+  "surplus-notice:sla-130": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large dark-roofed commercial building with light-colored rooftop structures and a surrounding parking area with parked cars along its edge. No visible collapse, debris, or heavy overgrowth on the building itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:53.160Z"
+  },
+  "surplus-notice:sla-131": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved area with painted parking stall markings and parked vehicles, bordered by rows of houses to the south and north. No building sits on the central paved surface.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:52.718Z"
+  },
+  "surplus-notice:sla-132": {
+   "label": "unclear",
+   "notes": "The centre of the chip is a small circular feature, possibly a round structure or fountain, surrounded by bare ground and a dark paved area with vehicles to the south-west. It is not clear whether the centre holds a building or open land, so the label is uncertain.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:51.476Z"
+  },
+  "surplus-notice:sla-133": {
+   "label": "unclear",
+   "notes": "The centre of the chip shows a small circular structure, possibly a tank or cover, surrounded by bare ground, gravel and some scattered vegetation next to a road. It is not clear whether the centre is open land or a small built structure, so no confident label can be assigned.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:07.862Z"
+  },
+  "surplus-notice:sla-193": {
+   "label": "unclear",
+   "notes": "The centre of the chip sits among trees, small outbuildings and a dirt yard beside long rows of covered structures, with no clear single building or open lot at the exact centre. The area near the middle is too mixed to assign one label with confidence.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:58.334Z"
+  },
+  "surplus-notice:sla-135": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows open dry land with scattered patches of bare ground and a pale dirt track, with no building visible. A wide paved road or runway runs diagonally across the upper part of the image.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:19:56.614Z"
+  },
+  "surplus-notice:sla-038": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, unpaved dirt lot with no building on it, bordered by a parking area and buildings to the north and south. Some sparse shrubs sit along its upper edge.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:12.365Z"
+  },
+  "surplus-notice:sla-194": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved lot with marked parking spaces and parked cars, bordered by a street and a commercial building to the north-east. No building sits at the very centre of the image.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:11.814Z"
+  },
+  "surplus-notice:sla-195": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, dry grassy field with no building or paved parking visible on it, bordered by a road to the north and a freeway with vehicles to the south. A few shrubs and a low hedge line the edge of the field.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:12.566Z"
+  },
+  "surplus-notice:sla-196": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a graded, bare-earth area with scattered equipment, materials and a few parked vehicles, plus a large flat gravel or dirt expanse to the east. It is not clearly open vacant land or a paved parking lot, and no building is evident at the exact centre, so the site type is ambiguous.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:16.560Z"
+  },
+  "surplus-notice:sla-197": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, dry, bare-soil field with no building or paving on it, bordered by a road and a curved sidewalk. Scattered trees and a few road elements lie at the edges, but the central parcel itself appears to be unbuilt land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:16.137Z"
+  },
+  "surplus-notice:sla-198": {
+   "label": "building-possibly-distressed",
+   "notes": "The centre shows a cluster of older low-rise buildings with a few flat roofs and scattered debris, junk piles and stored materials around them. The surrounding lot is cluttered with vehicles and loose material, though no roof collapse is clearly visible.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:18.816Z"
+  },
+  "surplus-notice:sla-199": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare dirt area between freeway ramps, with no building beyond a small roofed structure at its western edge and no paved lot. Sparse shrubs border the plot and vehicles on nearby roads are outside the site.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:22.716Z"
+  },
+  "surplus-notice:sla-200": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, unbuilt gravel or dirt-covered area bounded by a curved access road, with no building on it. A cluttered storage yard with vehicles and materials lies to the west, outside the central open parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:23.318Z"
+  },
+  "surplus-notice:sla-201": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, unpaved-looking expanse of gravel or dirt between a highway ramp and a curved access road, with no building on it. A small structure is visible to the right of centre, but the central area itself is open land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:22.411Z"
+  },
+  "surplus-notice:sla-202": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open, unpaved-looking ground between a curved highway ramp and an access road, with no building visible on it. A small structure is visible near the right-centre edge, but the central area itself has no building and no marked parking stalls.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:26.498Z"
+  },
+  "surplus-notice:sla-203": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, gravelly or dirt-surfaced area between an elevated highway ramp and a curved access road, with no building at the centre. A small roofed structure and a few parked vehicles sit near the edge, but the central land is undeveloped.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:27.170Z"
+  },
+  "surplus-notice:sla-204": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open, unbuilt ground between a highway ramp and a curved access road, with no building footprint visible. A small structure with a pitched roof sits at the edge of the right-hand open area, not at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:26.501Z"
+  },
+  "surplus-notice:sla-172": {
+   "label": "building-possibly-distressed",
+   "notes": "The centre of the chip shows a flat-roofed commercial building surrounded by parking areas, with a large parking lot to the north-west. The building roof appears intact, though the nearby building to the north-west has a partially collapsed or damaged roof with debris visible.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:31.939Z"
+  },
+  "surplus-notice:sla-173": {
+   "label": "unclear",
+   "notes": "The centre of the chip is a road intersection with crosswalk striping, vehicles, and medians rather than a building or open lot. Surrounding land includes dry grass fields and residential structures at the edges, but no building sits at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:31.942Z"
+  },
+  "surplus-notice:sla-134": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip shows a paved lot with rows of parked cars and painted stall lines, bordered by buildings and trees. No building structure occupies the central area, and no visible damage is apparent.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:40.745Z"
+  },
+  "surplus-notice:sla-205": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large tan-roofed building under construction or recently completed, with solar panels on its roof and an adjacent graded dirt area. No visible collapse, missing roof, or debris marks the building as distressed.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:51.890Z"
+  },
+  "surplus-notice:sla-206": {
+   "label": "building-intact",
+   "notes": "The centre shows a large tiled-roof building under construction or renovation with solar panels on its roof and some exposed dirt and grading around it. The roof appears intact with no visible collapse or debris on the building itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:45.335Z"
+  },
+  "surplus-notice:sla-207": {
+   "label": "building-intact",
+   "notes": "The centre shows a large tiled-roof building under construction or renovation with solar panels on its roof, surrounded by bare graded earth and a paved access road. No collapsed roof or debris is evident, though the site is partly unfinished.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:45.003Z"
+  },
+  "surplus-notice:sla-208": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large tan-roofed building under construction or recently built, with solar panels on its roof and no visible collapse or debris on the structure itself. The surrounding area has graded dirt and an access road, but the building at the centre is intact.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:54.914Z"
+  },
+  "surplus-notice:sla-210": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip falls on a paved parking area with marked stalls and many parked cars, bordered by roads and tree rows. A large flat-roofed building lies to the upper right, but the central area is a vehicle lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:56.183Z"
+  },
+  "surplus-notice:sla-211": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, unbuilt cleared area of bare ground with faint pavement remnants and some vegetation edges, bounded by a roadway and freeway ramps. No building is visible at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:20:56.088Z"
+  },
+  "surplus-notice:sla-212": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open, flat ground with no building, showing faded pavement patches, cracks and some sparse vegetation between roadways. A large parking lot with striped stalls lies to the upper right, separated from the open ground by a road.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:00.694Z"
+  },
+  "surplus-notice:sla-213": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open paved or cleared ground with no building, showing faded parking stripes and scattered patches of vegetation along a road corridor. Nearby roads, a freeway and a parking area with cars lie outside the central site.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:05.254Z"
+  },
+  "surplus-notice:sla-214": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows a large open, paved-over or cracked-surface area with faded parking stripes and patchy weeds, but no building. It sits between a road and a freeway, with no structure visible on the site.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:05.256Z"
+  },
+  "surplus-notice:sla-215": {
+   "label": "parking-lot",
+   "notes": "The centre shows a large paved area with faded parking stall markings and some sparse vegetation patches, with no building present. Freeway and road infrastructure lie along its edges.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:08.558Z"
+  },
+  "surplus-notice:sla-216": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, largely empty paved and dirt area with faded parking-stall markings and scattered weeds, with no building on it. Major roads and a freeway bound the site on the sides.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:13.070Z"
+  },
+  "surplus-notice:sla-217": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, unbuilt paved and weedy area bordered by roads and an overpass, with no building on it. Some cars are visible on nearby roads and a small parking area lies to the north, but the central parcel itself shows no structure.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:08.488Z"
+  },
+  "surplus-notice:sla-218": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a road junction and a tree-lined median, with a large cleared, partly overgrown lot to the lower right and a flat-roofed building to the upper left. No single site at the exact centre is clearly identifiable as vacant land, a parking lot, or a building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:19.068Z"
+  },
+  "surplus-notice:sla-219": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a road intersection with a median and roadway rather than a building or lot. Nearby there is a parking area to the right and a large cracked, overgrown paved area to the lower left, so the site itself cannot be clearly identified.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:16.546Z"
+  },
+  "surplus-notice:sla-220": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a road intersection with a median and roadway rather than a building or lot. Nearby, there are parking areas and buildings, but none is clearly the site at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:19.243Z"
+  },
+  "surplus-notice:sla-221": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a road intersection and a tree-covered strip near the roadway, with no building clearly at the centre. Nearby, a large open lot to the lower right shows cracked pavement with heavy overgrowth, but the exact centre is not clearly a building or lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:23.325Z"
+  },
+  "surplus-notice:sla-039": {
+   "label": "unclear",
+   "notes": "The centre of the chip is a road intersection with a grassy sports field and baseball diamond nearby, not a building or a vacant lot. No single site at the centre clearly matches one of the defined categories.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:24.230Z"
+  },
+  "surplus-notice:sla-040": {
+   "label": "unclear",
+   "notes": "The centre of the chip is a wide road intersection with multiple lanes of traffic and crosswalk markings, not a building, vacant lot, or parking lot. The buildings with red roofs are off to the upper right, outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:23.869Z"
+  },
+  "surplus-notice:sla-041": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with a narrow path running through a line of trees, and no building is visible there. A road runs along the top edge of the image.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:29.304Z"
+  },
+  "surplus-notice:sla-042": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with no building, bordered by a road to the north and a line of trees along a footpath. No structure or paved vehicle lot is visible at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:29.264Z"
+  },
+  "surplus-notice:sla-043": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with a narrow path running through a line of trees and no building visible. A few small vehicles appear along the roadside at the top, away from the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:28.616Z"
+  },
+  "surplus-notice:sla-044": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with a footpath running through a line of trees and no building visible. A road runs along the top edge of the image.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:31.785Z"
+  },
+  "surplus-notice:sla-045": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows open dry grassland with a narrow path running through a line of trees and a few small cars parked along the edge of a road or path. No building is visible at the centre, so the site appears to be open land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:31.739Z"
+  },
+  "surplus-notice:sla-046": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with a footpath running through a line of trees, and no building is visible there. A road runs along the top edge, with a small lawn and parking area beyond it.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:31.845Z"
+  },
+  "surplus-notice:sla-047": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with no building, bordered by a road to the north and a row of trees and a footpath running through it. No paved vehicle lot or structure is visible at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:34.390Z"
+  },
+  "surplus-notice:sla-048": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows open dry grassland with a footpath running through a line of trees, and no building is visible there. A road runs along the top edge of the image, with a grassy area and a parking lot further to the upper right, outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:34.694Z"
+  },
+  "surplus-notice:sla-049": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with no building, bordered by a road to the north and a line of trees along a path. No paved vehicle parking area or structure sits at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:34.392Z"
+  },
+  "surplus-notice:sla-050": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with no building, bordered by a road to the north and a line of trees along a dirt path. No paved parking area or structure is visible at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:37.083Z"
+  },
+  "surplus-notice:sla-051": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with a narrow path running through a line of trees and no building visible. A few small vehicles sit on a road at the top edge, outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:37.169Z"
+  },
+  "surplus-notice:sla-052": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with a footpath running through a line of trees and no building visible. A road runs along the top edge of the image.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:37.105Z"
+  },
+  "surplus-notice:sla-053": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is open dry grassland with a narrow path running through a line of trees and no building visible. A major road runs along the top edge of the image.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:39.671Z"
+  },
+  "surplus-notice:sla-054": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows open dry grassland with a footpath running through a line of trees, and no building is visible there. A road runs along the top edge of the image, with a few small parked-looking vehicles nearby but no paved lot at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:39.956Z"
+  },
+  "surplus-notice:sla-056": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved parking area with marked stall rows and parked cars, alongside a wide road. No building occupies the exact centre, which is asphalt lot surface.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:41.662Z"
+  },
+  "surplus-notice:sla-057": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip shows a paved, dark-asphalt lot with painted stall lines, bounded by a narrow channel and a pedestrian strip on the east side. Adjacent buildings appear intact with no visible roof damage or debris.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:47.083Z"
+  },
+  "surplus-notice:sla-058": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed building with rooftop equipment and no visible roof collapse, debris, or heavy overgrowth on it. A parking area and landscaped strips surround the building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:45.521Z"
+  },
+  "surplus-notice:sla-059": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large flat-roofed commercial or institutional building with rooftop equipment and a surrounding paved parking area. No obvious roof collapse, debris, or heavy overgrowth is visible on the building itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:46.571Z"
+  },
+  "surplus-notice:sla-167": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare dirt parcel with no building on it, bordered by trees and a street. A paved parking lot with parked cars lies to the lower right, outside the central parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:53.137Z"
+  },
+  "surplus-notice:sla-168": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare dirt parcel with no building on it, bordered by trees and a parking area to the south. Nearby buildings are visible but none sit on the central parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:53.175Z"
+  },
+  "surplus-notice:sla-169": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare dirt lot with no building on it, bordered by trees and a parking area to the south. A large flat-roofed building sits to the north, outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:32:04.557Z"
+  },
+  "surplus-notice:sla-136": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a small patch of dry bare ground between two rows of industrial buildings, with a narrow strip of open land and a building row to its right. The centre is not clearly a single building or lot, so the label is uncertain.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:56.980Z"
+  },
+  "surplus-notice:sla-137": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a row of flat-roofed commercial or industrial buildings with parking and paved areas along their front, and no visible roof collapse or debris. A large dry, open lot sits just north of this row, but the centre itself is occupied by the building row.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:21:56.884Z"
+  },
+  "surplus-notice:sla-138": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a row of flat-roofed commercial or industrial buildings with parking and driveways beside them, and no visible roof collapse or debris is evident. Open dry land lies just to the left and above, but the centre itself is a building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:32:07.533Z"
+  },
+  "surplus-notice:sla-139": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open tract of bare, dry ground with sparse vegetation and no building on it. A road runs along its south edge and a row of commercial buildings sits beyond the road to the south.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:00.846Z"
+  },
+  "surplus-notice:sla-140": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, dry, sparsely vegetated plot with no building on it, bordered by a road to the north and buildings to the south. It appears to be bare or scrubby ground rather than a paved vehicle lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:00.781Z"
+  },
+  "surplus-notice:sla-141": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, dry, unpaved plot with sparse grass and no building on it, sitting between a street and a row of industrial buildings. Some small debris is scattered on the ground but no structure is visible at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:00.821Z"
+  },
+  "surplus-notice:sla-142": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, unpaved dirt-and-scrub plot with no building on it, sitting between a street and a row of industrial-style buildings. Some small debris-like specks are visible on the ground but no structure occupies the central area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:03.670Z"
+  },
+  "surplus-notice:sla-143": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip falls on a bare, dry, open lot of tan ground with no building or paving at its core, sitting between rows of industrial buildings and a road. Some scattered debris is visible at the lot's edges but no structure occupies the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:04.079Z"
+  },
+  "surplus-notice:sla-144": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip falls on open bare dirt and sparse brown ground between the rows of industrial buildings, with no building or paved parking at the middle. Surrounding roofs and a street are visible but outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:04.675Z"
+  },
+  "surplus-notice:sla-145": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip sits on a large open, bare dirt-and-gravel plot with no building on it, bordered by a warehouse row to the left and right. Some scattered debris is visible on the lot, but no structure occupies the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:07.580Z"
+  },
+  "surplus-notice:sla-146": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a row of industrial buildings and a dirt-and-gravel strip between roads, and it is hard to tell whether the exact centre is open land or a building edge. The surrounding area shows several flat-roofed warehouses, bare lots, and parked cars along the streets.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:08.294Z"
+  },
+  "surplus-notice:sla-147": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a boundary between a bare, dusty open lot and grey industrial buildings with flat roofs. The exact site footprint at the centre cannot be cleanly separated from its neighbours, so the label is uncertain.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:08.297Z"
+  },
+  "surplus-notice:sla-148": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a boundary between a bare dirt lot and a row of industrial buildings with flat roofs. The exact centre is hard to isolate, and the sparse dirt patch sits near the edge of a building block, so I cannot confidently assign one site type.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:11.508Z"
+  },
+  "surplus-notice:sla-149": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls between rows of industrial buildings and bare dirt lots, with a bare-ground plot near the middle-left and a building block to its right. The exact centre parcel is hard to pin down at this scale, so I cannot confidently choose between vacant land and a building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:11.492Z"
+  },
+  "surplus-notice:sla-150": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a small gap between the industrial buildings and a street, with a dirt-and-sparse-vegetation strip and a parked-vehicle area nearby. The exact centre site cannot be clearly identified as a single lot, building, or vacant parcel from this view.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:12.213Z"
+  },
+  "surplus-notice:sla-151": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a small section between the building rows, near the middle of a bare-to-dusty lot and the buildings beside it. The centre is not clearly a single building, lot or vacant parcel, so I cannot assign a label with confidence.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:15.860Z"
+  },
+  "surplus-notice:sla-152": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a row of industrial-style buildings with flat roofs and some parked vehicles nearby, with dry bare ground to the left and right of the central block. No obvious roof collapse or debris is visible, but the exact centre parcel is hard to isolate at this resolution, so the label is uncertain.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:15.888Z"
+  },
+  "surplus-notice:sla-153": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a small gap between industrial buildings and a street, with a patch of bare dirt and some vehicles nearby. It is hard to tell whether the exact centre is a lot or the edge of a building, so no confident label can be given.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:16.066Z"
+  },
+  "surplus-notice:sla-154": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a cluster of grey flat-roofed buildings with parked cars between rows, and the exact site boundary is hard to pin down at this scale. The surrounding area includes bare dirt lots, but the centre itself is not clearly open land, a lot, or a single distinct building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:19.513Z"
+  },
+  "surplus-notice:sla-155": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls among rows of flat-roofed buildings and open tan plots, and the exact centre parcel is hard to isolate at this scale. The central area appears to be a building cluster with some bare ground nearby, so the site type cannot be confirmed with confidence.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:19.493Z"
+  },
+  "surplus-notice:sla-156": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls among rows of flat-roofed buildings and small lots with parked cars, and the exact centre parcel is hard to isolate. The area near the middle looks like a tan open lot or a building edge, so the classification at the exact centre is uncertain.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:19.453Z"
+  },
+  "surplus-notice:sla-157": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare-looking dry-grass parcel with no building on it, lying between a row of commercial buildings to the left and the street edge above. Some small objects are scattered along its lower edge, but no structure sits on the central area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:30.893Z"
+  },
+  "surplus-notice:sla-158": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large area of bare, dry brown ground with no building or paved parking visible, bordered by a road to the south and industrial-style buildings to the west. Scattered small objects appear near the lower edge, but the central open land shows no structure.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:24.527Z"
+  },
+  "surplus-notice:sla-159": {
+   "label": "unclear",
+   "notes": "The exact centre of the chip is at the boundary of a large industrial-style block and bare ground, with a street and parking strip nearby. The centre cannot be confidently assigned to a single use, so the label is unclear.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:23.659Z"
+  },
+  "surplus-notice:sla-160": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a row of industrial-style buildings with flat roofs and a parking strip with cars between them, near a road. The exact centre point is ambiguous, so the site type cannot be confidently assigned.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:34.101Z"
+  },
+  "surplus-notice:sla-161": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a row of flat-roofed commercial or industrial buildings with parked cars and a street nearby, and the exact centre site is hard to isolate. The nearby open dry lots are to the right and lower left, so the centre cannot be confidently assigned to vacant land or a building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:34.292Z"
+  },
+  "surplus-notice:sla-162": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a row of large flat-roofed buildings and a street edge with parked cars, and the exact site boundary is hard to pin down. The buildings near the centre look intact, but the centre is not clearly one clean land use.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:34.191Z"
+  },
+  "surplus-notice:sla-163": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip falls on a dry, bare, sandy-brown open lot with no building or paved parking visible, bordered by a row of industrial-style buildings to the north and south. The lot appears unpaved and undeveloped at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:38.589Z"
+  },
+  "surplus-notice:sla-164": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip sits on a large tan, dry open patch of bare ground between the commercial buildings to the left and the lot edge to the right, with no building or vehicle parking at the exact centre. Surrounding structures are low industrial or commercial buildings along a road.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:40.281Z"
+  },
+  "surplus-notice:sla-165": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip falls on an open, dry, sparsely vegetated plot with no building, lying between the industrial-style buildings to the west and the row of buildings to the south. Parked vehicles sit along the adjacent street, not on the centre plot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:40.284Z"
+  },
+  "surplus-notice:sla-166": {
+   "label": "building-intact",
+   "notes": "The centre of the chip falls on a row of flat-roofed multi-unit buildings with parked cars along the street and no obvious roof collapse or debris. The area directly at the centre is a building block with some vegetation around it, but no clear damage is visible.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:46.481Z"
+  },
+  "surplus-notice:sla-231": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large residence with a gray roof, surrounded by a paved courtyard, pool, and driveway, with no visible roof damage or debris. Dry grassland and wooded hills surround the property.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:44.324Z"
+  },
+  "surplus-notice:sla-030": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is bare, dry open ground with scattered shrubs and no building or paved lot visible. A road runs along the lower edge and a residence with a pool and tennis court sits toward the upper left.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:49.450Z"
+  },
+  "surplus-notice:sla-031": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip sits on an intersection of wide roads with crosswalks, flanked by a large paved area to the lower right filled with parked cars. The central area itself is road and a building roof edge, but the adjacent paved lot with many vehicles is the dominant parking surface near the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:55.494Z"
+  },
+  "surplus-notice:sla-060": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved lot with painted stall lines, scattered parked cars and tree islands. A small building sits near the upper right edge, but the central area is asphalt with vehicles, and the open dirt field lies to the north.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:06.951Z"
+  },
+  "surplus-notice:sla-061": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved lot with painted stall markings, parked cars, and scattered trees and a small building at its upper right edge. The upper part of the image is bare graded earth, but the centre itself sits on asphalt parking.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:22:55.693Z"
+  },
+  "surplus-notice:sla-062": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large area of bare, graded dirt with no building on it, bounded by a sidewalk and the road to the south. A separate construction-type area with equipment and a small structure sits just north of it.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:12.436Z"
+  },
+  "surplus-notice:sla-063": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open dirt lot with no building, bordered by a road and sidewalk on the south side. Some construction equipment and a small structure are visible on the adjacent parcel to the north, not on the central open ground.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:32:27.204Z"
+  },
+  "surplus-notice:sla-064": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare dirt strip with no building on it, lying between a row of houses to the west and a multi-lane road with a tree-lined median to the east. Nearby, a green field and a blue-marked court sit to the south.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:32:27.592Z"
+  },
+  "surplus-notice:sla-065": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large bare, flat tan-coloured open area with no building or paved parking on it, flanked by a row of trees and a road to the east. Houses and a green field lie nearby but not at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:39.446Z"
+  },
+  "surplus-notice:sla-066": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large, flat, bare dirt or gravel strip with no building on it, lying between a row of houses to the west and a multi-lane road with a tree-lined median to the east. A green park or field with a small blue court sits at the bottom edge.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:27.848Z"
+  },
+  "surplus-notice:sla-067": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open tan/brown bare-earth strip with no building or paved lot on it, lying between a row of residential houses to the west and a tree-lined road to the east. The parcel appears unbuilt and unpaved.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:39.457Z"
+  },
+  "surplus-notice:sla-068": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large bare, sandy-coloured open plot with no building or paving visible on it, lying between a row of houses to the west and a tree-lined road to the east. Nearby properties show intact roofs, and the open land appears undeveloped.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:42.102Z"
+  },
+  "surplus-notice:sla-069": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large bare, sandy-coloured open plot with no building or paved parking visible on it. It sits between a row of houses on the left and a tree-lined road on the right.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:42.148Z"
+  },
+  "surplus-notice:sla-070": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large bare, sandy-toned open plot with no building or paved vehicle lot visible on it. It sits between a row of houses to the west and a boulevard with trees to the east.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:42.009Z"
+  },
+  "surplus-notice:sla-071": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large, flat, bare dirt or gravel strip with no building or paving on it, lying between a row of houses to the west and a tree-lined road to the east. Nearby houses and a green park area are visible but are not at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:44.845Z"
+  },
+  "surplus-notice:sla-072": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large, flat, bare dirt or gravel strip with no building on it, lying between a row of houses to the west and a multi-lane road with a tree-lined median to the east. A green sports field sits just to the south.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:44.842Z"
+  },
+  "surplus-notice:sla-073": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open tan-coloured plot of bare ground with no building on it, lying between a row of houses to the west and a multi-lane road with a tree-lined median to the east. A small green sports area with a blue court sits just south of it.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:44.848Z"
+  },
+  "surplus-notice:sla-074": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large rectangular stretch of bare, dry brown open ground with no building visible, bordered by a narrow access road on the west and a tree-lined boulevard on the east. No paving or vehicle parking is evident on the central parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:49.051Z"
+  },
+  "surplus-notice:sla-075": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large rectangular stretch of bare, dry brown ground with no building or paving, bordered by a service road on the west and a tree-lined boulevard on the east. No structure is visible on the open parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:49.449Z"
+  },
+  "surplus-notice:sla-076": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows a large rectangular stretch of bare, dry, light-brown open ground with no building on it, bordered by a service road on the west and a tree-lined boulevard on the east. No structures or paved parking are visible on the central parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:49.214Z"
+  },
+  "surplus-notice:sla-077": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large rectangular plot of bare, dry brown ground with no building visible, bordered by a service road on the west and a tree-lined boulevard on the east. No paving or structures are visible on the site itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:52.248Z"
+  },
+  "surplus-notice:sla-078": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large bare, dirt-covered open parcel with no building, running between a service road and a tree-lined boulevard. No structures or paved parking are visible on the central parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:52.215Z"
+  },
+  "surplus-notice:sla-079": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large rectangular plot of bare, dry brown ground with no building visible, bordered by a road on the left and a boulevard with tall trees and a major road on the right. The open land appears undeveloped with no structures or paved parking on it.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:52.325Z"
+  },
+  "surplus-notice:sla-080": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare dirt parcel with no building or paved parking visible, lying between a service road on the west and a tree-lined boulevard on the east. Nearby houses and a cross street are visible but sit outside the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:55.071Z"
+  },
+  "surplus-notice:sla-081": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open dirt parcel with no building footprint, though scattered small items, a few containers and a blue tarp sit near its western edge. Surrounding lots hold houses, a parking area and a long arterial road to the east.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:56.518Z"
+  },
+  "surplus-notice:sla-082": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large rectangular plot of bare, dry brownish ground with no building on it, bordered by a narrow access road on the west and a tree-lined boulevard on the east. No paved parking or structures are visible within the central open area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:55.017Z"
+  },
+  "surplus-notice:sla-083": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a long, bare, dry-looking open parcel with no building, bordered by a road on the left and a tree-lined boulevard on the right. No paved vehicle lot or structure is visible on the parcel itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:59.425Z"
+  },
+  "surplus-notice:sla-084": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large rectangular plot of bare, tan-brown open ground with no building visible, bordered by a service road on the west and a tree-lined boulevard on the east. No vehicles are parked on the plot itself.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:59.383Z"
+  },
+  "surplus-notice:sla-085": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large rectangular stretch of bare, dry-looking open ground between a service road and a boulevard with a median of palms and trees. No building or paved vehicle lot occupies the centre of the site.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:23:59.386Z"
+  },
+  "surplus-notice:sla-086": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large bare dirt parcel with no building on it, though scattered equipment, small structures and some vehicles are visible along its western edge. The land is open ground rather than a paved lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:02.249Z"
+  },
+  "surplus-notice:sla-087": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare dirt parcel with no building on it, lying between a residential street on the left and a tree-lined road on the right. A small paved parking area sits at its southern edge, but the central land itself is unbuilt.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:07.471Z"
+  },
+  "surplus-notice:sla-088": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare dirt parcel with no building on it, lying between a residential street on the left and a tree-lined road on the right. A small paved parking area sits at its southern edge, outside the central parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:02.792Z"
+  },
+  "surplus-notice:sla-089": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare dirt parcel with no building on it, bordered by a road with trees to the east and houses to the west. A small paved parking area sits at its southern edge, but the centre itself is undeveloped land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:10.543Z"
+  },
+  "surplus-notice:sla-090": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare dirt parcel with no building on it, lying between a residential street on the left and a tree-lined divided road on the right. A paved driveway and parking area sits at its southern edge, but the central area itself is unbuilt land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:10.589Z"
+  },
+  "surplus-notice:sla-091": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open dirt parcel with no building on it, showing tire tracks and some scattered equipment near the middle. Small trees line the edges and houses sit to the east and south of the parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:13.513Z"
+  },
+  "surplus-notice:sla-092": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is an open, bare dirt parcel with no building on it, lying between a residential street and a tree-lined road. Vehicles and a parking area are visible only at its southern edge, not at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:16.903Z"
+  },
+  "surplus-notice:sla-093": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large rectangular area of bare, dry dirt with no building on it, bordered by a street with trees on one side and houses to the west. No structures or paved vehicle area occupy the centre of the site.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:17.301Z"
+  },
+  "surplus-notice:sla-094": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large rectangular area of bare, dry brown ground with no building on it, bordered by a road on the right and houses on the left. A small paved parking area sits just south of it, but the centre itself is open land.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:16.371Z"
+  },
+  "surplus-notice:sla-095": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a major road intersection with a median and crosswalks, so no clear site is visible there. Nearby, a small lot with a tree and a few structures sits to the upper-left of the centre, but the exact centre point is not a clearly identifiable building, vacant lot, or parking lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:32:52.129Z"
+  },
+  "surplus-notice:sla-096": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows open, unpaved bare ground with no building on it, sitting between a paved lot to the west and a small building to the east. Surrounding parcels hold buildings and parked vehicles, but the central plot itself appears empty.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:22.731Z"
+  },
+  "surplus-notice:sla-097": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open dirt parcel with no building on it, bordered by a sidewalk and trees along the edges. Some construction-like equipment or disturbed soil is visible, but no structure stands on the central lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:20.271Z"
+  },
+  "surplus-notice:sla-098": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open dirt parcel with no building on it, showing bare ground, tracks and some construction-type equipment. A few trees and small structures sit along its edges, outside the central open area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:37.176Z"
+  },
+  "surplus-notice:sla-099": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare dirt parcel with no building on it, showing tire tracks and some equipment near the edges. Neighbouring houses sit beside it but not on the central lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:37.241Z"
+  },
+  "surplus-notice:sla-100": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a dry, bare, open plot between the two road lanes, with a small building outline near the lower-middle of the plot and a parked car area nearby. The centre is mostly open ground, but the small structure is close to centre and its condition is hard to judge from this resolution, so the label is uncertain.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:51.626Z"
+  },
+  "surplus-notice:sla-101": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a cleared dirt parcel between the road and a small building with a pitched roof, and the building at the centre-lower area appears to be a low structure partly obscured by trees and surrounding lots. The exact centre is ambiguous between open dirt land and the adjacent building footprint, so a single label cannot be confidently assigned.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:55.059Z"
+  },
+  "surplus-notice:sla-102": {
+   "label": "unclear",
+   "notes": "The centre of the chip falls on a large bare dirt parcel between the arterial road and the cross street, with a small single-storey building in its southern portion near the centre-right and a few trees along the edges. The centre is mostly open ground, but the small structure and mixed surroundings make the exact site boundary hard to pin down, so I am not certain of the label.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:54.893Z"
+  },
+  "surplus-notice:sla-103": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a flat, light-brown unpaved open area between buildings, with no structure on it. Nearby buildings are at the edges, and the lot appears to have no building at its core.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:24:56.559Z"
+  },
+  "surplus-notice:sla-104": {
+   "label": "parking-lot",
+   "notes": "The centre shows a large paved area with parking spaces and a small building at its edge, with a second low structure nearby. The lot is extensively paved with vehicles parked along the edges, and the building at the centre appears intact.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:01.452Z"
+  },
+  "surplus-notice:sla-105": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip shows an open, unpaved sandy lot with sparse dry patches and no building on it, bordered by a street to the north and a small structure with a parking area to the south. The lot appears empty of buildings at its core.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:04.111Z"
+  },
+  "surplus-notice:sla-106": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large flat, bare tan-coloured open area with no building on it, lying between the rows of houses to the west and the wide road to the east. A small paved circular turnaround sits at its southern edge, outside the main open area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:32:58.087Z"
+  },
+  "surplus-notice:sla-107": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large flat, bare tan-colored open parcel with no building on it, lying between a row of structures to the west and a major road to the east. The area is unpaved dirt or dry grass with no visible structure at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:28.884Z"
+  },
+  "surplus-notice:sla-108": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large flat, bare tan-colored open parcel with no building on it, bordered by a road to the east and a cul-de-sac to the south. No vehicles or structures are visible within the open lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:22.297Z"
+  },
+  "surplus-notice:sla-109": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large flat, bare tan-coloured open area with no building on it, lying between a street-side row of buildings to the west and a wide road to the east. It appears to be unpaved, dry open ground.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:21.955Z"
+  },
+  "surplus-notice:sla-110": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open tan-colored plot with bare ground and no building, bordered by a road on the east and houses to the west. A few small scattered objects appear on the plot but no structure occupies the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:33:02.890Z"
+  },
+  "surplus-notice:sla-111": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large, flat, bare dirt parcel with no building on it, lying between a street-side row of houses to the west and a multi-lane road to the east. A few small objects are scattered on the dirt, but no structure occupies the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:32.568Z"
+  },
+  "surplus-notice:sla-112": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare tan-colored plot with no building or paved vehicle lot visible, bordered by a road and a row of houses to the east. No signs of structural damage are apparent.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:33.163Z"
+  },
+  "surplus-notice:sla-113": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare-soil parcel with no building or paving visible, bordered by a major road to the west and a street to the south. Residential houses lie to the east, and a parking lot sits across the road to the west.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:48.541Z"
+  },
+  "surplus-notice:sla-114": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large bare, sandy-toned open parcel with no building or paved vehicle lot on it, bordered by a major road to the west and a street with houses to the east. No visible structural damage applies since no building is present at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:48.951Z"
+  },
+  "surplus-notice:sla-115": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare sandy-tan parcel with no building or paved vehicle lot visible on it. Roads and houses border the parcel to the east and along the street to the south.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:48.955Z"
+  },
+  "surplus-notice:sla-116": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large expanse of bare, sandy-toned open land with no building visible, bordered by a road and a row of houses to the east. Nearby parking lots and streets are outside the central area.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:52.072Z"
+  },
+  "surplus-notice:sla-117": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare-ground parcel with no building or paving, bordered by a major road on the west and residential houses on the east. A smaller bare lot lies to the south.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:52.328Z"
+  },
+  "surplus-notice:sla-118": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare-earth parcel with no building or paved vehicle lot, bordered by a road and a row of houses to the east. The surface looks sandy-brown and undeveloped.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:51.920Z"
+  },
+  "surplus-notice:sla-119": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare-ground parcel with no building or paved vehicle lot visible, bordered by a main road to the west and residential houses to the east. The surface looks sandy or dirt-toned with no visible structures on it.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:55.196Z"
+  },
+  "surplus-notice:sla-120": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, bare dirt-colored parcel with no building on it, bordered by a road and a street corner. Houses and a parking area are visible at the edges rather than on the centre parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:55.048Z"
+  },
+  "surplus-notice:sla-121": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large flat, unpaved-looking expanse of bare ground with no building visible on it, bordered by a freeway to the north and houses to the south. Faint tire-like tracks and a few small patches of sparse vegetation are visible, but no clear parking markings.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:25:57.359Z"
+  },
+  "surplus-notice:sla-122": {
+   "label": "vacant-lot",
+   "notes": "The centre of the chip is a large open, unpaved dirt or gravel plot with no building on it, bordered by a highway on the left and houses to the south. A few faint tire tracks or disturbed patches are visible, but no structures sit on the central parcel.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:00.383Z"
+  },
+  "surplus-notice:sla-124": {
+   "label": "unclear",
+   "notes": "The centre of the chip is a road intersection with a green-tinted open median strip and a lane of traffic, not a clear building or lot. No single site at the centre can be confidently classified from this view.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:14.102Z"
+  },
+  "surplus-notice:sla-222": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved lot with painted stall lines and many parked cars, bordered by trees and a road along its south edge. Adjacent to the west is a dry, unpaved open area with no building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:07.946Z"
+  },
+  "surplus-notice:sla-223": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved lot with painted stall lines and many parked cars, bordered by a road along the bottom edge. Adjacent to its left is an open dry grassy lot with no building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:17.196Z"
+  },
+  "surplus-notice:sla-224": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved lot with painted stall lines and many parked cars, bordered by trees and a road along the bottom edge. A dry, unpaved open area lies to the left of the lot, but the centre itself is asphalt parking.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:17.625Z"
+  },
+  "surplus-notice:sla-225": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large open asphalt parking lot with rows of parked cars and painted stall markings, bordered by a road to the south. The adjacent dry grassy lot to the west has no building on it.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:16.995Z"
+  },
+  "surplus-notice:sla-226": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved lot with painted stall lines and many parked cars, bordered by trees and a road along its south edge. No building sits at the centre.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:20.407Z"
+  },
+  "surplus-notice:sla-227": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved lot filled with rows of parked cars and painted stall lines, bordered by trees and a road along its south edge. Dry open land lies to the west of the lot, but the centre itself is asphalt with vehicles.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:20.484Z"
+  },
+  "surplus-notice:sla-228": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large open asphalt parking lot with rows of parked cars and painted stall lines, bordered by a road to the south. The adjacent land to the west is dry, unpaved open ground with no building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:20.696Z"
+  },
+  "surplus-notice:sla-229": {
+   "label": "parking-lot",
+   "notes": "The centre of the chip is a large paved lot with painted stall lines and many parked cars, bordered by a road along the bottom edge. No building sits at the centre; the dry open land to the left is separate from the paved lot.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:23.970Z"
+  },
+  "surplus-notice:sla-230": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a large red-tiled roof building with a flat grey section, set on a green lawn beside a road junction. No visible roof collapse, debris or overgrowth is apparent on the building.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:24.997Z"
+  },
+  "surplus-notice:sla-128": {
+   "label": "building-intact",
+   "notes": "The centre of the chip shows a flat-roofed commercial or residential building cluster between tree lines, with no obvious roof collapse or debris visible. Surrounding area includes intact houses, a large parking lot to the left, and streets.",
+   "model": "claude-haiku-5-5",
+   "readAt": "2026-11-12T23:26:25.444Z"
+  }
+ }
+}

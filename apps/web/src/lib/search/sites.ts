@@ -9,6 +9,7 @@ import { listCandidates } from "@/lib/chapter8/candidates";
 import { listSource } from "@/lib/chapter8/county-list";
 import { canonicalFocusCity } from "@/lib/focus";
 import { listNotices, noticeProvenance } from "@/lib/market/notices";
+import { committedRead } from "./aerial-reads";
 import geo from "./data/tax-defaulted-geo.json";
 import type { PathwayHit, SiteResult, SourceRef } from "./types";
 
@@ -82,6 +83,7 @@ function taxSites(): SiteResult[] {
       score: c.score.total,
       detailHref: `/chapter8/${p.apn}`,
       sourceRef: taxSourceRef,
+      aerial: null,
     };
   });
 }
@@ -120,6 +122,7 @@ function noticeSites(): { sites: SiteResult[]; ref: SourceRef } {
       score: null,
       detailHref: null,
       sourceRef: ref,
+      aerial: null,
     };
   });
   return { sites, ref };
@@ -204,12 +207,20 @@ function heSites(warnings: string[]): { sites: SiteResult[]; ref: SourceRef } {
       score: null,
       detailHref: null,
       sourceRef: ref,
+      aerial: null,
     };
     return { site, cap: cap ?? 0 };
   });
   // Highest capacity first, then APN, for a deterministic order.
   withCap.sort((a, b) => b.cap - a.cap || (a.site.apn ?? "").localeCompare(b.site.apn ?? "") || a.site.id.localeCompare(b.site.id));
   return { sites: withCap.map((x) => x.site), ref };
+}
+
+/** Shown only when the filtered set contains an un-located tax-defaulted parcel. */
+export function unlocatedWarning(): string {
+  const tax = siteIndex().sites.filter((s) => s.source === "tax-defaulted");
+  const missing = tax.filter((s) => s.lat === null).length;
+  return `${missing} of ${tax.length} tax-defaulted parcels were not found in the county parcel layer, so they have no coordinates.`;
 }
 
 export interface SiteIndex {
@@ -228,9 +239,9 @@ export function siteIndex(): SiteIndex {
   const notices = noticeSites();
   const he = heSites(warnings);
   const sites = [...tax, ...notices.sites, ...he.sites];
-  const missing = tax.filter((s) => s.lat === null).length;
-  if (missing > 0) {
-    warnings.push(`${missing} of ${tax.length} tax-defaulted parcels were not found in the county parcel layer, so they have no coordinates.`);
+  for (const s of sites) {
+    const r = committedRead(s.id);
+    if (r) s.aerial = { label: r.label, notes: r.notes };
   }
   memo = {
     sites,

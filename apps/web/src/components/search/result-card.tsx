@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { SiteResult } from "@/lib/search/types";
 import { StatusTag } from "@/components/ui";
 import { PathwayPill } from "./pathway-pill";
-import { SOURCE_COLOR, SOURCE_LABEL, acresText } from "./shared";
+import { AERIAL_LABEL_TEXT, SOURCE_COLOR, SOURCE_LABEL, acresText } from "./shared";
 
 export function ResultCard({
   site,
@@ -77,6 +77,14 @@ export function ResultCard({
             {site.pathways.map((p) => (
               <PathwayPill key={p.id} hit={p} />
             ))}
+          </div>
+        ) : null}
+
+        {site.aerial ? (
+          <div>
+            <StatusTag tone="accent" shape="pill">
+              AI aerial read: {AERIAL_LABEL_TEXT[site.aerial.label]}
+            </StatusTag>
           </div>
         ) : null}
 

@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Compiled scout tests (npm run test:scout).
     ".scout-test/**",
+    // MapLibre worker copied from node_modules by predev/prebuild.
+    "public/maplibre/**",
   ]),
 ]);
 

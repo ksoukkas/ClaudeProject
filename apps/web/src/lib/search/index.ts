@@ -1,13 +1,23 @@
-import { SOURCE_LABELS, siteIndex } from "./sites";
+import { AERIAL_LABELS, isAerialLabel } from "./aerial-reads";
+import { SOURCE_LABELS, siteIndex, unlocatedWarning } from "./sites";
 import type { SearchParams, SearchResponse, SiteResult, SiteSource } from "./types";
 
 export { aerialImageUrl } from "./aerial-url";
 export type * from "./types";
+export { isAerialLabel };
 
 export const DEFAULT_LIMIT = 50;
 export const MAX_LIMIT = 200;
 const SOURCES: SiteSource[] = ["tax-defaulted", "surplus-notice", "housing-element"];
 export const isSiteSource = (v: unknown): v is SiteSource => SOURCES.includes(v as SiteSource);
+
+const AERIAL_WORDS: Record<(typeof AERIAL_LABELS)[number], string> = {
+  "vacant-lot": "vacant lot vacant-lot",
+  "parking-lot": "parking lot parking-lot",
+  "building-intact": "building intact building-intact",
+  "building-possibly-distressed": "building distressed possibly distressed building-possibly-distressed",
+  unclear: "unclear",
+};
 
 const hayCache = new WeakMap<SiteResult, { text: string; apnDigits: string }>();
 
@@ -24,6 +34,7 @@ function haystack(s: SiteResult) {
       SOURCE_LABELS[s.source],
       ...s.facts,
       ...s.pathways.map((p) => `${p.id} ${p.label}`),
+      s.aerial ? `aerial ${AERIAL_WORDS[s.aerial.label]}` : null,
     ]
       .filter(Boolean)
       .join(" | ")
@@ -66,23 +77,28 @@ export function search(params: SearchParams = {}): SearchResponse {
   const filtered = idx.sites.filter((s) => {
     if (params.source && s.source !== params.source) return false;
     if (city && (s.city ?? "").toLowerCase() !== city) return false;
+    if (params.aerial && s.aerial?.label !== params.aerial) return false;
     if (pathway && !s.pathways.some((p) => p.id.toLowerCase() === pathway && (p.status === "likely" || p.status === "possible"))) {
       return false;
     }
     return terms.every((t) => matchesTerm(s, t));
   });
 
-  const facets: SearchResponse["facets"] = { source: {}, city: {} };
+  const facets: SearchResponse["facets"] = { source: {}, city: {}, aerial: {} };
   for (const s of filtered) {
     count(facets.source, s.source);
     count(facets.city, s.city);
+    count(facets.aerial, s.aerial?.label ?? "none");
   }
+  const warnings = filtered.some((s) => s.source === "tax-defaulted" && s.lat === null)
+    ? [...idx.warnings, unlocatedWarning()]
+    : idx.warnings;
   return {
     total: filtered.length,
     results: filtered.slice(offset, offset + limit),
     facets,
     sources: idx.sources,
-    warnings: idx.warnings,
+    warnings,
   };
 }
 

@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { aerialImageUrl } from "@/lib/search/aerial-url";
 import type { AerialRead, SiteResult } from "@/lib/search/types";
 import { Button, StatusTag } from "@/components/ui";
 import { AERIAL_LABEL_TEXT, SOURCE_COLOR, SOURCE_LABEL, STATUS_LABEL, STATUS_TONE, acresText } from "./shared";
+
+const AERIAL_CAVEAT_TEXT =
+  "This is an AI reading of an aerial image of unknown capture date, not a site inspection. It says nothing about ownership, zoning or legality.";
 
 type ReadState =
   | { kind: "idle" }
@@ -17,6 +20,17 @@ export function SitePanel({ site, onClose }: { site: SiteResult; onClose: () => 
   const located = site.lat != null && site.lon != null;
   const [imgFailed, setImgFailed] = useState(false);
   const [read, setRead] = useState<ReadState>({ kind: "idle" });
+
+  // A committed batch read is shown at once; fetch it from the same source the list uses.
+  useEffect(() => {
+    if (!site.aerial) return;
+    const ctl = new AbortController();
+    fetch(`/api/aerial-read?id=${encodeURIComponent(site.id)}`, { signal: ctl.signal })
+      .then((r) => (r.ok ? (r.json() as Promise<AerialRead>) : Promise.reject(new Error(String(r.status)))))
+      .then((data) => setRead({ kind: "done", data }))
+      .catch(() => {});
+    return () => ctl.abort();
+  }, [site.id, site.aerial]);
 
   const runRead = async () => {
     setRead({ kind: "loading" });
@@ -121,19 +135,30 @@ export function SitePanel({ site, onClose }: { site: SiteResult; onClose: () => 
         <div className="rounded-[12px] border border-line bg-canvas px-3 py-3">
           <div className="flex items-center justify-between gap-2">
             <h3 className="text-[10px] font-semibold tracking-[1.6px] text-accent uppercase">AI aerial read</h3>
-            <Button
-              variant="secondary-accent"
-              onClick={runRead}
-              disabled={!located || read.kind === "loading"}
-            >
-              {read.kind === "loading" ? "Reading..." : read.kind === "done" ? "Read again" : "Read this image"}
-            </Button>
+            {site.aerial ? null : (
+              <Button
+                variant="secondary-accent"
+                onClick={runRead}
+                disabled={!located || read.kind === "loading"}
+              >
+                {read.kind === "loading" ? "Reading..." : read.kind === "done" ? "Read again" : "Read this image"}
+              </Button>
+            )}
           </div>
           <p className="mt-1 text-[11px] leading-[1.5] text-muted">
             An AI model describes what it sees in the image. It is not a site inspection.
           </p>
           {read.kind === "error" ? (
             <p className="mt-2 text-[12px] text-blocked">The AI read could not be reached. Try again later.</p>
+          ) : null}
+          {site.aerial && read.kind !== "done" ? (
+            <div className="mt-2 flex flex-col gap-1.5">
+              <StatusTag tone="accent" shape="pill" size="md">
+                {AERIAL_LABEL_TEXT[site.aerial.label]}
+              </StatusTag>
+              <p className="text-[13px] leading-[1.5] text-ink">{site.aerial.notes}</p>
+              <p className="text-[11px] leading-[1.5] text-muted">{AERIAL_CAVEAT_TEXT}</p>
+            </div>
           ) : null}
           {read.kind === "done" ? <ReadResult data={read.data} /> : null}
         </div>

@@ -77,7 +77,8 @@ test("no invented addresses or coordinates: nulls stay null", () => {
   const known = new Map(geo.parcels.map((p) => [p.apn, p]));
   for (const r of search({ source: "tax-defaulted", limit: 200 }).results) {
     const g = known.get(r.apn!)!;
-    assert.equal(r.address, g.address);
+    // The county layer writes "ADDRESS NOT AVAILABLE"; that is a null, not an address.
+    assert.equal(r.address, g.address && !/not available/i.test(g.address) ? g.address : null);
     assert.equal(r.lat, g.lat);
     assert.equal(r.lon, g.lon);
     assert.equal(r.acres, g.acres);
@@ -98,10 +99,18 @@ test("aerial read without a key is available:false with the caveat", async () =>
   const saved = process.env.ANTHROPIC_API_KEY;
   delete process.env.ANTHROPIC_API_KEY;
   try {
-    const withCoords = all.results.find((r) => r.lat !== null)!;
+    const withCoords = search({ source: "housing-element", limit: 200 }).results.find((r) => r.lat !== null && !r.aerial)!;
     const r = await aerialRead(withCoords.id);
     assert.equal(r.available, false);
     assert.match(r.caveat, /AI reading of an aerial image of unknown capture date, not a site inspection/);
+    // A committed read is served even without a key, and matches the list.
+    const read = search({ limit: 200 }).results.find((x) => x.aerial);
+    if (read) {
+      const c = await aerialRead(read.id);
+      assert.equal(c.available, true);
+      assert.equal(c.label, read.aerial!.label);
+      assert.equal(c.notes, read.aerial!.notes);
+    }
     const noCoords = search({ source: "tax-defaulted", limit: 200 }).results.find((x) => x.lat === null)!;
     assert.equal((await aerialRead(noCoords.id)).available, false);
   } finally {
@@ -113,4 +122,27 @@ test("model reply parsing falls back to unclear", () => {
   assert.equal(parseAerialReply('{"label":"vacant-lot","notes":"Open ground."}').label, "vacant-lot");
   assert.equal(parseAerialReply('{"label":"haunted","notes":"x"}').label, "unclear");
   assert.equal(parseAerialReply("not json").label, "unclear");
+});
+
+test("aerial filter, facet and free-text match agree with the committed reads", () => {
+  const full = search({ limit: 1 });
+  const read = all.results.find((r) => r.aerial) ?? search({ limit: 200, source: "tax-defaulted" }).results.find((r) => r.aerial);
+  if (!read) return; // no committed reads in this checkout
+  const label = read.aerial!.label;
+  const f = search({ aerial: label, limit: 200 });
+  assert.ok(f.total > 0 && f.results.every((r) => r.aerial?.label === label));
+  assert.equal(f.facets.aerial[label], f.total);
+  assert.equal(Object.keys(f.facets.aerial).length, 1);
+  assert.equal(Object.values(full.facets.aerial).reduce((a, b) => a + b, 0), full.total);
+  const word = { "vacant-lot": "vacant", "parking-lot": "parking", "building-intact": "intact", "building-possibly-distressed": "distressed", unclear: "unclear" }[label];
+  const q = search({ q: word, limit: 200 });
+  assert.ok(q.results.some((r) => r.id === read.id));
+  assert.equal(search({ aerial: label, source: "housing-element" }).total, 0);
+});
+
+test("unlocated-parcel warning only when the result set contains one", () => {
+  const unlocated = search({ source: "tax-defaulted", limit: 200 }).results.find((r) => r.lat === null);
+  assert.ok(unlocated);
+  assert.ok(search({ q: unlocated.apn! }).warnings.some((w) => /not found in the county parcel layer/.test(w)));
+  assert.ok(!search({ source: "surplus-notice" }).warnings.some((w) => /not found in the county parcel layer/.test(w)));
 });
