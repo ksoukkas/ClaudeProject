@@ -31,20 +31,24 @@ const ASSUMPTIONS = [
   `A county tax-defaulted list older than ${CHAPTER8_LIST_MAX_AGE_DAYS} days counts as stale, because owners can redeem until 5 PM the day before an auction (OC Treasurer-Tax Collector). No statute gives this number.`,
   "Zoning categories are a keyword reading of each source's zoning text. The source text is always shown beside the category.",
   "Next steps in a feasibility report are ranked by how many unknowns they clear, not by cost or time.",
-  "The scout's unit-goal default, its half-acre \"small site\" cutoff and its request throttle are demo defaults.",
-  "The three synthetic parcels and the sample workspace (addresses, owners, saved sites, documents) are fictional. Every value in them is made up.",
+  "The aerial image chip is about 150 m across, a size chosen to show a lot and its neighbours. The request limit on the Claude-backed APIs (10 per minute per client) is a demo default.",
+  "The three synthetic parcels and the sample paste list on the update page are fictional. Every value in them is made up.",
   "Addresses are withheld for any tax-defaulted or surplus parcel whose use reads as a home. The rule is a heuristic in code.",
 ];
 
 const PARTS: [string, string][] = [
-  ["Chapter 8 scout (/chapter8)", "Real: all 108 parcels across Orange County from the county's June 25, 2025 Exhibit I (44 vacant, 64 with a building), filterable by city. About 16 months old as of 2026-11-07; parcels may have sold or been redeemed."],
+  ["Search (/)", "Working on three real public lists cached in the repo: 108 tax-defaulted parcels, 231 Surplus Land Act notices and 2,126 housing-element sites, on a street map with a USGS aerial layer. Free text plus source, city, pathway and aerial-label filters."],
+  ["Map coordinates", "86 of the 108 tax-defaulted parcels were found in the OC Parcels layer by parcel number; 22 were not found and have no coordinates. Five notices have none either."],
+  ["AI aerial read", "AI reading of a USGS image of unknown capture date, committed for 312 located tax-defaulted and surplus sites (not for housing-element sites). Not an inspection. On some tax-defaulted parcels it disagrees with the county's vacant or improved flag; both are shown and neither is treated as right."],
+  ["SB 4 (faith or higher-education land)", "Unknown for every site: no loaded dataset has ownership, and an aerial image cannot show it."],
+  ["Chapter 8 scout (/chapter8)", "Real: all 108 parcels across Orange County from the county's June 25, 2025 Exhibit I (44 vacant, 64 with a building), filterable by city. The list is from the June 2025 auction, so as of 2026-11-12 parcels may have sold or been redeemed."],
   ["Score out of 100", "Working. Known inputs today: vacant vs built (county list) and housing-element membership (SCAG layer by APN). Every other line scores half points and is marked to verify until its layer is joined."],
   ["Deadline badge", "Working. The loaded list's auction has passed, so it reads as passed; a newer pasted list with a future auction date shows red, orange or green."],
   ["Update list (/market)", "Working on whatever county list you paste; synthetic sample for the demo."],
   ["Feasibility report law tests", "Working; most hazard and local-code tests return unknown because those layers are not queried per parcel yet."],
   ["Local zoning plain-English translation", "Mocked: the slot exists, no city code text is wired."],
   ["Title and CC&R check", "Checklist and draft request only; no public title data exists, so it never returns pass."],
-  ["Housing-element scout (/api/scout)", "Kept as a JSON API over live SCAG, Caltrans and zoning layers; no longer a screen. SCAG has no housing-element sites for Santa Ana."],
+  ["Housing-element scout (/api/scout)", "Kept as a JSON API over live SCAG, Caltrans and zoning layers; not used by any screen. SCAG has no housing-element sites for Santa Ana."],
   ["Owner identity, assessed values, hazards, transit, prices", "Not yet joined; each scores half points marked to verify."],
 ];
 
@@ -70,8 +74,9 @@ export default function AboutPage() {
       <section className="flex flex-col gap-2">
         <h2 className="text-lg font-semibold">What it does</h2>
         <p className="text-sm text-ink-soft">
-          Cucumber reads the county&apos;s tax-defaulted list for {FOCUS_LABEL}, flags where each
-          parcel sits in the Chapter 8 agreement-sale process, screens what a lot could become
+          Cucumber searches three public lists for {FOCUS_LABEL} (the county&apos;s tax-defaulted
+          list, Surplus Land Act notices and housing-element sites) on one map. For the county
+          list it also flags where each parcel sits in the Chapter 8 agreement-sale process, screens what a lot could become
           under SB 9, SB 684 / SB 1123, AB 2011 and SB 4, and says plainly what is still unknown.
           It is a prototype and not legal advice. It sends nothing; every request is drafted for a
           person to review and send.
@@ -162,8 +167,7 @@ export default function AboutPage() {
           );
         })}
         <p className="text-xs text-muted">
-          The scout&apos;s own layer registry is listed on each results page. The cached data files
-          carry their provenance in{" "}
+          The cached data files carry their provenance in{" "}
           <Link href="/market" className="underline">
             the pipeline
           </Link>{" "}

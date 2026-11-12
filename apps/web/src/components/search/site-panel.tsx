@@ -74,7 +74,7 @@ export function SitePanel({ site, onClose }: { site: SiteResult; onClose: () => 
 
       <div className="flex flex-col gap-4 overflow-y-auto px-4 py-3">
         {located && !imgFailed ? (
-          <div className="overflow-hidden rounded-[12px] border border-line bg-canvas">
+          <div className="shrink-0 overflow-hidden rounded-[12px] border border-line bg-canvas">
             {/* eslint-disable-next-line @next/next/no-img-element -- remote aerial chip */}
             <img
               src={aerialImageUrl(site.lat as number, site.lon as number, 512)}
@@ -88,6 +88,37 @@ export function SitePanel({ site, onClose }: { site: SiteResult; onClose: () => 
             {located ? "Aerial image could not be loaded." : "Not located on the map, so no aerial image."}
           </p>
         )}
+
+        <div className="shrink-0 rounded-[12px] border border-line bg-canvas px-3 py-3">
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="text-[10px] font-semibold tracking-[1.6px] text-accent uppercase">AI aerial read</h3>
+            {site.aerial ? null : (
+              <Button
+                variant="secondary-accent"
+                onClick={runRead}
+                disabled={!located || read.kind === "loading"}
+              >
+                {read.kind === "loading" ? "Reading..." : read.kind === "done" ? "Read again" : "Read this image"}
+              </Button>
+            )}
+          </div>
+          <p className="mt-1 text-[11px] leading-[1.5] text-muted">
+            An AI model describes what it sees in the image. It is not a site inspection.
+          </p>
+          {read.kind === "error" ? (
+            <p className="mt-2 text-[12px] text-blocked">The AI read could not be reached. Try again later.</p>
+          ) : null}
+          {site.aerial && read.kind !== "done" ? (
+            <div className="mt-2 flex flex-col gap-1.5">
+              <StatusTag tone="accent" shape="pill" size="md">
+                {AERIAL_LABEL_TEXT[site.aerial.label]}
+              </StatusTag>
+              <p className="text-[13px] leading-[1.5] text-ink">{site.aerial.notes}</p>
+              <p className="text-[11px] leading-[1.5] text-muted">{AERIAL_CAVEAT_TEXT}</p>
+            </div>
+          ) : null}
+          {read.kind === "done" ? <ReadResult data={read.data} /> : null}
+        </div>
 
         {site.facts.length > 0 ? (
           <ul className="flex flex-wrap gap-1.5">
@@ -130,37 +161,6 @@ export function SitePanel({ site, onClose }: { site: SiteResult; onClose: () => 
               ))}
             </ul>
           )}
-        </div>
-
-        <div className="rounded-[12px] border border-line bg-canvas px-3 py-3">
-          <div className="flex items-center justify-between gap-2">
-            <h3 className="text-[10px] font-semibold tracking-[1.6px] text-accent uppercase">AI aerial read</h3>
-            {site.aerial ? null : (
-              <Button
-                variant="secondary-accent"
-                onClick={runRead}
-                disabled={!located || read.kind === "loading"}
-              >
-                {read.kind === "loading" ? "Reading..." : read.kind === "done" ? "Read again" : "Read this image"}
-              </Button>
-            )}
-          </div>
-          <p className="mt-1 text-[11px] leading-[1.5] text-muted">
-            An AI model describes what it sees in the image. It is not a site inspection.
-          </p>
-          {read.kind === "error" ? (
-            <p className="mt-2 text-[12px] text-blocked">The AI read could not be reached. Try again later.</p>
-          ) : null}
-          {site.aerial && read.kind !== "done" ? (
-            <div className="mt-2 flex flex-col gap-1.5">
-              <StatusTag tone="accent" shape="pill" size="md">
-                {AERIAL_LABEL_TEXT[site.aerial.label]}
-              </StatusTag>
-              <p className="text-[13px] leading-[1.5] text-ink">{site.aerial.notes}</p>
-              <p className="text-[11px] leading-[1.5] text-muted">{AERIAL_CAVEAT_TEXT}</p>
-            </div>
-          ) : null}
-          {read.kind === "done" ? <ReadResult data={read.data} /> : null}
         </div>
 
         <p className="text-[11px] leading-[1.5] text-muted">

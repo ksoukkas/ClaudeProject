@@ -1,177 +1,175 @@
 # Cucumber
 
-> For housing nonprofits across Orange County: every tax-defaulted parcel on the
-> county's list, scored out of 100 for a Chapter 8 agreement sale, with the deadline beside the
-> score and the public record behind every point.
+> One search over three public lists of possible sites for affordable ownership homes in Orange
+> County, on a map with aerial imagery, with the source behind every result and "unknown" wherever
+> the data is silent.
 
 **Team:** Unlot
 **Members:** Felix Hallmann, Laurence Chau, Kevin Sohn, Haven Park, Save Soukkaseum
 **Lane:** 1 Find it
-**Built at:** Claude Impact Lab: UCI × SoCal Affordable Housing, November 7, 2026
+**Built at:** Claude Impact Lab: UCI × SoCal Affordable Housing, November 7, 2026 (finished afterwards)
 
 The event's own README, with the schedule, lanes and submission rules, is at
 [docs/event-README.md](docs/event-README.md).
 
+**This is a prototype. It is not legal, financial or lending advice.** It finds leads, not
+answers. Check every lead with the county, the city and a professional before acting.
+
 ## The real user
 
-A one-person acquisitions team at a small housing nonprofit in Orange County. They
-have no GIS staff and lose every bidding war to cash buyers. Tax-defaulted land may be the one
-place the law puts them first: as this team understands California's tax-sale law (UNVERIFIED,
-Revenue and Taxation Code, Part 6, Chapter 8, cited on the page until read in full), a county may
-sell such parcels by agreement to a nonprofit for low-income housing instead of at public auction.
-Nobody has turned the county's list into something they can act on.
+Habitat for Humanity Orange County described the problem: finding land for affordable ownership
+homes. The person we picture is a one-person acquisitions team at a small housing nonprofit with
+no GIS staff, who loses bidding wars to cash buyers and has nobody to read three different public
+lists for them. Tax-defaulted land may be the one place the law puts them first: as this team
+understands it (UNVERIFIED, Revenue and Taxation Code, Part 6, Chapter 8), a county may sell such
+parcels by agreement to a nonprofit for low-income housing instead of at public auction.
 
-**Before:** they hear about the county auction after it happens, or scan a PDF of parcel numbers
-with no idea which lots could hold homes or which deals could close.
-**After:** they open one ranked list of the county's parcels, pick a city, see a score out of 100
-with the reason next to every point and "to verify" on every gap, see the deadline beside it, and
-open the law tests and the application checklist for the ones worth a call.
+**Before:** a PDF of parcel numbers from the county, a state spreadsheet of public land offers,
+and a planning map of city sites, each in its own place and none of them showing what is on the
+ground.
+**After:** one search box and a map. Type a city, a parcel number or a word like "vacant", filter
+by list, and see each site with its facts, its source and a look from above.
+
+## Demo
+
+Demo video: docs/demo/cucumber-demo.webm
 
 ## What we built
 
-One list. Every screen says it is a prototype and not legal advice.
+Open the home page (`/`). It searches **2,465 sites** from three real public datasets:
 
-1. **Chapter 8 scout** (`/chapter8`, also the home page). Every parcel from the Orange County
-   Treasurer-Tax Collector's published tax-defaulted list across all of Orange County:
-   108 parcels from Exhibit I for the June 25, 2025 auction, with a city dropdown. Each is scored
-   out of 100 on five metrics of 20 points: acquisition certainty, buildability, housing yield,
-   funding competitiveness, and cost and complexity. Every point shows its reason. Unknown data
-   scores half points and is marked "to verify"; water and sewer is always "verify with the
-   utility". Tiers: 75 and up call this week, 55 to 74 worth a look, under 55 watch only. The
-   Chapter 8 deadline sits beside the score, never inside it: red under 30 days, orange 30 to 90,
-   green 90 and up, and "no deadline on record" for this list, whose auction is over. City dropdown and tier filters.
-   Each row links to the parcel detail with the State Controller's ten-step application checklist
-   and to the law tests. Street addresses are left out.
-2. **Law tests per parcel** (`/report/[id]`). What a tax-defaulted lot could become under SB 9,
-   SB 684 / SB 1123, AB 2011 and SB 4: one row per site test with the requirement, the source that
-   states it, the data that answered it, and pass / fail / unknown with who can resolve an
-   unknown. Disagreements between sources are shown, never resolved silently. A title and CC&R
-   checklist that never returns pass and drafts the title request the user sends themselves.
-3. **Update list** (`/market`). When the county publishes a newer list, paste it. Owner and
-   assessee columns are dropped on sight, homes get their address withheld, and each parcel in the
-   county is flagged for where it sits in the process, with the redemption cutoff computed
-   as 5 PM the day before the auction (the county's stated rule, read 2026-11-07).
-4. **About** (`/about`). What it does, how the score and confidence work, every assumption, what is
-   real versus mocked, and all registered sources with VERIFIED / UNVERIFIED status and the date
-   checked.
+- **108 tax-defaulted parcels** from the OC Treasurer-Tax Collector's Exhibit I
+- **231 Surplus Land Act notices** from California HCD (public land that agencies must offer first
+  to housing developers)
+- **2,126 housing-element sites** from SCAG (sites cities have listed as places for homes)
 
-**Demo video:** [link, or "uploaded on the hub"]
-**Live demo:** [link, optional]
+Results show on a map (street basemap, with a switch to a USGS aerial layer) beside a list. Click
+a site for its facts, an aerial image and an AI read of that image. Other pages:
+
+- `/chapter8` the Chapter 8 scout: the 108 county parcels scored out of 100 (see "How it works"),
+  with a city dropdown, tiers, the State Controller's application checklist, and a deadline badge
+- `/report` and `/report/[id]` what a tax-defaulted lot could become under SB 9, SB 684 / SB 1123,
+  AB 2011 and SB 4: one row per test with its source, and pass, fail or unknown
+- `/market` paste a newer county list to flag each parcel's place in the process
+- `/about` assumptions, what is real, and every registered source
 
 ## How Claude is used
 
-- We built the app with Claude Code, in parallel branches, with a cheap Claude review on every
-  push before a human merged (see the pull request history).
-- Inside the tool, nothing on the scout list is decided by Claude: every point comes from a rule
-  and a record, and every unknown is marked. A housing-element search API (`/api/scout`) kept from
-  an earlier cut uses Claude, when an `ANTHROPIC_API_KEY` is set, to parse a goal into criteria;
-  it is not on any screen.
-- A person verifies the "to verify" lines with the county, the city and a title company, and sends
-  any request themselves. The tool sends nothing.
+- We built the app with Claude Code, in parallel branches, with a Claude review on each push
+  before a person merged.
+- **AI aerial read.** Claude looked once at a USGS aerial image of each of 312 located
+  tax-defaulted and surplus sites (86 and 226) and gave one label plus a sentence. The models
+  recorded in `apps/web/src/lib/search/data/aerial-reads.json` are claude-opus-5-5 and
+  claude-haiku-5-5. The results are committed, so the app needs no key to show them.
+- Nothing else on screen is decided by Claude: scores come from fixed rules and records. A
+  separate JSON API (`/api/scout`, not on any page) can use Claude to parse a search when a key is
+  set.
+- A person checks every lead. The tool sends nothing to anyone.
 
 ## Try it
 
-You need [Node.js](https://nodejs.org/) 20 or newer (built and tested with 22.15.0) and npm.
+You need [Node.js](https://nodejs.org/) 20 or newer (built and tested with 22.15.0). Open a
+terminal and run:
 
 ```bash
-git clone https://github.com/ksoukkas/Cucumber.git
-cd Cucumber/apps/web
-npm install
+git clone https://github.com/ksoukkas/Unlot.git
+cd Unlot/apps/web && npm install
 npm run dev
 ```
 
-Open <http://localhost:3000>. It lands on the Chapter 8 scout. Then:
+Then open <http://localhost:3000>. No keys are needed. All data is cached in the repo.
 
-- Filter by city or tier, open **Why this score** on any row, then **Parcel detail** and
-  **Law tests with sources**
-- `/market` to paste a newer county list, or click **Load SYNTHETIC sample** to see the flags and
-  a live deadline badge
-- `/about` for the score, the assumptions and every source
+Optional: an `ANTHROPIC_API_KEY` in `apps/web/.env.local` (copy `.env.example`) is only needed to
+read the aerial image of a site that has no committed read. Never commit that file.
+Developer notes are in [apps/web/README.md](apps/web/README.md).
 
-Other commands, from `apps/web`: `npm run build` (production build and type check), `npm run lint`,
-`npm test` (offline unit tests).
-
-The scout works offline: the county list and the SCAG housing-element sites are cached in the repo.
-
-## Sources and assumptions
-
-| Item | Source or assumption | Date checked |
-|---|---|---|
-| Tax-defaulted parcels (Chapter 8) | [OC Treasurer-Tax Collector, Exhibit I for Sale #1398](https://www.octreasurer.gov/sites/ttc/files/2025-04/Exhibit%20I%20-%20PUBLIC%20AUCTION%20SALE%20%231398.pdf), the June 25, 2025 auction list; row counts and minimum-bid totals match the exhibit. [Property Auctions page](https://www.octreasurer.gov/taxauction) read in a browser: redemption until 5 PM the day before, list viewable by all | 2026-11-07 |
-| Chapter 8 statute (Rev. & Tax. Code 3692.4, 3791.4, Part 6 Chapter 8) | UNVERIFIED: leginfo did not render in automated reads; a FindLaw snippet of 3692.4 quotes "housing directly related to low-income persons". Read in full before relying on it | not fetched |
-| Chapter 8 application steps | [State Controller's Chapter 8 sale guide](https://www.sco.ca.gov/Files-ARD-Tax-Info/Tax-Collector-Ref-Man/Chapter8SaleGuide.pdf), ten steps with code sections | 2026-11-07 |
-| Housing-element sites (yield bonus) | [SCAG HousingElementSite_poly_scag](https://maps.scag.ca.gov/scaggis/rest/services/LDX/HousingElementSite_poly_scag/MapServer/0), 2,126 Orange County sites cached in `apps/web/public/data/`, joined by APN | 2026-11-07 |
-| **The 100-point score** | **ASSUMPTION.** The team's ranking convention: five metrics of 20, fixed points per line (for example debt 15%+ of assessed value +8; slope over 10% −4; 20+ units 20; transit within ½ mile +5; value per unit below median +8), unknown at half points marked to verify, tiers at 75 and 55. Encoded in `apps/web/src/lib/chapter8/score.ts`. No statute or program gives these numbers | n/a |
-| Score inputs known today | Vacant vs built (county list) and housing-element membership (SCAG). Debt share, hazards, slope, density, transit, grocery, schools, opportunity area, QCT/DDA, Prohousing, value, liens and utilities are not yet joined, so they score half points marked to verify | 2026-11-07 |
-| Deadline badge | The county's stated redemption cutoff, 5 PM the day before the auction. Red under 30 days, orange 30 to 90, green 90 and up (ASSUMPTION: the thresholds are the team's) | 2026-11-07 |
-| Chapter 8 list staleness | ASSUMPTION: a county list older than 30 days counts as stale, in `apps/web/src/lib/chapter8/flag.ts` | n/a |
-| SB 9 (Gov Code 65852.21, 66411.7) | [HCD fact sheet](https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/lot-splits-and-duplexes-sb-9.pdf); [HCD SB 9 implementation sheet](https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/sb-9-fact-sheet.pdf) | 2026-11-06 |
-| SB 684 / SB 1123 (Gov Code 66499.41, 65913.4.5) | [HCD Housing Law Fact Sheets](https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/housing-law-fact-sheets.pdf); CalMatters bill pages for [SB 684](https://calmatters.digitaldemocracy.org/bills/ca_202320240sb684) and [SB 1123](https://calmatters.digitaldemocracy.org/bills/ca_202320240sb1123). Lot-size limits differ by source, so that test returns unknown | 2026-11-06 |
-| AB 2011 (Gov Code 65912.100 to 65912.140) | [HCD Housing Law Fact Sheets](https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/housing-law-fact-sheets.pdf); [HCD draft AB 2011 guidelines](https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/draft-ab-2011-guidelines.pdf) | 2026-11-06 |
-| SB 4 (Gov Code 65913.16) | [HCD fact sheet](https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/aff-hsg-faith-higher-ed-sb-4.pdf) | 2026-11-06 |
-| Statute text on leginfo | UNVERIFIED: leginfo returned 403 to automated fetch; links are given for a browser | not fetched |
-| Hazards (fire, flood, fault) | FEMA, CAL FIRE and county layers listed in `apps/web/src/lib/feasibility/sources.ts`; registered but not yet queried per parcel | 2026-11-06 |
-| Zoning category from text | ASSUMPTION: a keyword mapping of each source's zoning text; the original text is always shown beside it | n/a |
-| Next-step ranking in reports | ASSUMPTION: ranked by how many unknowns a step clears, not by cost | n/a |
-| Public land offered | [HCD Surplus Land Act Notices of Availability](https://data.ca.gov/dataset/surplus-land-act-notices-of-availability-received), public domain, 231 Orange County rows cached in `apps/web/src/lib/market/data/` with provenance. Kept as data; not on any screen after the Chapter 8 cut | file 2026-11-06, fetched 2026-11-07 |
-| Synthetic parcels | ASSUMPTION: three synthetic parcels in `apps/web/src/lib/feasibility/fixtures.ts` show each verdict path; every value is made up | n/a |
-
-Every number we made up is labelled ASSUMPTION here and in the tool.
-
-## What is real and what is mocked
+## What is real, what is AI-read, what is unknown
 
 | Part | Status |
 |---|---|
-| Chapter 8 scout list | real: all 108 parcels across Orange County from the county's June 25, 2025 Exhibit I (44 vacant, 64 with a building), filterable by city; about 16 months old as of 2026-11-07, and the page says parcels may have sold or been redeemed |
-| Score out of 100 | working on real inputs where they exist (vacant vs built, housing-element membership); every other line scores half points marked to verify |
-| Deadline badge | working; reads "passed" for the loaded list, and red / orange / green for a pasted list with a future auction date |
-| City dropdown and tier filters | working, in the URL |
-| Parcel detail and application checklist | working; six Chapter 8 tests per parcel through the confidence engine, ten checklist steps from the State Controller's guide |
-| Law tests per parcel | working; most hazard and local-code tests return unknown because those layers are not queried per parcel yet |
-| Title and CC&R check | partly working: checklist, flags from parcel signals, and a draft request; no public title data exists, so it never returns pass |
-| Update list | working on whatever list you paste, with a labelled synthetic sample |
-| Housing-element scout API | kept as JSON at `/api/scout` over live SCAG, Caltrans and zoning layers; not on any screen |
-| Owner identity, assessed values, hazards, transit, prices | not yet joined; each scores half points marked to verify |
+| The 3 lists (108 + 231 + 2,126 rows) | Real public data, cached in the repo. The tax-defaulted list is from the June 25, 2025 auction (Exhibit I), so parcels may since have sold or been redeemed |
+| Coordinates for tax-defaulted parcels | Real for 86 of 108, found in the OC Parcels layer by parcel number. **22 were not found and have no coordinates**, so they are not on the map |
+| Score out of 100 (tax-defaulted only) | A team ranking rule (ASSUMPTION). Only vacant vs built and housing-element membership are known; other lines score half points marked "to verify" |
+| AI aerial read | AI reading of an image of **unknown capture date**. 312 sites read once. Not an inspection, and says nothing about ownership, zoning or legality |
+| Ownership, SB 4 eligibility | **Unknown** (see limits) |
+| Zoning, hazards, utilities, prices, liens | Unknown, not joined |
+| Law tests, title and CC&R check | Checklists and tests with sources; most return unknown. Title never returns pass |
+
+## Data sources
+
+| Dataset | Source | Date checked |
+|---|---|---|
+| Tax-defaulted parcels (108) | [OC Treasurer-Tax Collector, Exhibit I for Sale #1398](https://www.octreasurer.gov/sites/ttc/files/2025-04/Exhibit%20I%20-%20PUBLIC%20AUCTION%20SALE%20%231398.pdf); [Property Auctions page](https://octreasurer.gov/taxauction) (redemption until 5 PM the day before an auction). Row counts and minimum-bid totals match the exhibit | 2026-11-07 |
+| Coordinates and acres for those parcels | [OC Public Works Parcels FeatureServer](https://www.ocgis.com/arcpub/rest/services/Map_Layers/Parcels/FeatureServer/0), 86 of 108 found. Acres are computed from geometry, not an official lot size. Addresses kept only for vacant parcels | 2026-11-12 |
+| Surplus Land Act notices (231 Orange County rows) | [HCD Notices of Availability on data.ca.gov](https://data.ca.gov/dataset/surplus-land-act-notices-of-availability-received), "Other (Public Domain)" as stated there. Contact column dropped | fetched 2026-11-07 (file modified 2026-11-06) |
+| Housing-element sites (2,126) | [SCAG HousingElementSite_poly_scag](https://maps.scag.ca.gov/scaggis/rest/services/LDX/HousingElementSite_poly_scag/MapServer/0). No Santa Ana records exist in this layer. Points are polygon centroids | 2026-11-07 |
+| Aerial imagery | [USGS National Map NAIP ImageServer](https://imagery.nationalmap.gov/arcgis/rest/services/USGSNAIPImagery/ImageServer), public domain, credit USGS and USDA ([USGS copyright page](https://www.usgs.gov/information-policies-and-instructions/copyrights-and-credits)). Capture date at a point not read | 2026-11-12 |
+| Street basemap | [OpenFreeMap](https://openfreemap.org/) "positron" style with OpenStreetMap data, attribution on the map. Terms not checked by us | not checked |
+| Chapter 8 application steps | [State Controller's Chapter 8 sale guide](https://www.sco.ca.gov/Files-ARD-Tax-Info/Tax-Collector-Ref-Man/Chapter8SaleGuide.pdf) (updated 12/2018 per the guide) | 2026-11-07 |
+| Chapter 8 statute (Rev. & Tax. Code 3692.4, 3791.4, Part 6 Chapter 8) | UNVERIFIED: leginfo did not render in automated reads. Read in full before relying on it | not fetched |
+| SB 9, SB 684 / SB 1123, AB 2011, SB 4 | [HCD Housing Law Fact Sheets](https://www.hcd.ca.gov/sites/default/files/docs/planning-and-community/housing-law-fact-sheets.pdf) and the other HCD pages registered in `apps/web/src/lib/feasibility/sources.ts` and listed on `/about`. Statute text on leginfo is UNVERIFIED | 2026-11-06 |
+
+## How the search works
+
+- The three datasets are turned into one list of sites. A field a source does not give stays
+  empty, never filled in.
+- Free text matches parcel number (with or without dashes), city, address, use, source, pathway
+  names and the AI aerial label. Every word you type must match.
+- Filters: source list, city, pathway and aerial label. Counts beside each filter come from the
+  current result set. The search is also in the web address, so a view can be shared.
+- Order: tax-defaulted parcels by score, then Surplus Land Act notices, then housing-element
+  sites (largest planned capacity first).
+- Tax-defaulted parcels get a score out of 100: five metrics of 20 (acquisition certainty,
+  buildability, housing yield, funding competitiveness, cost and complexity). Unknown data scores
+  half points and says "to verify". The tiers (75, 55) and the points are an **ASSUMPTION**: the
+  team's ranking convention, in `apps/web/src/lib/chapter8/score.ts`. No law or program sets them.
+  The deadline sits beside the score, never in it.
+- The AI aerial read is a label (vacant lot, parking lot, building looks intact, building possibly
+  distressed, unclear) from a 150 m image chip (ASSUMPTION: a size chosen to show a lot and its
+  neighbours). It is shown with its caveat every time.
 
 ## Where it gets things wrong
 
-- **Most of the score is "to verify" today.** Only two inputs are known per parcel, so every parcel
-  lands near the middle and in the watch-only tier. The structure is the product; the joins are
-  the roadmap.
-- **The loaded list is old.** The June 2025 auction has passed, so the deadline badge reads
-  "passed" for every row and any parcel may have sold or been redeemed. Paste the county's next
-  list to make the badge live.
-- **Unknown dominates the law tests.** On a county parcel, 1 of 22 tests resolves from the list
-  alone. That is honest, but it means the report points at what to check rather than answering.
-- **Two rule engines exist** (`lib/feasibility` for the law tests, `lib/confidence` plus
-  `county-list.ts` for the Chapter 8 tests), written in parallel. Unifying them is on the list.
-- **The privacy rule is a heuristic.** Addresses are withheld for anything that reads as a home;
-  confirm the rule with an organizer before showing more.
-- We would not trust it yet with: a go or no-go on a parcel, any price, or anything about a private
+- **SB 4 is "unknown" for every site.** The law concerns land owned by faith or higher-education
+  institutions. No loaded dataset says who owns a parcel, and an aerial image cannot show
+  ownership. We do not guess.
+- **The list is old.** The tax-defaulted list is from the June 25, 2025 auction. Its deadline
+  badge reads "passed", and any parcel may have been sold or redeemed.
+- **The AI read can be wrong and the image can be old.** Capture date is unknown. Of the 312
+  reads: vacant lot 154, building looks intact 70, unclear 53, parking lot 30, building possibly
+  distressed 5. The read is also missing for 22 tax-defaulted parcels (no coordinates) and 5
+  notices (no coordinates), and for all 2,126 housing-element sites (not read).
+- **Two sources disagree on some tax-defaulted parcels.** The county flags 44 as vacant land and 64
+  as improved. The AI read called 11 of the 44 vacant ones a building and 3 of the 64 improved ones
+  a vacant lot. We show both and do not say which is right; check the county record and a site
+  visit.
+- **Most of the score is "to verify".** Only two inputs are known per parcel, so scores cluster in
+  the middle. The structure is the product; the joins are the roadmap.
+- **A housing-element listing is a planning listing, not an approval.** Inventories go stale.
+- **Law tests are mostly unknown.** Hazard and local-code layers are not queried per parcel.
+- **The privacy rule is a heuristic.** Addresses are withheld for anything that reads as a home.
+- We would not trust it with: a go or no-go on a parcel, any price, or anything about a private
   owner.
 
-## Next steps
+## Path to the next 100 projects
 
-For a nonprofit to use this on the next Orange County tax auction: read Revenue and Taxation Code
-3692.4, 3791.4 and Chapter 8 in full and replace the UNVERIFIED labels with page citations; join
-each parcel by APN to the county parcel layer (lot size), SCAG zoning (density, so yield becomes
-real), FEMA and CAL FIRE (buildability), Caltrans transit and the TCAC opportunity map (funding),
-and assessed values (debt share and value per unit); ask the Treasurer-Tax Collector for the
-county's own Chapter 8 request cutoff and process; and refresh the list when the county publishes
-the next one.
-
-With one more week: the parcels on a map from the county's GIS layer; one rule engine behind every
-page; grocery, school and utility-service layers; a title-and-lien checklist tuned to tax-sale
-risks; and the same score over the Surplus Land Act notices as a second public-land channel.
+What it would take for a nonprofit to use this next month: read Revenue and Taxation Code Part 6
+Chapter 8 in full and replace the UNVERIFIED labels with page citations; ask the Treasurer-Tax
+Collector for the county's own Chapter 8 request process; load the county's newest list in
+`/market`; then join each parcel by APN to ownership and assessed values (what would let SB 4 and
+the score's debt lines stop being unknown), zoning, hazards and transit. The same pattern (a
+cached public list, a source on every row, an AI look that is labelled) can repeat for each
+county that publishes a tax-defaulted list and for each city's housing-element inventory. That is
+a path we believe is plausible; we have not tested it outside Orange County.
 
 ## Data and privacy
 
 This project uses only public or provided data. It contains no personal information about real
-tenants, buyers or residents. The county list is shown by parcel number and city only; street
-addresses, default numbers and any owner or assessee columns are left out or dropped on sight,
-and anything that reads as a home has its address withheld. The HCD notices' contact column was
-dropped before caching. The synthetic parcels are fictional. The tool does not file applications,
-send messages, or contact any city or person; it drafts text for a person to review and send.
+tenants, buyers or residents. The county list is shown by parcel number and city; tax default
+numbers and any owner or assessee columns are not kept, and addresses are kept only for vacant
+parcels (16 have one). The HCD notices' contact column was dropped before caching. The synthetic
+parcels and sample paste list are fictional. The tool does not file applications, send messages,
+or contact any city or person.
 
 ## License
 

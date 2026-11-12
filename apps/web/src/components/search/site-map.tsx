@@ -70,10 +70,9 @@ export default function SiteMap({
       zoom: 9.3,
       attributionControl: false,
     });
-    map.on("error", () => {
-      // Tile hiccups are normal; only a style that never loaded is fatal.
-      if (!map.isStyleLoaded() && !map.loaded()) setFailed(true);
-    });
+    // Tile hiccups are normal; only a style that has not loaded after 15 s is fatal.
+    const giveUp = setTimeout(() => setFailed(true), 15_000);
+    map.on("load", () => clearTimeout(giveUp));
     mapRef.current = map;
     map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "bottom-right");
@@ -128,6 +127,7 @@ export default function SiteMap({
     });
 
     return () => {
+      clearTimeout(giveUp);
       map.remove();
       mapRef.current = null;
       setReady(false);
