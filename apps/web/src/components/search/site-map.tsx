@@ -43,7 +43,7 @@ export default function SiteMap({
   const container = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const [ready, setReady] = useState(false);
-  const [basemap, setBasemap] = useState<Basemap>("street");
+  const [basemap, setBasemap] = useState<Basemap>("aerial");
   const [failed, setFailed] = useState(false);
   const onSelectRef = useRef(onSelect);
   const resultsRef = useRef(results);
@@ -89,7 +89,7 @@ export default function SiteMap({
         id: "aerial",
         type: "raster",
         source: "usgs-imagery",
-        layout: { visibility: "none" },
+        layout: { visibility: "visible" },
       });
       map.addSource("sites", { type: "geojson", data: toCollection(resultsRef.current), promoteId: "id" });
       map.addLayer({
