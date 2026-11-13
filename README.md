@@ -32,7 +32,7 @@ by list, and see each site with its facts, its source and a look from above.
 
 ## Demo
 
-Demo video: docs/demo/cucumber-demo.webm
+Demo video: [docs/demo/cucumber-demo.webm](docs/demo/cucumber-demo.webm)
 
 ## What we built
 
